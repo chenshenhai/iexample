@@ -1,5 +1,6 @@
 import AutoComplete from 'enquirer/lib/prompts/autocomplete';
 import chalk from 'chalk';
+import vue from '@vitejs/plugin-vue'
 import { createServer, UserConfig } from 'vite';
 import { resolvePackagePath } from './util/project';
 import { packages } from './config'
@@ -32,7 +33,9 @@ function getViteConfig(pkgName): UserConfig {
       port: 8080,
       host: '127.0.0.1',
     },
-    plugins: [],
+    plugins: [
+      vue(),
+    ],
     esbuild: {
       include: [
         /\.ts$/,
@@ -57,6 +60,7 @@ async function inputPackageName() {
     initial: 0,
     choices: choices
   });
+  // @ts-ignore
   const pkgName = await prompt.run();
   return pkgName;
 }

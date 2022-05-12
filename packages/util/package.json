@@ -1,0 +1,7 @@
+{
+  "name": "@iexample/util",
+  "version": "0.0.0",
+  "dependencies": {
+    "vue": "^3.2.33"
+  }
+}

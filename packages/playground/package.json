@@ -4,7 +4,9 @@
   "files": [
     "dist"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "@iexample/uitl": "0.0.0"
+  },
   "devDependencies": {
     "vue": "^3.2.25"
   },

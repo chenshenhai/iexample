@@ -1,6 +1,9 @@
 {
   "name": "@iexample/util",
   "version": "0.0.0",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "vue": "^3.2.33"
   }

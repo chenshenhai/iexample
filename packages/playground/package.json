@@ -1,6 +1,9 @@
 {
   "name": "@iexample/playground",
   "version": "0.0.0",
+  "files": [
+    "dist"
+  ],
   "dependencies": {},
   "devDependencies": {
     "vue": "^3.2.25"

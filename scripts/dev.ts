@@ -20,7 +20,7 @@ async function dev() {
   console.log(
     `Open: ` + 
     chalk.green(
-      `http://${host}:${port}/main.html`
+      `http://${host}:${port}/example/index.html`
     )
   );
 }
@@ -28,7 +28,7 @@ async function dev() {
 function getViteConfig(pkgName): UserConfig {
   const viteConfig: UserConfig = {
     root: resolvePackagePath(pkgName),
-    publicDir: resolvePackagePath(pkgName, 'dev'),
+    publicDir: resolvePackagePath(pkgName, 'example', 'public'),
     server: {
       port: 8080,
       host: '127.0.0.1',

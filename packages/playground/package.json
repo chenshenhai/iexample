@@ -8,9 +8,9 @@
     "@iexample/uitl": "0.0.0"
   },
   "devDependencies": {
-    "vue": "^3.2.25"
+    "vue": "^3.2.33"
   },
   "peerDependencies": {
-    "vue": "^3.2.25"
+    "vue": "^3.2.33"
   }
 }

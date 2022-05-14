@@ -19,3 +19,17 @@ export function getTsConfig() {
   const config = JSON.parse(configStr);
   return config;
 }
+
+
+export function getPakcages(): string[] {
+  const packagesDir = resolveProjectPath('packages');
+  const packages: string[] = [];
+  const dirs = fs.readdirSync(packagesDir);
+  dirs.forEach((name) => {
+    const pkgFile = resolveProjectPath('packages', name, 'package.json');
+    if (fs.existsSync(pkgFile) && fs.statSync(pkgFile).isFile()) {
+      packages.push(name);
+    }
+  });
+  return packages;
+}

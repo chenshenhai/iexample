@@ -5,6 +5,6 @@
     "dist"
   ],
   "dependencies": {
-    "vue": "^3.2.33"
+		"vue": "^3.2.33"
   }
 }

@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import vue from '@vitejs/plugin-vue'
 import { createServer, UserConfig } from 'vite';
 import { resolvePackagePath } from './util/project';
-import { packages } from './config'
+import { packages } from './config/package'
 
 dev();
 

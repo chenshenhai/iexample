@@ -1,30 +1,30 @@
 import { build } from 'vite';
-
-
 import chalk from 'chalk';
 import vue from '@vitejs/plugin-vue'
 import { createServer, UserConfig } from 'vite';
 import { resolvePackagePath } from './util/project';
-import { packages } from './config'
+import { packages } from './config/package'
 
 dev();
 
 async function dev() {
-  const pkgName = 'util';
-  const viteConfig = getViteConfig(pkgName);
-  const output = await build({
-    configFile: false,
-    ...viteConfig
-  })
-  console.log('output ===', output)
-  
-  console.log(chalk.green(`success!`));
+  for (let i = 0; i < packages.length; i++) {
+    const pkgName = packages[i].dirName
+    const viteConfig = getViteConfig(pkgName);
+    const result = await build({
+      configFile: false,
+      ...viteConfig
+    });
+    console.log(chalk.green(`build packages/${pkgName}/src  success!`));
+  }
+  console.log(chalk.green(`build source success!`));
 }
 
 function getViteConfig(pkgName): UserConfig {
   const viteConfig: UserConfig = {
     build: {
       minify: false,
+      emptyOutDir: false,
       outDir: resolvePackagePath(pkgName, 'dist'),
       lib: {
         entry: resolvePackagePath(pkgName, 'src', 'index.ts'),

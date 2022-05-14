@@ -12,8 +12,8 @@ function main() {
   names.forEach((name) => {
     generateDts(name);
   })
+  fs.rmdirSync(resolveProjectPath('dist'), { recursive: true })
 }
-
 
 function generateDts(pkgName) {
   

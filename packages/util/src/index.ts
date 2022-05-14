@@ -1,4 +1,8 @@
 
-export function add(a: number, b: number) {
-  return a + b;
+export function add1(a: number) {
+  return a + 1;
+}
+
+export function add2(a: number) {
+  return a + 2;
 }

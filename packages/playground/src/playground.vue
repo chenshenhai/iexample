@@ -7,11 +7,12 @@
 
 <script setup lang="ts">
   import { reactive } from 'vue';
+  import { add1 } from '@iexample/util';
   const state = reactive<{count: number}>({
     count: 0
   });
   const onClick = () => {
-    state.count ++;
+    state.count = add1(state.count);
   }
 </script>
 

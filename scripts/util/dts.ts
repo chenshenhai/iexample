@@ -2,20 +2,10 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import { Extractor, ExtractorConfig } from '@microsoft/api-extractor';
-import { resolvePackagePath, resolveProjectPath } from './util/project';
-import { getPakcages } from './util/project';
+import { resolvePackagePath } from './project';
+// import { getPakcages } from './util/project';
 
-main();
-
-function main() {
-  const names = getPakcages();
-  names.forEach((name) => {
-    generateDts(name);
-  })
-  fs.rmdirSync(resolveProjectPath('dist'), { recursive: true })
-}
-
-function generateDts(pkgName) {
+export function generateDts(pkgName) {
   
   // build types
   const target = pkgName;

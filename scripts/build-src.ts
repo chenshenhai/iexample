@@ -4,8 +4,10 @@ import vue from '@vitejs/plugin-vue'
 import { createServer, UserConfig } from 'vite';
 import { resolvePackagePath } from './util/project';
 import { packages } from './config/package'
+import { generateDts } from './util/dts';
 
 dev();
+
 
 async function dev() {
   for (let i = 0; i < packages.length; i++) {
@@ -15,6 +17,7 @@ async function dev() {
       configFile: false,
       ...viteConfig
     });
+    generateDts(pkgName);
     console.log(chalk.green(`build packages/${pkgName}/src  success!`));
   }
   console.log(chalk.green(`build source success!`));
@@ -24,12 +27,13 @@ function getViteConfig(pkgName): UserConfig {
   const viteConfig: UserConfig = {
     build: {
       minify: false,
-      emptyOutDir: false,
       outDir: resolvePackagePath(pkgName, 'dist'),
       lib: {
         entry: resolvePackagePath(pkgName, 'src', 'index.ts'),
-        formats: ['es'],
-        fileName: () => 'index.esm.js',
+        formats: ['es', 'cjs'],
+        fileName: (format) => {
+          return `index.${format}.js`;
+        },
       },
       rollupOptions: {
         external: ['vue', 'vue/compiler-sfc']

@@ -2,9 +2,9 @@
 	"scripts": {
 		"init": "pnpm i",
 		"dev": "vite-node ./scripts/dev.ts",
-		"build": "npm run build:dts && npm run build:dts",
-		"build:src": "vite-node ./scripts/build-src.ts",
-		"build:dts": "vue-tsc -p tsconfig.build.json && vite-node ./scripts/build-dts.ts"
+		"build": "npm run build:src",
+		"build:src": "npm run build:type && vite-node ./scripts/build-src.ts",
+		"build:type": "vue-tsc -p tsconfig.build.json"
 	},
 	"devDependencies": {
 		"@microsoft/api-extractor": "^7.23.2",

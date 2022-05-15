@@ -1,0 +1,22 @@
+{
+  "name": "@iexample/playground",
+  "version": "0.0.0",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@iexample/util": "0.0.0"
+  },
+  "devDependencies": {
+    "vue": "^3.2.33"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.33"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

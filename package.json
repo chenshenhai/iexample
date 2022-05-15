@@ -6,7 +6,8 @@
     "build": "npm run build:src",
     "build:src": "npm run build:type && vite-node ./scripts/build-src.ts",
     "build:type": "vue-tsc -p tsconfig.build.json",
-    "version": "vite-node ./scripts/version.ts"
+    "version": "vite-node ./scripts/version.ts",
+    "release": "vite-node ./scripts/release.ts"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.23.2",

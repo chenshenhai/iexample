@@ -1,7 +1,7 @@
 <template>
-  <header class="header">
-    hello
-  </header>
+  <footer class="footer">
+    Footer
+  </footer>
 </template>
 
 <script lang="ts">
@@ -15,7 +15,7 @@ export default {
 
 <style scoped lang="less">
 
-.header {
+.footer {
   display: flex;
   align-items: center;
   justify-content: center;

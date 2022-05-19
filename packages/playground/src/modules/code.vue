@@ -4,32 +4,18 @@
       side
     </div>
     <div class='view-code-main' :style="{width: rightWidth + 'px'}">
-      <code-preview></code-preview>
+      <CodeLayout 
+        :width="rightWidth"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue';
-import CodePreview from './code-preview.vue';
+import CodeLayout from './code-layout.vue';
 
-const leftWidth = 100;
+const leftWidth = 50;
 const rightWidth = window.innerWidth - leftWidth;
-
-const state = reactive<{
-  projectOpenFile: string,
-  projectInfo: Types.ProjectInfo,
-}>({
-  projectInfo: {
-    name: '',
-    folder: [],
-  },
-  projectOpenFile: '',
-})
-
-
- 
-
 
 
 </script>

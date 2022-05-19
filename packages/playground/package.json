@@ -8,9 +8,11 @@
     "dist"
   ],
   "dependencies": {
-    "@iexample/util": "0.0.0"
+    "@iexample/util": "0.0.0",
+    "codemirror": "^5.65.3"
   },
   "devDependencies": {
+    "@types/codemirror": "^5.60.5",
     "vue": "^3.2.33"
   },
   "peerDependencies": {

@@ -1,26 +1,36 @@
 <template>
   <div class="code-preview-container">
     <layout-column class="code-preview" 
-      :defaultLeftWidth="50" 
-      :onSplitChange="onSplitChange"
-      :unit="'%'"
+      :defaultLeftWidth="220" 
+      :unit="'px'"
     >
-      <template #left class="left">
-        <code-editor />
+      <template #left>
+        <div>list</div>
       </template>
-      <template #right class="right">
-        <layout-row style="{{width: '100%', height: '100%'}}"
-          :defaultTopHeight="50" 
+      <template #right>
+        <layout-column class="code-preview" 
+          :defaultLeftWidth="50" 
           :onSplitChange="onSplitChange"
-          :unit="'px'"
+          :unit="'%'"
         >
-          <template #top>
-            <div>Top</div>
+          <template #left class="left">
+            <code-editor />
           </template>
-          <template #bottom>
-            <div>Bottom</div>
+          <template #right class="right">
+            <layout-row style="{{width: '100%', height: '100%'}}"
+              :defaultTopHeight="50" 
+              :onSplitChange="onSplitChange"
+              :unit="'%'"
+            >
+              <template #top>
+                <div>Top</div>
+              </template>
+              <template #bottom>
+                <div>Bottom</div>
+              </template>
+            </layout-row>
           </template>
-        </layout-row>
+        </layout-column>
       </template>
     </layout-column>
   </div>

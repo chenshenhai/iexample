@@ -1,42 +1,90 @@
 <template>
-  <div class="box">
-    <button class="btn" @click="onClick">Add</button>
-    <span class="text">Count: {{state.count}}</span>
+  <div class="iexample iexample-container"
+    :class="{
+      'iexample-theme-dark': storeGlobal.theme === 'dark',
+    }"
+  >
+    <Header class="iexample-header"></Header>
+    <div class="iexample-main">
+      <div class="iexample-main-container">
+       <code-view />
+      </div>
+    </div>
+    <Footer class="iexample-footer"></Footer>
   </div>
 </template>
 
-<script setup lang="ts">
-  import { reactive } from 'vue';
-  import { add1 } from '@iexample/util';
-  const state = reactive<{count: number}>({
-    count: 0
-  });
-  const onClick = () => {
-    state.count = add1(state.count);
-  }
+<script lang="ts" setup>
+/// <reference path="lib.d.ts" />
+import { defineProps } from 'vue';
+import Header from './modules/header.vue';
+import Footer from './modules/footer.vue';
+import CodeView from './modules/code.vue';
+import { storeGlobal } from './store/global';
+const props = defineProps<{
+  theme?: IPlaygroundTheme
+}>()
+storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light'
 </script>
 
-<style lang="less">
+<style scoped lang="less">
+@header-height: 40px;
+@footer-height: 30px;
 
-.box {
-  width: 200px;
-  padding: 10px;
-  margin: 0 auto;
-  border: 1px solid #999999;
+
+
+.iexample {
+  --iexample-bg: #ffffff;
+  --iexample-font-color: #555555;
+  --iexample-font-family: Monaco, Consolas, monospace, 'Courier New';
+  --iexample-border-color: #dddddd;
+
+  &.iexample-theme-dark {
+    --iexample-bg: #1a1a1a;
+    --iexample-font-color: #aaaaaa;
+    --iexample-border-color: #383838;
+  }
+
+  &.iexample-container {
+    height: 100%;
+    font-family: var(--iexample-font-family);
+    color: var(--iexample-font-color);
+    background: var(--iexample-bg);
+  }
+
+  .iexample-header {
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    height: @header-height;
+    width: 100%;
+    box-shadow: 0px 0px 10px 0px #8481817a;
+    background: var(--iexample-bg);
+  }
+  .iexample-footer {
+    bottom: 0;
+    position: fixed;
+    z-index: 100;
+    height: @footer-height;
+    width: 100%;
+    box-shadow: 0px 0px 10px 0px #8481817a;
+    background: var(--iexample-bg);
+  }
+  .iexample-main {
+    padding-top: @header-height;
+    padding-bottom: @footer-height;
+    box-sizing: border-box;
+    height: 100%;
+  }
+
+  .iexample-main-container {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+  }
+
 }
-.btn {
-  height: 32px;
-  background: #2784ee;
-  color: #ffffff;
-  font-size: 18px;
-  border: none;
-}
-.text {
-  font-size: 20px;
-  font-weight: bold;
-  color: #666666;
-  margin: 0 10px;
-}
+
+
 </style>
-
 

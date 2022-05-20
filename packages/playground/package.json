@@ -8,13 +8,16 @@
     "dist"
   ],
   "dependencies": {
-    "@iexample/util": "0.0.0"
+    "@ant-design/icons-vue": "^6.1.0",
+    "@iexample/util": "0.0.0",
+    "codemirror": "^5.65.3"
   },
   "devDependencies": {
-    "vue": "^3.2.33"
+    "@types/codemirror": "^5.60.5",
+    "vue": "^3.2.34"
   },
   "peerDependencies": {
-    "vue": "^3.2.33"
+    "vue": "^3.2.34"
   },
   "publishConfig": {
     "access": "public"

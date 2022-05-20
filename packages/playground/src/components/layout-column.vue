@@ -95,7 +95,7 @@
       flex: 1;
     }
     .left {
-      border-right: 1px solid #ccc;
+      border-right: 1px solid var(--iexample-border-color);
     }
     .dragger {
       position: absolute;

@@ -94,7 +94,7 @@
       flex: 1;
     }
     .top {
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid var(--iexample-border-color);
     }
     .dragger {
       position: absolute;

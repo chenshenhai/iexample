@@ -31,12 +31,12 @@ const rightWidth = window.innerWidth - leftWidth;
 .view-code-sider {
   display: flex;
   /* width: 80px; */
-  border-right: 1px solid #ccc;
+  border-right: 1px solid var(--iexample-border-color);
 }
 
 .view-code-main {
   display: flex;
-  background: #ffffff;
+  background: var(--iexample-bg);
   /* flex: 1; */
   /* width: 900px; */
 }

@@ -1,10 +1,10 @@
 <template>
   <div class='view-code'>
     <div class='view-code-sider' :style="{width: leftWidth + 'px'}">
-      side
+      <iexample-sider />
     </div>
     <div class='view-code-main' :style="{width: rightWidth + 'px'}">
-      <CodeLayout 
+      <code-layout 
         :width="rightWidth"
       />
     </div>
@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import CodeLayout from './code-layout.vue';
+import IexampleSider from './sider.vue';
 
 const leftWidth = 50;
 const rightWidth = window.innerWidth - leftWidth;

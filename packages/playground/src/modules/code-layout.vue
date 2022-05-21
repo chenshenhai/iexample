@@ -48,8 +48,8 @@ const defaultLayoutLeft = props.width / 2;
 
 const state = reactive<{
   codeBoxWidth: number,
-  codeLanguage: Types.CodeLanguage,
-  codeSelectedLines: Types.CodeSelectedLine[],
+  codeLanguage: ICodeType,
+  codeSelectedLines: any[],
   codeContent: string,
   selectedKeys: string[],
   expandedKeys: string[],

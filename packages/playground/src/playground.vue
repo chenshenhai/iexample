@@ -19,7 +19,7 @@
 import { defineProps } from 'vue';
 import Header from './modules/header.vue';
 import Footer from './modules/footer.vue';
-import CodeView from './modules/code.vue';
+import CodeView from './modules/view.vue';
 import { storeGlobal } from './store/global';
 const props = defineProps<{
   theme?: IPlaygroundTheme
@@ -32,16 +32,19 @@ storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light'
 @footer-height: 30px;
 
 
-
 .iexample {
   --iexample-bg: #ffffff;
   --iexample-font-color: #555555;
+  --iexample-font-color-hover: #222222;
+  --iexample-font-color-active: #1277f2;
+  
   --iexample-font-family: Monaco, Consolas, monospace, 'Courier New';
   --iexample-border-color: #dddddd;
 
   &.iexample-theme-dark {
     --iexample-bg: #1a1a1a;
     --iexample-font-color: #aaaaaa;
+    --iexample-font-color-hover: #fafafa;
     --iexample-border-color: #383838;
   }
 

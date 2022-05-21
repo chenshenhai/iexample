@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue'
 import { createServer, UserConfig } from 'vite';
 import { resolvePackagePath } from './util/project';
 import { packages } from './config/package'
+import { lessOptions } from './config/less';
 
 dev();
 
@@ -36,6 +37,11 @@ function getViteConfig(pkgName): UserConfig {
     plugins: [
       vue(),
     ],
+    css: {
+      preprocessorOptions: {
+        less: lessOptions
+      }
+    },
     esbuild: {
       include: [
         /\.ts$/,

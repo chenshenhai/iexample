@@ -5,7 +5,7 @@
       :unit="'px'"
     >
       <template #left>
-        <div>list</div>
+        <iexample-list />
       </template>
       <template #right>
         <layout-column class="code-preview" 
@@ -41,7 +41,7 @@ import { reactive, defineProps } from 'vue';
 import LayoutColumn from '../components/layout-column.vue';
 import LayoutRow from '../components/layout-row.vue';
 import CodeEditor from './code-editor.vue';
-import Code from './code.vue';
+import IexampleList from './list.vue'
 
 const props = defineProps<{ width: number }>();
 const defaultLayoutLeft = props.width / 2;

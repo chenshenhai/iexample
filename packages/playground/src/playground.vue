@@ -15,16 +15,20 @@
 </template>
 
 <script lang="ts" setup>
-/// <reference path="lib.d.ts" />
 import { defineProps } from 'vue';
 import Header from './modules/header.vue';
 import Footer from './modules/footer.vue';
 import CodeView from './modules/view.vue';
 import { storeGlobal } from './store/global';
+
 const props = defineProps<{
-  theme?: IPlaygroundTheme
+  theme?: IPlaygroundTheme,
+  directory?: IProjectDirectory 
 }>()
-storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light'
+const { theme, directory } = props;
+storeGlobal.theme = theme === 'dark' ? 'dark' : 'light';
+storeGlobal.directory = Array.isArray(directory) ? directory : [];
+
 </script>
 
 <style scoped lang="less">
@@ -34,6 +38,7 @@ storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light'
 
 .iexample {
   --iexample-bg: #ffffff;
+  --iexample-bg-active: #e6e6e6;
   --iexample-font-color: #555555;
   --iexample-font-color-hover: #222222;
   --iexample-font-color-active: #1277f2;
@@ -43,6 +48,7 @@ storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light'
 
   &.iexample-theme-dark {
     --iexample-bg: #1a1a1a;
+    --iexample-bg-active: #3e3e3e;
     --iexample-font-color: #aaaaaa;
     --iexample-font-color-hover: #fafafa;
     --iexample-border-color: #383838;

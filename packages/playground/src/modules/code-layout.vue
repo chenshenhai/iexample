@@ -37,29 +37,16 @@
 </template>
 
 <script setup lang="ts" >
-import { reactive, defineProps } from 'vue';
+import { reactive } from 'vue';
 import LayoutColumn from '../components/layout-column.vue';
 import LayoutRow from '../components/layout-row.vue';
 import CodeEditor from './code-editor.vue';
-import IexampleList from './list.vue'
-
-const props = defineProps<{ width: number }>();
-const defaultLayoutLeft = props.width / 2;
+import IexampleList from './list.vue';
 
 const state = reactive<{
   codeBoxWidth: number,
-  codeLanguage: ICodeType,
-  codeSelectedLines: any[],
-  codeContent: string,
-  selectedKeys: string[],
-  expandedKeys: string[],
 }>({
   codeBoxWidth: -1,
-  codeLanguage: 'plaintext',
-  codeContent: '',
-  codeSelectedLines: [],
-  selectedKeys: [],
-  expandedKeys: ['src'],
 })
 
 const onSplitChange = (e: { left: number, right: number }) => {
@@ -67,7 +54,6 @@ const onSplitChange = (e: { left: number, right: number }) => {
   state.codeBoxWidth = right;
 }
 
- 
 </script>
 
 <style scoped>

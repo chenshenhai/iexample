@@ -1,30 +1,28 @@
 <template>
   <div class="iexample-file-tree">
-    <div class="iexample-file-item">
-      <icon-file class="iexample-file-icon" />
-      <span class="iexample-file-name">
-        <span class="iexample-file-name-text">index.js</span>
-      </span>
-    </div>
-    <div class="iexample-file-item">
+    <div class="iexample-file-item"
+      v-for="item in directory"
+    >
       <icon-file class="iexample-file-icon"/>
       <span class="iexample-file-name">
          <span class="iexample-file-name-text">
-          index.css
+          {{item.name}}
          </span>
-      </span>
-    </div>
-     <div class="iexample-file-item">
-      <icon-file class="iexample-file-icon"/>
-      <span class="iexample-file-name">
-        <span class="iexample-file-name-text">index11111111111111111111111111111.html</span>
       </span>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import IconFile from '@ant-design/icons-vue/FileOutlined'
+import { defineProps } from 'vue';
+import IconFile from '@ant-design/icons-vue/FileOutlined';
+
+const props = defineProps<{
+  directory: IProjectDirectory,
+  onSelect?: (data: any) => void,
+}>();
+
+const { directory = [] } = props;
 
 </script>
 
@@ -40,6 +38,11 @@ import IconFile from '@ant-design/icons-vue/FileOutlined'
     line-height: 28px;
     font-size: 14px;
     flex-direction: row;
+    cursor: pointer;
+
+    &.active {
+      background: var(--iexample-bg-active);
+    }
   }
 
   .iexample-file-icon {

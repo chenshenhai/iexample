@@ -2,24 +2,21 @@ declare type IPlaygroundTheme = 'light' | 'dark';
 
 declare type ICodeType = 'javascript' | 'html' | 'css' | 'plaintext';
 
-declare interface IProject {
-  name: string;
-  list: Array<{
-    pathname: string
-  }>
-}
+// declare interface IProject {
+//   name: string;
+// }
 
 declare interface IProjectFile {
-  title: string;
-  key: string;
+  name: string;
+  path: string;
   type: 'file',
+  content: string;
   fileType: ICodeType,
-  isLeaf: boolean,
 }
 
 declare interface IProjectFolder extends Omit<IProjectFile, 'type'> {
   type: 'folder',
-  title: string;
-  key: string;
   children: Array<IProjectFile | IProjectFolder>;
 }
+
+declare type IProjectDirectory = Array<IProjectFolder | IProjectFile>

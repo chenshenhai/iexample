@@ -23,11 +23,17 @@ import { storeGlobal } from './store/global';
 
 const props = defineProps<{
   theme?: IPlaygroundTheme,
-  directory?: IProjectDirectory 
+  directory?: IProjectDirectory,
+  currentFilePath?: string | null,
 }>()
-const { theme, directory } = props;
+const { theme, directory, currentFilePath } = props;
 storeGlobal.theme = theme === 'dark' ? 'dark' : 'light';
 storeGlobal.directory = Array.isArray(directory) ? directory : [];
+if (currentFilePath) {
+  storeGlobal.currentFilePath = currentFilePath;
+} else {
+  storeGlobal.currentFilePath = null;
+}
 
 </script>
 

@@ -2,6 +2,9 @@
   <div class="iexample-file-tree">
     <div class="iexample-file-item"
       v-for="item in directory"
+      :class="{
+        'active': currentFilePath === item.path
+      }"
     >
       <icon-file class="iexample-file-icon"/>
       <span class="iexample-file-name">
@@ -19,10 +22,12 @@ import IconFile from '@ant-design/icons-vue/FileOutlined';
 
 const props = defineProps<{
   directory: IProjectDirectory,
+  currentFilePath: string | null,
   onSelect?: (data: any) => void,
 }>();
 
-const { directory = [] } = props;
+const { directory = [], currentFilePath } = props;
+console.log('currentFilePath =', currentFilePath)
 
 </script>
 

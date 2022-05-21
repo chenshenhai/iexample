@@ -1,6 +1,9 @@
 <template>
   <div class="iexample-mod-list">
-    <file-tree :directory="storeGlobal.directory"/>
+    <file-tree
+      :directory="storeGlobal.directory"
+      :currentFilePath="storeGlobal.currentFilePath"
+    />
   </div>
 </template>
 

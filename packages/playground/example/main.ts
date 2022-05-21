@@ -56,6 +56,7 @@ html, body {
 const app = createApp(Playground, {
   theme: 'dark',
   directory,
+  currentFilePath: '/index.js'
 })
 app.mount('#app');
 

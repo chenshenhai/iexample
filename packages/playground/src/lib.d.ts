@@ -1,6 +1,6 @@
 declare type IPlaygroundTheme = 'light' | 'dark';
 
-declare type ICodeType = 'javascript' | 'html' | 'css' | 'plaintext';
+declare type ICodeType = 'javascript' | 'typescript' | 'json' | 'html' | 'css' | 'plaintext';
 
 // declare interface IProject {
 //   name: string;

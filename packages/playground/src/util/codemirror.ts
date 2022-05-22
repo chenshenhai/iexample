@@ -2,8 +2,9 @@ import CodeMirror from 'codemirror'
 
 // modes
 import 'codemirror/mode/javascript/javascript.js'
-// import 'codemirror/mode/css/css.js'
-// import 'codemirror/mode/htmlmixed/htmlmixed.js'
+import 'codemirror/mode/jsx/jsx.js'
+import 'codemirror/mode/css/css.js'
+import 'codemirror/mode/htmlmixed/htmlmixed.js'
 import 'codemirror/mode/markdown/markdown.js'
 
 // addons

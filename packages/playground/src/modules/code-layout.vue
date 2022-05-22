@@ -14,7 +14,7 @@
           :unit="'%'"
         >
           <template #left class="left">
-            <code-editor />
+            <iexample-editor />
           </template>
           <template #right class="right">
             <layout-row style="{{width: '100%', height: '100%'}}"
@@ -40,7 +40,7 @@
 import { reactive } from 'vue';
 import LayoutColumn from '../components/layout-column.vue';
 import LayoutRow from '../components/layout-row.vue';
-import CodeEditor from './code-editor.vue';
+import IexampleEditor from './editor.vue';
 import IexampleList from './list.vue';
 
 const state = reactive<{

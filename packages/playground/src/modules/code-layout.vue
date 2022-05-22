@@ -5,7 +5,7 @@
       :unit="'px'"
     >
       <template #left>
-        <div>list</div>
+        <iexample-list />
       </template>
       <template #right>
         <layout-column class="code-preview" 
@@ -14,12 +14,11 @@
           :unit="'%'"
         >
           <template #left class="left">
-            <code-editor />
+            <iexample-editor />
           </template>
           <template #right class="right">
             <layout-row style="{{width: '100%', height: '100%'}}"
-              :defaultTopHeight="50" 
-              :onSplitChange="onSplitChange"
+              :defaultTopHeight="50"
               :unit="'%'"
             >
               <template #top>
@@ -37,29 +36,16 @@
 </template>
 
 <script setup lang="ts" >
-import { reactive, defineProps } from 'vue';
+import { reactive } from 'vue';
 import LayoutColumn from '../components/layout-column.vue';
 import LayoutRow from '../components/layout-row.vue';
-import CodeEditor from './code-editor.vue';
-import Code from './code.vue';
-
-const props = defineProps<{ width: number }>();
-const defaultLayoutLeft = props.width / 2;
+import IexampleEditor from './editor.vue';
+import IexampleList from './list.vue';
 
 const state = reactive<{
   codeBoxWidth: number,
-  codeLanguage: Types.CodeLanguage,
-  codeSelectedLines: Types.CodeSelectedLine[],
-  codeContent: string,
-  selectedKeys: string[],
-  expandedKeys: string[],
 }>({
   codeBoxWidth: -1,
-  codeLanguage: 'plaintext',
-  codeContent: '',
-  codeSelectedLines: [],
-  selectedKeys: [],
-  expandedKeys: ['src'],
 })
 
 const onSplitChange = (e: { left: number, right: number }) => {
@@ -67,7 +53,6 @@ const onSplitChange = (e: { left: number, right: number }) => {
   state.codeBoxWidth = right;
 }
 
- 
 </script>
 
 <style scoped>

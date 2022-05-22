@@ -15,16 +15,30 @@
 </template>
 
 <script lang="ts" setup>
-/// <reference path="lib.d.ts" />
-import { defineProps } from 'vue';
+import { defineProps, toRaw } from 'vue';
 import Header from './modules/header.vue';
 import Footer from './modules/footer.vue';
-import CodeView from './modules/code.vue';
+import CodeView from './modules/view.vue';
 import { storeGlobal } from './store/global';
+
 const props = defineProps<{
-  theme?: IPlaygroundTheme
+  theme?: IPlaygroundTheme,
+  directory?: IProjectDirectory,
+  currentFilePath?: string | null,
 }>()
-storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light'
+const { theme, directory, currentFilePath } = props;
+
+storeGlobal.theme = theme === 'dark' ? 'dark' : 'light';
+storeGlobal.directory = Array.isArray(directory) ? directory : [];
+
+if (currentFilePath) {
+  for (let i = 0; i < storeGlobal.directory.length; i++) {
+    if (storeGlobal.directory[i]?.type === 'file' && storeGlobal.directory[i]?.path === currentFilePath) {
+      storeGlobal.currentFile = toRaw(storeGlobal.directory[i]) as IProjectFile;
+    }
+  }
+}
+
 </script>
 
 <style scoped lang="less">
@@ -32,16 +46,21 @@ storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light'
 @footer-height: 30px;
 
 
-
 .iexample {
   --iexample-bg: #ffffff;
+  --iexample-bg-active: #e6e6e6;
   --iexample-font-color: #555555;
+  --iexample-font-color-hover: #222222;
+  --iexample-font-color-active: #1277f2;
+  
   --iexample-font-family: Monaco, Consolas, monospace, 'Courier New';
   --iexample-border-color: #dddddd;
 
   &.iexample-theme-dark {
     --iexample-bg: #1a1a1a;
+    --iexample-bg-active: #3e3e3e;
     --iexample-font-color: #aaaaaa;
+    --iexample-font-color-hover: #fafafa;
     --iexample-border-color: #383838;
   }
 

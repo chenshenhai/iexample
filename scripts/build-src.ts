@@ -1,15 +1,16 @@
 import { build } from 'vite';
 import chalk from 'chalk';
-import vue from '@vitejs/plugin-vue'
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
 import { createServer, UserConfig } from 'vite';
 import { resolvePackagePath } from './util/project';
 import { packages } from './config/package'
 import { generateDts } from './util/dts';
+import { lessOptions } from './config/less';
 
-dev();
+start();
 
-
-async function dev() {
+async function start() {
   for (let i = 0; i < packages.length; i++) {
     const pkgName = packages[i].dirName
     const viteConfig = getViteConfig(pkgName);
@@ -41,7 +42,13 @@ function getViteConfig(pkgName): UserConfig {
     },
     plugins: [
       vue(),
+      vueJsx(),
     ],
+    css: {
+      preprocessorOptions: {
+        less: lessOptions
+      }
+    },
   };
   return viteConfig;
 }

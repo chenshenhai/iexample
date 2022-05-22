@@ -18,8 +18,7 @@
           </template>
           <template #right class="right">
             <layout-row style="{{width: '100%', height: '100%'}}"
-              :defaultTopHeight="50" 
-              :onSplitChange="onSplitChange"
+              :defaultTopHeight="50"
               :unit="'%'"
             >
               <template #top>

@@ -1,6 +1,7 @@
 import AutoComplete from 'enquirer/lib/prompts/autocomplete';
 import chalk from 'chalk';
-import vue from '@vitejs/plugin-vue'
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
 import { createServer, UserConfig } from 'vite';
 import { resolvePackagePath } from './util/project';
 import { packages } from './config/package'
@@ -36,6 +37,7 @@ function getViteConfig(pkgName): UserConfig {
     },
     plugins: [
       vue(),
+      vueJsx(),
     ],
     css: {
       preprocessorOptions: {

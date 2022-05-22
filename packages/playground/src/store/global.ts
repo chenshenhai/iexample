@@ -1,11 +1,14 @@
 import { reactive } from 'vue';
 
-export const storeGlobal = reactive<{
+
+export interface IStoreGlobal {
   theme: 'light' | 'dark',
   directory: IProjectDirectory,
-  currentFilePath: string | null,
-}>({
+  currentFile: IProjectFile | null,
+}
+
+export const storeGlobal = reactive<IStoreGlobal>({
   theme: 'light',
   directory: [],
-  currentFilePath: null,
+  currentFile: null,
 })

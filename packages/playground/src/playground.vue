@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue';
+import { defineProps, toRaw } from 'vue';
 import Header from './modules/header.vue';
 import Footer from './modules/footer.vue';
 import CodeView from './modules/view.vue';
@@ -27,12 +27,16 @@ const props = defineProps<{
   currentFilePath?: string | null,
 }>()
 const { theme, directory, currentFilePath } = props;
+
 storeGlobal.theme = theme === 'dark' ? 'dark' : 'light';
 storeGlobal.directory = Array.isArray(directory) ? directory : [];
+
 if (currentFilePath) {
-  storeGlobal.currentFilePath = currentFilePath;
-} else {
-  storeGlobal.currentFilePath = null;
+  for (let i = 0; i < storeGlobal.directory.length; i++) {
+    if (storeGlobal.directory[i]?.type === 'file' && storeGlobal.directory[i]?.path === currentFilePath) {
+      storeGlobal.currentFile = toRaw(storeGlobal.directory[i]) as IProjectFile;
+    }
+  }
 }
 
 </script>

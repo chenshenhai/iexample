@@ -4,10 +4,10 @@
       'iexample-theme-dark': storeGlobal.theme === 'dark',
     }"
   >
-    <Header class="iexample-header"></Header>
+    <main-nav class="iexample-header"></main-nav>
     <div class="iexample-main">
       <div class="iexample-main-container">
-       <code-view />
+       <main-view />
       </div>
     </div>
     <Footer class="iexample-footer"></Footer>
@@ -16,9 +16,9 @@
 
 <script lang="ts" setup>
 import { defineProps, toRaw } from 'vue';
-import Header from './modules/header.vue';
+import MainNav from './modules/main-nav.vue';
 import Footer from './modules/footer.vue';
-import CodeView from './modules/view.vue';
+import MainView from './modules/main-view.vue';
 import { storeGlobal } from './store/global';
 
 const props = defineProps<{

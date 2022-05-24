@@ -12,18 +12,11 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
 import CodeLayout from './code-layout.vue';
 import IexampleSider from './sider.vue';
-const props = defineProps<{
-  directory?: IProjectDirectory 
-}>()
-
-const { directory } = props;
 
 const leftWidth = 50;
 const rightWidth = window.innerWidth - leftWidth;
-
 
 
 </script>

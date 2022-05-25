@@ -1,7 +1,7 @@
 <template>
   <div class="iexample iexample-container"
     :class="{
-      'iexample-theme-dark': storeGlobal.theme === 'dark',
+      'iexample-theme-dark': state.theme === 'dark',
     }"
   >
     <main-nav class="iexample-header"></main-nav>
@@ -15,29 +15,40 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, toRaw } from 'vue';
+import { defineProps, toRaw, watch, reactive, watchEffect } from 'vue';
 import MainNav from './modules/main-nav.vue';
 import Footer from './modules/footer.vue';
 import MainView from './modules/main-view.vue';
 import { storeGlobal } from './store/global';
+import { formatDirectory, formatPath } from './util/format';
 
-const props = defineProps<{
+interface IProps {
   theme?: IPlaygroundTheme,
   directory?: IProjectDirectory,
   currentFilePath?: string | null,
-}>()
-const { theme, directory, currentFilePath } = props;
+}
 
-storeGlobal.theme = theme === 'dark' ? 'dark' : 'light';
-storeGlobal.directory = Array.isArray(directory) ? directory : [];
+const props = defineProps<IProps>();
+const state = reactive<IProps>({})
 
-if (currentFilePath) {
-  for (let i = 0; i < storeGlobal.directory.length; i++) {
-    if (storeGlobal.directory[i]?.type === 'file' && storeGlobal.directory[i]?.path === currentFilePath) {
-      storeGlobal.currentFile = toRaw(storeGlobal.directory[i]) as IProjectFile;
+watchEffect(() => {
+  state.theme = props.theme;
+  if (props.currentFilePath) {
+    state.currentFilePath = formatPath(toRaw(props.currentFilePath));
+  }
+  if (props.directory) {
+    state.directory = formatDirectory(toRaw(props.directory));
+  }
+  storeGlobal.theme = state.theme === 'dark' ? 'dark' : 'light';
+  storeGlobal.directory = Array.isArray(state.directory) ? state.directory : [];
+  if (state.currentFilePath) {
+    for (let i = 0; i < storeGlobal.directory.length; i++) {
+      if (storeGlobal.directory[i]?.type === 'file' && storeGlobal.directory[i]?.path === state.currentFilePath) {
+        storeGlobal.currentFile = toRaw(storeGlobal.directory[i]) as IProjectFile;
+      }
     }
   }
-}
+})
 
 </script>
 

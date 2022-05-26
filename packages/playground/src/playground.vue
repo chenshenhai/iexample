@@ -26,6 +26,7 @@ interface IProps {
   theme?: IPlaygroundTheme,
   directory?: IProjectDirectory,
   currentFilePath?: string | null,
+  entryPath?: string,
 }
 
 const props = defineProps<IProps>();
@@ -39,6 +40,10 @@ watchEffect(() => {
   if (props.directory) {
     state.directory = formatDirectory(toRaw(props.directory));
   }
+  if (props.entryPath) {
+    state.entryPath = formatPath(toRaw(props.entryPath));
+  }
+  storeGlobal.entryPath = state.entryPath;
   storeGlobal.theme = state.theme === 'dark' ? 'dark' : 'light';
   storeGlobal.directory = Array.isArray(state.directory) ? state.directory : [];
   if (state.currentFilePath) {

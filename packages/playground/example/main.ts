@@ -30,44 +30,47 @@ html, body {
 .title {
   font-size: 32px;
   font-weight: bolder;
+  color: #666666;
 }
 `,
     type: 'file',
     fileType: 'css',
   },
-  {
-    name: 'index.html',
-    path: '/index.html',
-    content: `
-<div class="title">Hello World</div>
-<div id="root"></div>
-`,
-    type: 'file',
-    fileType: 'html',
-  }
 //   {
 //     name: 'index.html',
 //     path: '/index.html',
 //     content: `
-// <html>
-//   <head>
-//     <link rel="stylesheet" href="./index.css" />
-//   </head>
-//   <body>
-//     <div id="root"></div>
-//   </body>
-//   <script src="./index.js"></script>
-// </html>
+// <div class="title">Hello World</div>
+// <div id="root"></div>
 // `,
 //     type: 'file',
 //     fileType: 'html',
 //   }
+  {
+    name: 'index.html',
+    path: '/index.html',
+    content: `
+<html>
+  <head>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <div class="title">Hello World</div>
+    <div id="root"></div>
+  </body>
+  <script src="./index.js"></script>
+</html>
+`,
+    type: 'file',
+    fileType: 'html',
+  }
 ]
 
 const app = createApp(Playground, {
   theme: 'dark',
   directory,
-  currentFilePath: '/index.js'
+  currentFilePath: './index.html',
+  entryPath: '/index.html'
 })
 app.mount('#app');
 

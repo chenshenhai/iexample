@@ -9,8 +9,7 @@
       </template>
       <template #right>
         <layout-column class="code-preview" 
-          :defaultLeftWidth="50" 
-          :onSplitChange="onSplitChange"
+          :defaultLeftWidth="50"
           :unit="'%'"
         >
           <template #left class="left">
@@ -22,11 +21,9 @@
               :unit="'%'"
             >
               <template #top>
-                <Preview 
+                <HtmlPreview 
                   :status="'LOADED'"
-                  :js="source.js"
-                  :css="source.css"
-                  :html="source.html"
+                  :source="state.source"
                 />
               </template>
               <template #bottom>
@@ -41,50 +38,38 @@
 </template>
 
 <script setup lang="ts" >
-import { reactive, onMounted, watch, watchEffect, toRaw } from 'vue';
+import { reactive, onMounted, watchEffect, watch, toRaw } from 'vue';
 import LayoutColumn from '../components/layout-column.vue';
 import LayoutRow from '../components/layout-row.vue';
 import IexampleEditor from './editor.vue';
 import IexampleList from './list.vue';
-import Preview from '../components/preview/index.vue';
+import HtmlPreview from '../components/html-preview/index.vue';
 import { storeGlobal } from '../store/global';
+import { runtime } from '../runtime/common';
 
 const state = reactive<{
-  codeBoxWidth: number,
+  source: string | null,
 }>({
-  codeBoxWidth: -1,
-})
-
-const source = reactive<{
-  js: string,
-  css: string,
-  html: string,
-}>({
-  js: '',
-  css: '',
-  html: ''
+  source: null,
 })
 
 onMounted(() => {
-  watchEffect(() => {
-    storeGlobal.directory?.forEach((file) => {
-      if (file.fileType === 'javascript') {
-        source.js = file.content;
-      } else if (file.fileType === 'css') {
-        source.css = file.content;
-      } else if (file.fileType === 'html') {
-        source.html = file.content;
-      }
-    })
-  })
+  if (storeGlobal.entryPath) {
+    state.source = runtime(
+      toRaw(storeGlobal.entryPath),
+      toRaw(storeGlobal.directory)
+    )
+  }
 })
 
-
-
-const onSplitChange = (e: { left: number, right: number }) => {
-  const { right } = e;
-  state.codeBoxWidth = right;
-}
+watch(storeGlobal.directory, () => {
+  if (storeGlobal.entryPath) {
+    state.source = runtime(
+      toRaw(storeGlobal.entryPath),
+      toRaw(storeGlobal.directory)
+    )
+  }
+})
 
 </script>
 

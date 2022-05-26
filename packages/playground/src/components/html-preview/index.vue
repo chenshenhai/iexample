@@ -11,14 +11,12 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, defineProps, watch, watchEffect } from 'vue';
 import { PreviewProxy } from './proxy';
-import srcdocHTML from './srcdoc.html?raw';
+// import srcdocHTML from './srcdoc.html?raw';
 import ResultStatus from './result-status.vue';
 
 const props = defineProps<{
   status: IResultStatus,
-  css: string,
-  js: string,
-  html: string,
+  source: string | null,
 }>()
 
 const container = ref()
@@ -30,33 +28,17 @@ let proxy: PreviewProxy
 
 // create sandbox on mount
 onMounted(() => {
-  
-
   watch(props, () => {
-    createSandbox();
+    createSandbox(props.source);
   })
 })
-
-
 
 onUnmounted(() => {
   proxy.destroy();
 })
 
 
-watch(() => {
-  return [
-    // store?.files[0]?.code,
-    // store?.files[1]?.code,
-    // store?.files[2]?.code,
-    // store?.files[3]?.code,
-    // store?.files[4]?.code
-  ]
-}, () => {
-  createSandbox();
-});
-
-function createSandbox() {
+function createSandbox(source: string) {
   if (sandbox) {
     proxy.destroy();
     container.value.removeChild(sandbox)
@@ -73,19 +55,8 @@ function createSandbox() {
     'allow-top-navigation-by-user-activation'
   ].join(' '))
 
-  const codeMap = {
-    importmap: {},
-    css: '',
-    js: '',
-    html: '',
-  }
   
-  const sandboxSrc = srcdocHTML.replace(/<!--__INJECT_STYLE__-->/, `\<style\>${props.css}\</style\>`)
-    // .replace(/<!--__INJECT_IMPORTMAP__-->/, `\<script type="importmap"\>${codeMap.importmap}\</script\>`)
-    .replace(/<!--__INJECT_HTML__-->/, props.html.replace(/<script[\s\S]*?<\/script>/ig, ''))
-    .replace(/<!--__INJECT_JS__-->/, `\<script type="module"\>${props.js}\</script\>`);
-
-  sandbox.srcdoc = sandboxSrc;
+  sandbox.srcdoc = source;
   container.value.appendChild(sandbox);
   proxy = createPreviewProxy(sandbox);
 }

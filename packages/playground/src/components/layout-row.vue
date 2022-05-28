@@ -7,11 +7,17 @@
     @mouseup="dragEnd"
     @mouseleave="dragEnd"
   >
-    <div class="top" :style="{ height: state.splitTop + unit }">
+    <div class="top" :style="{
+      height: state.splitTop + unit,
+      overflow: 'auto'
+    }">
       <slot name="top" />
       <div class="dragger" @mousedown.prevent="dragStart" />
     </div>
-    <div class="bottom" :style="{ height: state.splitBottom + unit }">
+    <div class="bottom" :style="{
+      height: state.splitBottom + unit,
+      overflow: 'auto'
+    }">
       <slot name="bottom" />
     </div>
   </div>
@@ -76,16 +82,14 @@
     width: 100%;
     height: 100%;
 
-    .dragging .top,
-    .dragging .bottom {
-      pointer-events: none;
-    }
     .top {
       display: flex;
       position: relative;
       height: 100%;
       // flex: 1;
+      border-bottom: 1px solid var(--iexample-border-color);
     }
+
     .bottom {
       display: flex;
       position: relative;
@@ -93,9 +97,23 @@
       width: 100%;
       flex: 1;
     }
-    .top {
-      border-bottom: 1px solid var(--iexample-border-color);
+   
+
+    &.dragging {
+      .top, .bottom {
+        pointer-events: none;
+        &::after {
+          position: absolute;
+          content: '';
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          z-index: 1;
+        }
+      }
     }
+    
     .dragger {
       position: absolute;
       z-index: 99;

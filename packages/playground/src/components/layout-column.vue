@@ -121,7 +121,7 @@
       z-index: 99;
       top: 0;
       bottom: 0;
-      right: -5px;
+      right: 0;
       width: 10px;
       cursor: ew-resize;
     }

@@ -119,7 +119,7 @@
       z-index: 99;
       left: 0;
       right: 0;
-      bottom: -5px;
+      bottom: 0;
       height: 10px;
       cursor: ns-resize;
     }

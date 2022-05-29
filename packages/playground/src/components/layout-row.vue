@@ -125,7 +125,7 @@
     }
   }
   .layout-row-box.dragging {
-    cursor: ew-resize;
+    cursor: ns-resize;
   }
  
 </style>

@@ -13,11 +13,11 @@ const  treeData = [0,1,2].map((i) => {
     text: `item-${i}`,
     children: [0,1,2,3].map((j) => {
       return {
-        id: `${i}`,
+        id: `${i}-${j}`,
         text: `item-${i}-${j}`,
         children:  [0,1,2,3,4].map((k) => {
           return {
-            id: `${i}`,
+            id: `${i}-${j}-${k}`,
             text: `item-${i}-${j}-${k}`,
             children: []
           }

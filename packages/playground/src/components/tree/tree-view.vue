@@ -23,6 +23,7 @@ const props = defineProps<{
 }>()
 
 const selected = (node) =>{
+  console.log('node ===', node);
   emit('selected', node)
 };
 const expandTree = (node) =>{

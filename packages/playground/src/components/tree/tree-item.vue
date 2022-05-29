@@ -66,7 +66,7 @@ export default {
       if (this.isFolder) {
         this.expand = !this.expand
       }
-      this.selected(this)
+      this.selected(this.itemData)
     }
   },
   created() {

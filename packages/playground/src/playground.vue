@@ -4,10 +4,10 @@
       'iexample-theme-dark': storeGlobal.theme === 'dark',
     }"
   >
-    <Header class="iexample-header"></Header>
+    <main-nav class="iexample-header"></main-nav>
     <div class="iexample-main">
       <div class="iexample-main-container">
-       <code-view />
+       <main-view />
       </div>
     </div>
     <Footer class="iexample-footer"></Footer>
@@ -15,29 +15,46 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, toRaw } from 'vue';
-import Header from './modules/header.vue';
+import { defineProps, toRaw, watch, reactive, watchEffect } from 'vue';
+import MainNav from './modules/main-nav.vue';
 import Footer from './modules/footer.vue';
-import CodeView from './modules/view.vue';
+import MainView from './modules/main-view.vue';
 import { storeGlobal } from './store/global';
+import { formatDirectory, formatPath } from './util/format';
 
-const props = defineProps<{
+interface IProps {
   theme?: IPlaygroundTheme,
   directory?: IProjectDirectory,
   currentFilePath?: string | null,
-}>()
-const { theme, directory, currentFilePath } = props;
+  entryPath?: string,
+}
 
-storeGlobal.theme = theme === 'dark' ? 'dark' : 'light';
-storeGlobal.directory = Array.isArray(directory) ? directory : [];
+const props = defineProps<IProps>();
+const state = reactive<IProps>({})
 
-if (currentFilePath) {
-  for (let i = 0; i < storeGlobal.directory.length; i++) {
-    if (storeGlobal.directory[i]?.type === 'file' && storeGlobal.directory[i]?.path === currentFilePath) {
-      storeGlobal.currentFile = toRaw(storeGlobal.directory[i]) as IProjectFile;
+watchEffect(() => {
+  console.log('111111111111 ----------')
+  state.theme = props.theme;
+  if (props.currentFilePath) {
+    state.currentFilePath = formatPath(toRaw(props.currentFilePath));
+  }
+  if (props.directory) {
+    state.directory = formatDirectory(toRaw(props.directory));
+  }
+  if (props.entryPath) {
+    state.entryPath = formatPath(toRaw(props.entryPath));
+  }
+  storeGlobal.entryPath = state.entryPath;
+  storeGlobal.theme = state.theme === 'dark' ? 'dark' : 'light';
+  storeGlobal.directory = Array.isArray(state.directory) ? state.directory : [];
+  if (state.currentFilePath) {
+    for (let i = 0; i < storeGlobal.directory.length; i++) {
+      if (storeGlobal.directory[i]?.type === 'file' && storeGlobal.directory[i]?.path === state.currentFilePath) {
+        storeGlobal.currentFile = toRaw(storeGlobal.directory[i]) as IProjectFile;
+      }
     }
   }
-}
+})
 
 </script>
 

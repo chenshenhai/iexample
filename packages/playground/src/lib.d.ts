@@ -20,3 +20,5 @@ declare interface IProjectFolder extends Omit<IProjectFile, 'type'> {
 }
 
 declare type IProjectDirectory = Array<IProjectFolder | IProjectFile>
+
+declare type IResultStatus = 'LOADING' | 'LOADED' | 'NOT_FOUND' | 'NOT_FINISHED'

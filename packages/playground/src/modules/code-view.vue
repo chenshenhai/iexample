@@ -5,12 +5,21 @@
       :unit="'px'"
     >
       <template #left>
-        <iexample-list />
+        <layout-row style="{{width: '100%', height: '100%'}}"
+          :defaultTopHeight="50"
+          :unit="'%'"
+        >
+          <template #top>
+            <iexample-list />
+          </template>
+          <template #bottom>
+            <div>List</div>
+          </template>
+        </layout-row>
       </template>
       <template #right>
         <layout-column class="code-preview" 
-          :defaultLeftWidth="50" 
-          :onSplitChange="onSplitChange"
+          :defaultLeftWidth="50"
           :unit="'%'"
         >
           <template #left class="left">
@@ -22,7 +31,10 @@
               :unit="'%'"
             >
               <template #top>
-                <div>Top</div>
+                <HtmlPreview 
+                  :status="'LOADED'"
+                  :source="state.source"
+                />
               </template>
               <template #bottom>
                 <div>Bottom</div>
@@ -36,22 +48,38 @@
 </template>
 
 <script setup lang="ts" >
-import { reactive } from 'vue';
+import { reactive, onMounted, watchEffect, watch, toRaw } from 'vue';
 import LayoutColumn from '../components/layout-column.vue';
 import LayoutRow from '../components/layout-row.vue';
 import IexampleEditor from './editor.vue';
 import IexampleList from './list.vue';
+import HtmlPreview from '../components/html-preview/index.vue';
+import { storeGlobal } from '../store/global';
+import { runtime } from '../runtime/common';
 
 const state = reactive<{
-  codeBoxWidth: number,
+  source: string | null,
 }>({
-  codeBoxWidth: -1,
+  source: null,
 })
 
-const onSplitChange = (e: { left: number, right: number }) => {
-  const { right } = e;
-  state.codeBoxWidth = right;
-}
+onMounted(() => {
+  if (storeGlobal.entryPath) {
+    state.source = runtime(
+      toRaw(storeGlobal.entryPath),
+      toRaw(storeGlobal.directory)
+    )
+  }
+})
+
+watch(storeGlobal.directory, () => {
+  if (storeGlobal.entryPath) {
+    state.source = runtime(
+      toRaw(storeGlobal.entryPath),
+      toRaw(storeGlobal.directory)
+    )
+  }
+})
 
 </script>
 

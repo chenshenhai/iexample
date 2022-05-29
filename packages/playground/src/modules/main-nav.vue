@@ -1,15 +1,15 @@
 <template>
-  <header class="header">
-    <div class="header-left">
+  <div class="iexample-header">
+    <div class="iexample-header-left">
       Left
     </div>
-    <div class="header-right">
+    <div class="iexample-header-right">
       <span class="switch-theme-btn" @click="onClickSwitchTheme">
         <icon-bulb-outlined v-if="storeGlobal.theme === 'light'" />
         <icon-bulb-filled  v-if="storeGlobal.theme === 'dark'"/>
       </span>
     </div>
-  </header>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -28,17 +28,17 @@ const onClickSwitchTheme = () => {
 </script>
 
 <style scoped lang="less">
-.header {
+.iexample-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
   box-sizing: border-box;
 
-  .header-left {
+  .iexample-header-left {
     display: flex;
   }
-  .header-right {
+  .iexample-header-right {
     display: flex;
 
     .switch-theme-btn {

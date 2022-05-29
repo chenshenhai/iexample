@@ -5,7 +5,17 @@
       :unit="'px'"
     >
       <template #left>
-        <iexample-list />
+        <layout-row style="{{width: '100%', height: '100%'}}"
+          :defaultTopHeight="50"
+          :unit="'%'"
+        >
+          <template #top>
+            <iexample-list />
+          </template>
+          <template #bottom>
+            <div>List</div>
+          </template>
+        </layout-row>
       </template>
       <template #right>
         <layout-column class="code-preview" 

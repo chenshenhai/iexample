@@ -1,7 +1,7 @@
 <template>
   <div class="iexample iexample-container"
     :class="{
-      'iexample-theme-dark': state.theme === 'dark',
+      'iexample-theme-dark': storeGlobal.theme === 'dark',
     }"
   >
     <main-nav class="iexample-header"></main-nav>
@@ -33,6 +33,7 @@ const props = defineProps<IProps>();
 const state = reactive<IProps>({})
 
 watchEffect(() => {
+  console.log('111111111111 ----------')
   state.theme = props.theme;
   if (props.currentFilePath) {
     state.currentFilePath = formatPath(toRaw(props.currentFilePath));

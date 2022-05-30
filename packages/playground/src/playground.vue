@@ -33,7 +33,6 @@ const props = defineProps<IProps>();
 const state = reactive<IProps>({})
 
 watchEffect(() => {
-  console.log('111111111111 ----------')
   state.theme = props.theme;
   if (props.currentFilePath) {
     state.currentFilePath = formatPath(toRaw(props.currentFilePath));
@@ -65,7 +64,10 @@ watchEffect(() => {
 
 .iexample {
   --iexample-bg: #ffffff;
-  --iexample-bg-active: #e6e6e6;
+  --iexample-bg-active: #2196f34f;
+  --iexample-bg-hover: #e6e6e6;
+  --iexample-border-color-active: #2f9df491;
+
   --iexample-font-color: #555555;
   --iexample-font-color-hover: #222222;
   --iexample-font-color-active: #1277f2;
@@ -75,7 +77,9 @@ watchEffect(() => {
 
   &.iexample-theme-dark {
     --iexample-bg: #1a1a1a;
-    --iexample-bg-active: #3e3e3e;
+    // --iexample-bg-active: #3e3e3e;
+    // --iexample-bg-active: #2196f34f;
+    --iexample-bg-hover: #3e3e3e;
     --iexample-font-color: #aaaaaa;
     --iexample-font-color-hover: #fafafa;
     --iexample-border-color: #383838;

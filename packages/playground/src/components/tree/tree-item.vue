@@ -8,10 +8,13 @@
       :value="itemData.id" />        
     <div
       class="tree-item-text" 
+      :class="{
+        active: !isFolder && selectedId === itemData.id
+      }"
       :for="itemData.id" 
       @click="toggle">
-      <icon-down v-if="isFolder && expand" class="tree-item-icon" />
-      <icon-right v-else-if="isFolder && !expand" class="tree-item-icon" />
+      <icon-down v-if="isFolder && expand" class="tree-item-icon" :style="{fontSize: 12}" />
+      <icon-right v-else-if="isFolder && !expand" class="tree-item-icon" :style="{fontSize: 12}" />
       <icon-file v-else class="tree-item-icon" />
       <span>{{itemData.text}}</span>
     </div>
@@ -21,7 +24,8 @@
         :key="child.id" 
         :itemData="child" 
         :expandAll="expandAll"
-        @selected="selected" 
+        :selectedId="selectedId"
+        @select="select" 
         @expandTree="expandTree"
       >
       </tree-item>      
@@ -50,6 +54,10 @@ export default {
     expandAll: {
       type: Boolean,
       required: false
+    },
+    selectedId: {
+      type: String,
+      required: false
     }
   },
   data() {
@@ -64,10 +72,10 @@ export default {
     },
   },
   methods: {
-    selected(node) {
+    select(node) {
       this.checked = null
       this.checked = this.itemData.id
-      this.$emit('selected', node)
+      this.$emit('select', node)
     },
     expandTree(node) {
       this.expand = true
@@ -77,7 +85,7 @@ export default {
       if (this.isFolder) {
         this.expand = !this.expand
       }
-      this.selected(this.itemData)
+      this.select(this.itemData)
     }
   },
   created() {
@@ -98,7 +106,12 @@ export default {
   height: 26px;
   line-height: 26px;
   &:hover {
-    background: var(--iexample-bg-active)
+    background: var(--iexample-bg-hover)
+  }
+
+  &.active {
+    background: var(--iexample-bg-active);
+    border: 1px solid var(--iexample-border-color-active);
   }
 
   .tree-item-icon {

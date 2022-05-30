@@ -10,7 +10,10 @@
       class="tree-item-text" 
       :for="itemData.id" 
       @click="toggle">
-      {{itemData.text}}
+      <icon-down v-if="isFolder && expand" class="tree-item-icon" />
+      <icon-right v-else-if="isFolder && !expand" class="tree-item-icon" />
+      <icon-file v-else class="tree-item-icon" />
+      <span>{{itemData.text}}</span>
     </div>
     <ul class="tree-item-view" v-show="expand" v-if="isFolder">
       <tree-item 
@@ -27,10 +30,18 @@
 </template>
 
 <script lang="ts">
+import IconDown from '@ant-design/icons-vue/DownOutlined';
+import IconRight from '@ant-design/icons-vue/RightOutlined';
+import IconFile from '@ant-design/icons-vue/FileOutlined'
 import { TreeData } from './types';
 
 export default {
   name: 'tree-item',
+  components: {
+    'icon-down': IconDown,
+    'icon-right': IconRight,
+    'icon-file': IconFile,
+  },
   props: {
     itemData: {
       type: Object as unknown as TreeData,
@@ -49,7 +60,7 @@ export default {
   },
   computed: {
     isFolder() {
-      return this.itemData.children && this.itemData.children.length
+      return this.itemData.children && this.itemData.children.length > 0
     },
   },
   methods: {
@@ -84,8 +95,18 @@ export default {
 .tree-item-text {
   cursor: pointer;
   user-select: none;
+  height: 26px;
+  line-height: 26px;
   &:hover {
     background: var(--iexample-bg-active)
+  }
+
+  .tree-item-icon {
+    font-size: 14px;
+    display: inline-block;
+    width: 14px;
+    margin-left: 3px;
+    margin-right: 3px;
   }
 }
 .tree-item-view {
@@ -96,7 +117,7 @@ export default {
   list-style-type: none;
   .tree-item-node {
     display: block;
-    padding-left: 12px;
+    padding-left: 16px;
   }
 }
 </style>

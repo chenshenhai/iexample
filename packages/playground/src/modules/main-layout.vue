@@ -6,14 +6,14 @@
     >
       <template #left>
         <layout-row style="{{width: '100%', height: '100%'}}"
-          :defaultTopHeight="30"
+          :defaultTopHeight="50"
           :unit="'%'"
         >
           <template #top>
-            <iexample-list />
+            <Tree />
           </template>
           <template #bottom>
-            <Tree />
+            <code-list />
           </template>
         </layout-row>
       </template>
@@ -23,7 +23,7 @@
           :unit="'%'"
         >
           <template #left class="left">
-            <iexample-editor />
+            <code-editor />
           </template>
           <template #right class="right">
             <layout-row style="{{width: '100%', height: '100%'}}"
@@ -48,11 +48,11 @@
 </template>
 
 <script setup lang="ts" >
-import { reactive, onMounted, watchEffect, watch, toRaw } from 'vue';
+import { reactive, onMounted, watch, toRaw } from 'vue';
 import LayoutColumn from '../components/layout-column.vue';
 import LayoutRow from '../components/layout-row.vue';
-import IexampleEditor from './editor.vue';
-import IexampleList from './list.vue';
+import CodeEditor from './code-editor.vue';
+import CodeList from './code-list.vue';
 import HtmlPreview from '../components/html-preview/index.vue';
 import { storeGlobal } from '../store/global';
 import { runtime } from '../runtime/common';

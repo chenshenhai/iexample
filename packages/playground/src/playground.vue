@@ -15,22 +15,25 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, toRaw, watch, reactive, watchEffect } from 'vue';
+import { defineProps, toRaw, reactive, watchEffect } from 'vue';
 import MainNav from './modules/main-nav.vue';
 import Footer from './modules/footer.vue';
 import MainView from './modules/main-view.vue';
 import { storeGlobal } from './store/global';
 import { formatDirectory, formatPath } from './util/format';
 
-interface IProps {
+const props = defineProps<{
   theme?: IPlaygroundTheme,
   directory?: IProjectDirectory,
   currentFilePath?: string | null,
   entryPath?: string,
-}
-
-const props = defineProps<IProps>();
-const state = reactive<IProps>({})
+}>();
+const state = reactive<{
+  theme?: IPlaygroundTheme,
+  directory?: IProjectDirectory,
+  currentFilePath?: string | null,
+  entryPath?: string,
+}>({})
 
 watchEffect(() => {
   state.theme = props.theme;

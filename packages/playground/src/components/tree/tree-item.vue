@@ -48,7 +48,8 @@ export default {
   },
   props: {
     itemData: {
-      type: Object as unknown as TreeData,
+      // @ts-ignore
+      type: Object as TreeData,
       required: false
     },
     expandAll: {

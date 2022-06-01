@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, defineProps, onMounted } from 'vue';
+  import { ref, reactive, defineProps } from 'vue';
   const props = defineProps<{
     defaultLeftWidth: number,
     onSplitChange?: (data: {left: number, right: number}) => void;
@@ -44,11 +44,8 @@
     splitRight: -1,
   })
 
-  let startPosition = 0;
-
   function dragStart(e: MouseEvent) {
     state.dragging = true
-    startPosition = e.pageX
   }
   function dragMove(e: MouseEvent) {
 

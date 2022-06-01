@@ -1,0 +1,19 @@
+{
+  "name": "iexample",
+  "version": "0.0.0",
+  "bin": "dist/bin.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@iexample/playground": "0.0.0",
+    "@iexample/util": "0.0.0",
+    "vue": "^3.2.34"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

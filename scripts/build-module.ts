@@ -4,15 +4,15 @@ import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import { createServer, UserConfig } from 'vite';
 import { resolvePackagePath } from './util/project';
-import { packages } from './config/package'
+import { f2ePackages } from './config/package'
 import { generateDts } from './util/dts';
 import { lessOptions } from './config/less';
 
 start();
 
 async function start() {
-  for (let i = 0; i < packages.length; i++) {
-    const pkgName = packages[i].dirName
+  for (let i = 0; i < f2ePackages.length; i++) {
+    const pkgName = f2ePackages[i].dirName
     const viteConfig = getViteConfig(pkgName);
     const result = await build({
       configFile: false,

@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts" >
-import { reactive, onMounted, watchEffect, watch, toRaw } from 'vue';
+import { reactive, onMounted, watch, toRaw } from 'vue';
 import LayoutColumn from '../components/layout-column.vue';
 import LayoutRow from '../components/layout-row.vue';
 import IexampleEditor from './editor.vue';

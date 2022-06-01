@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { toRaw, reactive, computed, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import CodeEditor from '../components/code-editor.vue'
 import { storeGlobal } from '../store/global';
 import { debounce } from '../util/time'

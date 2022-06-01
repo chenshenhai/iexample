@@ -4,7 +4,7 @@ import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import { createServer, UserConfig } from 'vite';
 import { resolvePackagePath } from './util/project';
-import { packages } from './config/package'
+import { modulePackages } from './config/package'
 import { lessOptions } from './config/less';
 
 dev();
@@ -58,7 +58,7 @@ function getViteConfig(pkgName): UserConfig {
 }
 
 async function inputPackageName() {
-  const choices = packages.map((pkg) => {
+  const choices = modulePackages.map((pkg) => {
     return pkg.dirName;
   })
   const prompt = new AutoComplete({

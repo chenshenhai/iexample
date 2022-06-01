@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, watch, reactive } from 'vue';
+import { watch, reactive } from 'vue';
 import IconFile from '@ant-design/icons-vue/FileOutlined';
 
 const props = defineProps<{

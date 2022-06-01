@@ -1,5 +1,5 @@
 
-export const f2ePackages = [
+export const modulePackages = [
   {
     dirName: 'util',
     globalName: 'iExampleUtil',

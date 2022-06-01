@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang='ts'>
-import { ref, onMounted, defineProps, defineEmits, watchEffect } from 'vue';
+import { ref, onMounted, watchEffect } from 'vue';
 import CodeMirror from '../util/codemirror';
 
 const refMount = ref<HTMLDivElement>();

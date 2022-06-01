@@ -14,10 +14,10 @@
   },
   "devDependencies": {
     "@types/codemirror": "^5.60.5",
-    "vue": "^3.2.34"
+    "vue": "^3.2.36"
   },
   "peerDependencies": {
-    "vue": "^3.2.34"
+    "vue": "^3.2.36"
   },
   "publishConfig": {
     "access": "public"

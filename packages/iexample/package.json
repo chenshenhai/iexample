@@ -2,10 +2,8 @@
   "name": "iexample",
   "version": "0.0.0",
   "type": "module",
-  "bin": "dist/bin.js",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.es.js",
-  "types": "dist/index.d.ts",
+  "bin": "dist/bin/index.js",
+  "main": "dist/server/index.js",
   "files": [
     "dist"
   ],

@@ -19,5 +19,8 @@
     "declaration": true,
     "emitDeclarationOnly": true
   },
-  "include": ["packages/**/src"],
+  "include": [
+    "packages/**/src",
+    "!packages/iexample/src"
+  ],
 }

@@ -8,9 +8,11 @@
     "dev:front": "vite-node ./scripts/dev-front.ts",
     "dev:server": "vite-node ./packages/iexample/src/server/index.ts",
     "_dev:server": "ts-node  --project ./tsconfig.node.json ./packages/iexample/src/server/index.ts",
-    "build": "npm run build:mod",
+    "build": "npm run build:mod && npm run build:front && npm run build:node",
     "build:mod": "npm run build:type && vite-node ./scripts/build-module.ts",
     "build:type": "vue-tsc -p tsconfig.build.json",
+    "build:front": "vite-node ./scripts/build-front.ts",
+    "build:node": "vite-node ./scripts/build-node.ts",
     "version": "vite-node ./scripts/version.ts",
     "release": "vite-node ./scripts/release.ts",
     "clear": "rm -rf ./node_modules && rm -rf ./pnpm-lock.yaml && rm -rf ./packages/*/dist/ && rm -rf ./packages/*/node_modules/ && rm -rf ./packages/*/pnpm-lock.yaml"

@@ -4,51 +4,37 @@ import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import { UserConfig } from 'vite';
 import { resolvePackagePath } from './util/project';
+import { generateDts } from './util/dts';
 import { lessOptions } from './config/less';
-import pkg from '../packages/iexample/package.json';
-
-const externals = Object.keys(pkg?.dependencies || {})
-
-const nodeNames = [
-  {
-    dirName: 'bin',
-  },
-  {
-    dirName: 'server',
-  }
-]
-
 
 start();
 
 async function start() {
-  for (let i = 0; i < nodeNames.length; i++) {
-    const name = nodeNames[i].dirName
-    const viteConfig = getViteConfig(name);
-    const result = await build({
-      configFile: false,
-      ...viteConfig
-    });
-    console.log(chalk.green(`build packages/iexample/src/${name}  success!`));
-  }
+  const pkgName = 'iexample';
+  const viteConfig = getViteConfig(pkgName);
+  await build({
+    configFile: false,
+    ...viteConfig
+  });
+  console.log(chalk.green(`build packages/${pkgName}/src  success!`));
   console.log(chalk.green(`build source success!`));
 }
 
-function getViteConfig(name: string): UserConfig {
+function getViteConfig(pkgName: string): UserConfig {
   const viteConfig: UserConfig = {
     build: {
       minify: false,
-      outDir: resolvePackagePath('iexample', 'dist', name),
+      outDir: resolvePackagePath(pkgName, 'dist', 'front'),
       lib: {
-        entry: resolvePackagePath('iexample', 'src', name, 'index.ts'),
-        formats: ['cjs'],
+        name: 'iExample',
+        entry: resolvePackagePath(pkgName, 'src', 'front', 'index.ts'),
+        formats: ['iife'],
         fileName: (format) => {
           return `index.js`;
         },
       },
       rollupOptions: {
         // external: ['vue', 'vue/compiler-sfc']
-        external: externals,
       }
     },
     plugins: [

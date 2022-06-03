@@ -2,7 +2,7 @@ import { build } from 'vite';
 import chalk from 'chalk';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import { createServer, UserConfig } from 'vite';
+import { UserConfig } from 'vite';
 import { resolvePackagePath } from './util/project';
 import { modulePackages } from './config/package'
 import { generateDts } from './util/dts';

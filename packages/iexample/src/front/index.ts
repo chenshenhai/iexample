@@ -1,10 +1,9 @@
-import '../src/lib.d';
-
 import { createApp } from 'vue';
-// import { add } from '@iexample/util';
-import Playground from '../src/index';
+import Playground from '@iexample/playground';
+import '@iexample/playground/dist/style.css';
+import './index.less';
 
-const directory: IProjectDirectory = [
+const directory = [
   {
     name: 'index.js',
     path: '/index.js',
@@ -73,6 +72,3 @@ const app = createApp(Playground, {
   entryPath: '/index.html'
 })
 app.mount('#app');
-
-// fetch('/example/public/data.json')
-// .then(res => res.json()).then(console.log)

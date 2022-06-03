@@ -2,42 +2,53 @@ import { build } from 'vite';
 import chalk from 'chalk';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import { createServer, UserConfig } from 'vite';
+import { UserConfig } from 'vite';
 import { resolvePackagePath } from './util/project';
-import { packages } from './config/package'
-import { generateDts } from './util/dts';
 import { lessOptions } from './config/less';
+import pkg from '../packages/iexample/package.json';
+
+const externals = Object.keys(pkg?.dependencies || {})
+
+const nodeNames = [
+  {
+    dirName: 'bin',
+  },
+  {
+    dirName: 'server',
+  }
+]
+
 
 start();
 
 async function start() {
-  for (let i = 0; i < packages.length; i++) {
-    const pkgName = packages[i].dirName
-    const viteConfig = getViteConfig(pkgName);
+  for (let i = 0; i < nodeNames.length; i++) {
+    const name = nodeNames[i].dirName
+    const viteConfig = getViteConfig(name);
     const result = await build({
       configFile: false,
       ...viteConfig
     });
-    generateDts(pkgName);
-    console.log(chalk.green(`build packages/${pkgName}/src  success!`));
+    console.log(chalk.green(`build packages/iexample/src/${name}  success!`));
   }
   console.log(chalk.green(`build source success!`));
 }
 
-function getViteConfig(pkgName): UserConfig {
+function getViteConfig(name: string): UserConfig {
   const viteConfig: UserConfig = {
     build: {
       minify: false,
-      outDir: resolvePackagePath(pkgName, 'dist'),
+      outDir: resolvePackagePath('iexample', 'dist', name),
       lib: {
-        entry: resolvePackagePath(pkgName, 'src', 'index.ts'),
-        formats: ['es', 'cjs'],
+        entry: resolvePackagePath('iexample', 'src', name, 'index.ts'),
+        formats: ['cjs'],
         fileName: (format) => {
-          return `index.${format}.js`;
+          return `index.js`;
         },
       },
       rollupOptions: {
-        external: ['vue', 'vue/compiler-sfc']
+        // external: ['vue', 'vue/compiler-sfc']
+        external: externals,
       }
     },
     plugins: [

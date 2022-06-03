@@ -1,14 +1,14 @@
 import path from 'path';
 import fs from 'fs';
-import { packages } from '../config/package';
+import { modulePackages } from '../config/package';
 
-export function resolvePackagePath(...args) {
+export function resolvePackagePath(...args: string[]) {
   const pathList = Array.from(args);
   const baseDir = path.join(resolveProjectPath(), 'packages');
   return path.join(baseDir, ...pathList);
 }
 
-export function resolveProjectPath(...args) {
+export function resolveProjectPath(...args: string[]) {
   const pathList = Array.from(args);
   const baseDir = path.join(__dirname, '..', '..');
   return path.join(baseDir, ...pathList);
@@ -23,5 +23,5 @@ export function getTsConfig() {
 
 
 export function getPakcages(): string[] {
-  return packages.map(pkg => pkg.dirName)
+  return modulePackages.map(pkg => pkg.dirName)
 }

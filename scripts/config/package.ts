@@ -1,5 +1,5 @@
 
-export const packages = [
+export const modulePackages = [
   {
     dirName: 'util',
     globalName: 'iExampleUtil',
@@ -8,4 +8,10 @@ export const packages = [
     dirName: 'playground',
     globalName: 'iExamplePlayground',
   },
+]
+
+export const nodePackages = [
+  {
+    dirName: 'iexample',
+  }
 ]

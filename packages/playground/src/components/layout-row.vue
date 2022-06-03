@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, defineProps, onMounted } from 'vue';
+  import { ref, reactive, defineProps } from 'vue';
   const props = defineProps<{
     defaultTopHeight: number,
     onSplitChange?: (data: {top: number, bottom: number}) => void;
@@ -40,11 +40,9 @@
     splitBottom: -1,
   })
 
-  let startPosition = 0;
 
   function dragStart(e: MouseEvent) {
-    state.dragging = true
-    startPosition = e.pageY
+    state.dragging = true;
   }
   function dragMove(e: MouseEvent) {
 

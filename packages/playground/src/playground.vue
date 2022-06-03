@@ -15,25 +15,27 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, toRaw, watch, reactive, watchEffect } from 'vue';
+import { toRaw, reactive, watchEffect } from 'vue';
 import MainNav from './modules/main-nav.vue';
 import Footer from './modules/footer.vue';
 import MainView from './modules/main-view.vue';
 import { storeGlobal } from './store/global';
 import { formatDirectory, formatPath } from './util/format';
 
-interface IProps {
+const props = defineProps<{
   theme?: IPlaygroundTheme,
   directory?: IProjectDirectory,
   currentFilePath?: string | null,
   entryPath?: string,
-}
-
-const props = defineProps<IProps>();
-const state = reactive<IProps>({})
+}>();
+const state = reactive<{
+  theme?: IPlaygroundTheme,
+  directory?: IProjectDirectory,
+  currentFilePath?: string | null,
+  entryPath?: string,
+}>({})
 
 watchEffect(() => {
-  console.log('111111111111 ----------')
   state.theme = props.theme;
   if (props.currentFilePath) {
     state.currentFilePath = formatPath(toRaw(props.currentFilePath));
@@ -65,7 +67,10 @@ watchEffect(() => {
 
 .iexample {
   --iexample-bg: #ffffff;
-  --iexample-bg-active: #e6e6e6;
+  --iexample-bg-active: #2196f34f;
+  --iexample-bg-hover: #e6e6e6;
+  --iexample-border-color-active: #2f9df491;
+
   --iexample-font-color: #555555;
   --iexample-font-color-hover: #222222;
   --iexample-font-color-active: #1277f2;
@@ -75,7 +80,9 @@ watchEffect(() => {
 
   &.iexample-theme-dark {
     --iexample-bg: #1a1a1a;
-    --iexample-bg-active: #3e3e3e;
+    // --iexample-bg-active: #3e3e3e;
+    // --iexample-bg-active: #2196f34f;
+    --iexample-bg-hover: #3e3e3e;
     --iexample-font-color: #aaaaaa;
     --iexample-font-color-hover: #fafafa;
     --iexample-border-color: #383838;

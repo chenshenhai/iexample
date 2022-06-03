@@ -5,26 +5,26 @@
       :key="item.id" 
       :itemData="item"
       :expandAll="props.expandAll" 
-      @selected="selected" 
+      :selectedId="props.selectedId"
+      @select="select" 
       @expandTree="expandTree" />            
   </ul>
 </template>
 
 <script setup lang="ts">
 import { TreeData } from './types';
-import { defineProps, defineEmits } from 'vue';
 import TreeItem from './tree-item.vue'
 
-const emit = defineEmits<(e: 'selected' | 'expandTree', value: any) => void>()
+const emit = defineEmits<(e: 'select' | 'expandTree', value: any) => void>()
 
 const props = defineProps<{
   data: TreeData,
   expandAll: boolean,
-}>()
+  selectedId?: string | null,
+}>();
 
-const selected = (node) =>{
-  console.log('node ===', node);
-  emit('selected', node)
+const select = (node) =>{
+  emit('select', node)
 };
 const expandTree = (node) =>{
   emit('expandTree', node)

@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, watch, reactive } from 'vue';
+import { watch, reactive } from 'vue';
 import IconFile from '@ant-design/icons-vue/FileOutlined';
 
 const props = defineProps<{
@@ -58,9 +58,15 @@ watch(props, () => {
     font-size: 14px;
     flex-direction: row;
     cursor: pointer;
+    box-sizing: content-box;
+
+    &:hover {
+      background: var(--iexample-bg-hover);
+    }
 
     &.active {
       background: var(--iexample-bg-active);
+      border: 1px solid var(--iexample-border-color-active);
     }
   }
 

@@ -8,9 +8,15 @@
       :value="itemData.id" />        
     <div
       class="tree-item-text" 
+      :class="{
+        active: !isFolder && selectedId === itemData.id
+      }"
       :for="itemData.id" 
       @click="toggle">
-      {{itemData.text}}
+      <icon-down v-if="isFolder && expand" class="tree-item-icon" :style="{fontSize: 12}" />
+      <icon-right v-else-if="isFolder && !expand" class="tree-item-icon" :style="{fontSize: 12}" />
+      <icon-file v-else class="tree-item-icon" />
+      <span>{{itemData.text}}</span>
     </div>
     <ul class="tree-item-view" v-show="expand" v-if="isFolder">
       <tree-item 
@@ -18,7 +24,8 @@
         :key="child.id" 
         :itemData="child" 
         :expandAll="expandAll"
-        @selected="selected" 
+        :selectedId="selectedId"
+        @select="select" 
         @expandTree="expandTree"
       >
       </tree-item>      
@@ -27,17 +34,30 @@
 </template>
 
 <script lang="ts">
+import IconDown from '@ant-design/icons-vue/DownOutlined';
+import IconRight from '@ant-design/icons-vue/RightOutlined';
+import IconFile from '@ant-design/icons-vue/FileOutlined'
 import { TreeData } from './types';
 
 export default {
   name: 'tree-item',
+  components: {
+    'icon-down': IconDown,
+    'icon-right': IconRight,
+    'icon-file': IconFile,
+  },
   props: {
     itemData: {
-      type: Object as unknown as TreeData,
+      // @ts-ignore
+      type: Object as TreeData,
       required: false
     },
     expandAll: {
       type: Boolean,
+      required: false
+    },
+    selectedId: {
+      type: String,
       required: false
     }
   },
@@ -49,14 +69,14 @@ export default {
   },
   computed: {
     isFolder() {
-      return this.itemData.children && this.itemData.children.length
+      return this.itemData.children && this.itemData.children.length > 0
     },
   },
   methods: {
-    selected(node) {
+    select(node) {
       this.checked = null
       this.checked = this.itemData.id
-      this.$emit('selected', node)
+      this.$emit('select', node)
     },
     expandTree(node) {
       this.expand = true
@@ -66,7 +86,7 @@ export default {
       if (this.isFolder) {
         this.expand = !this.expand
       }
-      this.selected(this.itemData)
+      this.select(this.itemData)
     }
   },
   created() {
@@ -84,8 +104,23 @@ export default {
 .tree-item-text {
   cursor: pointer;
   user-select: none;
+  height: 26px;
+  line-height: 26px;
   &:hover {
-    background: var(--iexample-bg-active)
+    background: var(--iexample-bg-hover)
+  }
+
+  &.active {
+    background: var(--iexample-bg-active);
+    border: 1px solid var(--iexample-border-color-active);
+  }
+
+  .tree-item-icon {
+    font-size: 14px;
+    display: inline-block;
+    width: 14px;
+    margin-left: 3px;
+    margin-right: 3px;
   }
 }
 .tree-item-view {
@@ -96,7 +131,7 @@ export default {
   list-style-type: none;
   .tree-item-node {
     display: block;
-    padding-left: 12px;
+    padding-left: 16px;
   }
 }
 </style>

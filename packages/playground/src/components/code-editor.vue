@@ -23,7 +23,7 @@ const modeMap = {
 
 const props = defineProps<{
   value: string,
-  type: ICodeType
+  type: CodeType
 }>()
 
 

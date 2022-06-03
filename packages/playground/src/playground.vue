@@ -23,39 +23,40 @@ import { storeGlobal } from './store/global';
 import { formatDirectory, formatPath } from './util/format';
 
 const props = defineProps<{
-  theme?: IPlaygroundTheme,
-  directory?: IProjectDirectory,
-  currentFilePath?: string | null,
-  entryPath?: string,
+  theme?: PlaygroundTheme,
+  codeDirectory?: CodeDirectory,
+  currentCodeFilePath?: string | null,
+  entryCodeFilePath?: string,
 }>();
 const state = reactive<{
-  theme?: IPlaygroundTheme,
-  directory?: IProjectDirectory,
-  currentFilePath?: string | null,
-  entryPath?: string,
+  theme?: PlaygroundTheme,
+  codeDirectory?: CodeDirectory,
+  currentCodeFilePath?: string | null,
+  entryCodeFilePath?: string,
 }>({})
 
 watchEffect(() => {
   state.theme = props.theme;
-  if (props.currentFilePath) {
-    state.currentFilePath = formatPath(toRaw(props.currentFilePath));
+  if (props.currentCodeFilePath) {
+    state.currentCodeFilePath = formatPath(toRaw(props.currentCodeFilePath));
   }
-  if (props.directory) {
-    state.directory = formatDirectory(toRaw(props.directory));
+  if (props.codeDirectory) {
+    state.codeDirectory = formatDirectory(toRaw(props.codeDirectory));
   }
-  if (props.entryPath) {
-    state.entryPath = formatPath(toRaw(props.entryPath));
+  if (props.entryCodeFilePath) {
+    state.entryCodeFilePath = formatPath(toRaw(props.entryCodeFilePath));
   }
-  storeGlobal.entryPath = state.entryPath;
+  storeGlobal.entryCodeFilePath = state.entryCodeFilePath;
   storeGlobal.theme = state.theme === 'dark' ? 'dark' : 'light';
-  storeGlobal.directory = Array.isArray(state.directory) ? state.directory : [];
-  if (state.currentFilePath) {
-    for (let i = 0; i < storeGlobal.directory.length; i++) {
-      if (storeGlobal.directory[i]?.type === 'file' && storeGlobal.directory[i]?.path === state.currentFilePath) {
-        storeGlobal.currentFile = toRaw(storeGlobal.directory[i]) as IProjectFile;
+  storeGlobal.codeDirectory = Array.isArray(state.codeDirectory) ? state.codeDirectory : [];
+  if (state.currentCodeFilePath) {
+    for (let i = 0; i < storeGlobal.codeDirectory.length; i++) {
+      if (storeGlobal.codeDirectory[i]?.type === 'file' && storeGlobal.codeDirectory[i]?.path === state.currentCodeFilePath) {
+        storeGlobal.currentCodeFile = toRaw(storeGlobal.codeDirectory[i]) as CodeFile;
       }
     }
   }
+  console.log(toRaw(storeGlobal))
 })
 
 </script>

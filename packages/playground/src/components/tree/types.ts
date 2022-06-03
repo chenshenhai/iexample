@@ -1,8 +1,4 @@
 
-export interface TreeDataItem {
-  id: string,
-  text: string,
-  children?: TreeDataItem[]
-}
+export interface TreeDataItem extends DocFile {};
 
 export type TreeData = TreeDataItem[];

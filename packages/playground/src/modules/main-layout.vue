@@ -65,19 +65,19 @@ const state = reactive<{
 })
 
 onMounted(() => {
-  if (storeGlobal.entryPath) {
+  if (storeGlobal.entryCodeFilePath) {
     state.source = runtime(
-      toRaw(storeGlobal.entryPath),
-      toRaw(storeGlobal.directory)
+      toRaw(storeGlobal.entryCodeFilePath),
+      toRaw(storeGlobal.codeDirectory)
     )
   }
 })
 
-watch(storeGlobal.directory, () => {
-  if (storeGlobal.entryPath) {
+watch(storeGlobal.codeDirectory, () => {
+  if (storeGlobal.entryCodeFilePath) {
     state.source = runtime(
-      toRaw(storeGlobal.entryPath),
-      toRaw(storeGlobal.directory)
+      toRaw(storeGlobal.entryCodeFilePath),
+      toRaw(storeGlobal.codeDirectory)
     )
   }
 })

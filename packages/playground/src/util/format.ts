@@ -9,7 +9,7 @@ export function formatPath(path: string): string {
 }
 
 
-export function formatDirectory(directory: IProjectDirectory): IProjectDirectory {
+export function formatDirectory(directory: CodeDirectory): CodeDirectory {
   directory.forEach((file) => {
     file.path = formatPath(file.path);
   });

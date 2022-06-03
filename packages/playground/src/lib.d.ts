@@ -1,24 +1,33 @@
-declare type IPlaygroundTheme = 'light' | 'dark';
+declare type PlaygroundTheme = 'light' | 'dark';
 
-declare type ICodeType = 'javascript' | 'typescript' | 'json' | 'html' | 'css' | 'plaintext';
+declare type CodeType = 'javascript' | 'typescript' | 'json' | 'html' | 'css' | 'plaintext';
 
 // declare interface IProject {
 //   name: string;
 // }
 
-declare interface IProjectFile {
+declare interface CodeFile {
   name: string;
   path: string;
   type: 'file',
   content: string;
-  fileType: ICodeType,
+  fileType: CodeType,
 }
 
-declare interface IProjectFolder extends Omit<IProjectFile, 'type'> {
+declare interface CodeFolder extends Omit<CodeFile, 'type'> {
   type: 'folder',
-  children: Array<IProjectFile | IProjectFolder>;
+  children: Array<CodeFile | CodeFolder>;
 }
 
-declare type IProjectDirectory = Array<IProjectFolder | IProjectFile>
+declare type CodeDirectory = Array<CodeFolder | CodeFile>
 
 declare type IResultStatus = 'LOADING' | 'LOADED' | 'NOT_FOUND' | 'NOT_FINISHED'
+
+
+declare interface DocFile {
+  id: string,
+  text: string,
+  children?: DocFile[]
+}
+
+declare type DocDirectory = Array<DocFile>

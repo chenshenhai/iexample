@@ -22,9 +22,9 @@ import { watch, reactive } from 'vue';
 import IconFile from '@ant-design/icons-vue/FileOutlined';
 
 const props = defineProps<{
-  directory: IProjectDirectory,
+  directory: CodeDirectory,
   currentFilePath: string | null,
-  onSelect?: (data: IProjectFile | IProjectFolder) => void,
+  onSelect?: (data: CodeFile | CodeFolder) => void,
 }>();
 
 const { directory = [], currentFilePath, onSelect } = props;
@@ -35,7 +35,7 @@ const state = reactive<{
   currentFilePath,
 })
 
-const onClick = (data: IProjectFile | IProjectFolder) => {
+const onClick = (data: CodeFile | CodeFolder) => {
   onSelect && onSelect(data)
 }
 

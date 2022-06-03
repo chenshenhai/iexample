@@ -1,10 +1,10 @@
-import '../src/lib';
+import '../src/lib.d';
 
 import { createApp } from 'vue';
 // import { add } from '@iexample/util';
 import Playground from '../src/index';
 
-const directory: IProjectDirectory = [
+const codeDirectory: CodeDirectory = [
   {
     name: 'index.js',
     path: '/index.js',
@@ -66,11 +66,46 @@ html, body {
   }
 ]
 
+
+// const expandAll = true;
+const  docDirectory = [0,1,2].map((i) => {
+  return {
+    id: `${i}`,
+    text: `item-${i}`,
+    children: [0,1,2,3].map((j) => {
+      return {
+        id: `${i}-${j}`,
+        text: `item-${i}-${j}`,
+        children:  [0,1,2,3,4].map((k) => {
+          return {
+            id: `${i}-${j}-${k}`,
+            text: `item-${i}-${j}-${k}`,
+            children: []
+          }
+        })
+      }
+    })
+  };
+})
+// const select = (node) => {
+//   if (!(node.children && node.children.length > 0)) {
+//     state.selectedId = node.id;
+//     console.log('node ===', node);
+//   }
+// };
+
 const app = createApp(Playground, {
   theme: 'dark',
-  directory,
-  currentFilePath: './index.html',
-  entryPath: '/index.html'
+
+  // code
+  codeDirectory,
+  currentCodeFilePath: './index.html',
+  entryCodeFilePath: '/index.html',
+
+  // doc
+  docDirectory,
+  selectedDocFilePath: '',
+  expandAllDoc: true,
 })
 app.mount('#app');
 

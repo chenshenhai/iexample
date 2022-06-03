@@ -3,14 +3,14 @@ import { reactive } from 'vue';
 
 export interface IStoreGlobal {
   theme: 'light' | 'dark',
-  directory: IProjectDirectory,
-  currentFile: IProjectFile | null,
-  entryPath: string | null,
+  codeDirectory: CodeDirectory,
+  currentCodeFile: CodeFile | null,
+  entryCodeFilePath: string | null,
 }
 
 export const storeGlobal = reactive<IStoreGlobal>({
   theme: 'light',
-  directory: [],
-  currentFile: null,
-  entryPath: null,
+  codeDirectory: [],
+  currentCodeFile: null,
+  entryCodeFilePath: null,
 })

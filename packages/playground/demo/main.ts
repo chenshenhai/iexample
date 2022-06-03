@@ -1,4 +1,4 @@
-import '../src/lib.d';
+import '../src/lib';
 
 import { createApp } from 'vue';
 // import { add } from '@iexample/util';

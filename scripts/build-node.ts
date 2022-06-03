@@ -8,7 +8,7 @@ const { packages } = require('./config');
 build();
 
 async function build() {
-  packages.forEach(async (pkg) => {
+  packages.forEach(async (pkg: any) => {
     const target = pkg.dirName;
     const pkgDir = path.resolve(`packages/${target}`);
     await fs.rmSync(`${pkgDir}/esm`);
@@ -16,7 +16,7 @@ async function build() {
   });
 }
 
-function buildPackage(dirName) {
+function buildPackage(dirName: string) {
   const pattern = '**/*.ts';
   const cwd = resolvePackagePath(dirName, 'src');
   const files = glob.sync(pattern, { cwd, });

@@ -24,7 +24,7 @@ async function start() {
   console.log(chalk.green(`build source success!`));
 }
 
-function getViteConfig(pkgName): UserConfig {
+function getViteConfig(pkgName: string): UserConfig {
   const viteConfig: UserConfig = {
     build: {
       minify: false,

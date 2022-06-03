@@ -1,6 +1,7 @@
 {
   "name": "iexample",
   "version": "0.0.0",
+  "type": "module",
   "bin": "dist/bin.js",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
@@ -11,9 +12,16 @@
   "dependencies": {
     "@iexample/playground": "0.0.0",
     "@iexample/util": "0.0.0",
+    "koa": "^2.13.4",
+    "koa-router": "^10.1.1",
     "vue": "^3.2.36"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.13.4",
+    "@types/koa-router": "^7.4.4",
+    "@types/node": "^17.0.38"
   }
 }

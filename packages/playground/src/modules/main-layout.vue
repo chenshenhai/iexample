@@ -54,7 +54,7 @@ import LayoutRow from '../components/layout-row.vue';
 import CodeEditor from './code-editor.vue';
 import CodeList from './code-list.vue';
 import HtmlPreview from '../components/html-preview/index.vue';
-import { storeGlobal } from '../store/global';
+import { storeCode } from '../store/code';
 import { runtime } from '../runtime/common';
 import Tree from '../components/tree/index.vue';
 
@@ -65,19 +65,19 @@ const state = reactive<{
 })
 
 onMounted(() => {
-  if (storeGlobal.entryCodeFilePath) {
+  if (storeCode.entryCodeFilePath) {
     state.source = runtime(
-      toRaw(storeGlobal.entryCodeFilePath),
-      toRaw(storeGlobal.codeDirectory)
+      toRaw(storeCode.entryCodeFilePath),
+      toRaw(storeCode.codeDirectory)
     )
   }
 })
 
-watch(storeGlobal.codeDirectory, () => {
-  if (storeGlobal.entryCodeFilePath) {
+watch(storeCode.codeDirectory, () => {
+  if (storeCode.entryCodeFilePath) {
     state.source = runtime(
-      toRaw(storeGlobal.entryCodeFilePath),
-      toRaw(storeGlobal.codeDirectory)
+      toRaw(storeCode.entryCodeFilePath),
+      toRaw(storeCode.codeDirectory)
     )
   }
 })

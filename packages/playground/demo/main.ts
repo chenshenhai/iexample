@@ -105,7 +105,7 @@ const app = createApp(Playground, {
   // doc
   docDirectory,
   selectedDocFilePath: '',
-  expandAllDoc: true,
+  expandAllDocFiles: true,
 })
 app.mount('#app');
 

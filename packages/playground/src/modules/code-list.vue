@@ -1,21 +1,21 @@
 <template>
   <div class="iexample-mod-list">
     <file-tree
-      :directory="storeGlobal.codeDirectory"
-      :currentFilePath="storeGlobal.currentCodeFile?.path || null"
+      :directory="storeCode.codeDirectory"
+      :currentFilePath="storeCode.currentCodeFile?.path || null"
       :onSelect="onSelect"
     />
   </div>
 </template>
 
 <script lang="ts" setup >
-import { toRaw } from 'vue';
+import { toRaw, onMounted } from 'vue';
 import FileTree from '../components/file-tree.vue';
-import { storeGlobal } from '../store/global';
+import { storeCode } from '../store/code';
 
 const onSelect = (data: CodeFile | CodeFolder) => {
   if (data.type === 'file') {
-    storeGlobal.currentCodeFile = toRaw(data)
+    storeCode.currentCodeFile = toRaw(data)
   }
 }
 

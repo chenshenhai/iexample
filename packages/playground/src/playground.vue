@@ -15,11 +15,12 @@
 </template>
 
 <script lang="ts" setup>
-import { toRaw, reactive, watchEffect } from 'vue';
+import { toRaw, reactive, watchEffect, onMounted } from 'vue';
 import MainNav from './modules/main-nav.vue';
 import Footer from './modules/footer.vue';
 import MainView from './modules/main-view.vue';
 import { storeGlobal } from './store/global';
+import { storeCode } from './store/code';
 import { formatDirectory, formatPath } from './util/format';
 
 const props = defineProps<{
@@ -28,35 +29,33 @@ const props = defineProps<{
   currentCodeFilePath?: string | null,
   entryCodeFilePath?: string,
 }>();
-const state = reactive<{
-  theme?: PlaygroundTheme,
-  codeDirectory?: CodeDirectory,
-  currentCodeFilePath?: string | null,
-  entryCodeFilePath?: string,
-}>({})
 
-watchEffect(() => {
-  state.theme = props.theme;
+
+storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
+
+const refreshStore = () => {
   if (props.currentCodeFilePath) {
-    state.currentCodeFilePath = formatPath(toRaw(props.currentCodeFilePath));
+    storeCode.currentCodeFilePath = formatPath(toRaw(props.currentCodeFilePath));
   }
   if (props.codeDirectory) {
-    state.codeDirectory = formatDirectory(toRaw(props.codeDirectory));
+    storeCode.codeDirectory = formatDirectory(toRaw(props.codeDirectory));
+  } else {
+    storeCode.codeDirectory = []
   }
   if (props.entryCodeFilePath) {
-    state.entryCodeFilePath = formatPath(toRaw(props.entryCodeFilePath));
+    storeCode.entryCodeFilePath = formatPath(toRaw(props.entryCodeFilePath));
   }
-  storeGlobal.entryCodeFilePath = state.entryCodeFilePath;
-  storeGlobal.theme = state.theme === 'dark' ? 'dark' : 'light';
-  storeGlobal.codeDirectory = Array.isArray(state.codeDirectory) ? state.codeDirectory : [];
-  if (state.currentCodeFilePath) {
-    for (let i = 0; i < storeGlobal.codeDirectory.length; i++) {
-      if (storeGlobal.codeDirectory[i]?.type === 'file' && storeGlobal.codeDirectory[i]?.path === state.currentCodeFilePath) {
-        storeGlobal.currentCodeFile = toRaw(storeGlobal.codeDirectory[i]) as CodeFile;
+  if (storeCode.currentCodeFilePath) {
+    for (let i = 0; i < storeCode.codeDirectory.length; i++) {
+      if (storeCode.codeDirectory[i]?.type === 'file' && storeCode.codeDirectory[i]?.path === storeCode.currentCodeFilePath) {
+        storeCode.currentCodeFile = toRaw(storeCode.codeDirectory[i]) as CodeFile;
       }
     }
   }
-  console.log(toRaw(storeGlobal))
+}
+
+watchEffect(() => {
+  refreshStore();
 })
 
 </script>

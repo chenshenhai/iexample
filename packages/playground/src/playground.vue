@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { toRaw, reactive, watchEffect, onMounted } from 'vue';
+import { toRaw, reactive, watchEffect, watch, onMounted } from 'vue';
 import MainNav from './modules/main-nav.vue';
 import Footer from './modules/footer.vue';
 import MainView from './modules/main-view.vue';

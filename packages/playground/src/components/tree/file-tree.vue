@@ -1,7 +1,7 @@
 <template>
   <div class="iexample-file-tree">
     <div class="iexample-file-item"
-      v-for="item in directory"
+      v-for="item in state.directory"
       :class="{
         'active': state.currentFilePath === item.path
       }"
@@ -31,16 +31,22 @@ const { directory = [], currentFilePath, onSelect } = props;
 
 const state = reactive<{
   currentFilePath: string | null,
+  directory: CodeDirectory,
 }>({
   currentFilePath,
+  directory,
 })
 
 const onClick = (data: CodeFile | CodeFolder) => {
   onSelect && onSelect(data)
 }
 
-watch(props, () => {
-  state.currentFilePath = props.currentFilePath
+watch(() => [
+  props.currentFilePath,
+  props.directory
+], () => {
+  state.currentFilePath = props.currentFilePath,
+  state.directory = props.directory || []
 })
 
 </script>

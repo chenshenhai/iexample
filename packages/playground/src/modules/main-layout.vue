@@ -73,7 +73,12 @@ onMounted(() => {
   }
 })
 
-watch(storeCode.codeDirectory, () => {
+watch(() => [
+  storeCode.codeDirectory,
+  storeCode.entryCodeFilePath,
+  storeCode.currentCodeFile,
+  storeCode.currentCodeFilePath,
+], () => {
   if (storeCode.entryCodeFilePath) {
     state.source = runtime(
       toRaw(storeCode.entryCodeFilePath),

@@ -21,13 +21,21 @@ import Footer from './modules/footer.vue';
 import MainView from './modules/main-view.vue';
 import { storeGlobal } from './store/global';
 import { storeCode } from './store/code';
+import { storeDoc } from './store/doc';
 import { formatDirectory, formatPath } from './util/format';
 
 const props = defineProps<{
   theme?: PlaygroundTheme,
+
+  // code
   codeDirectory?: CodeDirectory,
   currentCodeFilePath?: string | null,
   entryCodeFilePath?: string,
+
+  // doc
+  docDirectory: DocDirectory,
+  selectedDocFilePath: string | null,
+  expandAllDocFiles: boolean,
 }>();
 
 
@@ -54,8 +62,23 @@ const refreshStore = () => {
   }
 }
 
+const refreshStoreDoc = () => {
+  if (props.selectedDocFilePath) {
+    storeDoc.selectedDocFilePath = formatPath(toRaw(props.currentCodeFilePath));
+  }
+  if (props.docDirectory) {
+    storeDoc.docDirectory = formatDirectory(toRaw(props.docDirectory));
+  } else {
+    storeDoc.docDirectory = []
+  }
+  if (typeof props.expandAllDocFiles === 'boolean') {
+    storeDoc.expandAllDocFiles = props.expandAllDocFiles;
+  }
+}
+
 watchEffect(() => {
   refreshStore();
+  refreshStoreDoc();
 })
 
 </script>

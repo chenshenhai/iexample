@@ -72,13 +72,16 @@ const  docDirectory = [0,1,2].map((i) => {
   return {
     id: `${i}`,
     text: `item-${i}`,
+    path: [`item-${i}`].join('/'),
     children: [0,1,2,3].map((j) => {
       return {
         id: `${i}-${j}`,
+        path: [`item-${i}`, `item-${i}-${j}`].join('/'),
         text: `item-${i}-${j}`,
         children:  [0,1,2,3,4].map((k) => {
           return {
             id: `${i}-${j}-${k}`,
+            path: [`item-${i}`, `item-${i}-${j}`, `item-${i}-${j}-${k}`].join('/'),
             text: `item-${i}-${j}-${k}`,
             children: []
           }

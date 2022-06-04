@@ -27,6 +27,7 @@ declare type IResultStatus = 'LOADING' | 'LOADED' | 'NOT_FOUND' | 'NOT_FINISHED'
 declare interface DocFile {
   id: string,
   text: string,
+  path: string,
   children?: DocFile[]
 }
 

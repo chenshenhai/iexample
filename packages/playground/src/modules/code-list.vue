@@ -10,7 +10,7 @@
 
 <script lang="ts" setup >
 import { toRaw, onMounted } from 'vue';
-import FileTree from '../components/file-tree.vue';
+import FileTree from '../components/tree/file-tree.vue';
 import { storeCode } from '../store/code';
 
 const onSelect = (data: CodeFile | CodeFolder) => {

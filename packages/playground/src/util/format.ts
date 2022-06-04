@@ -12,6 +12,9 @@ export function formatPath(path: string): string {
 export function formatDirectory<T extends CodeDirectory | DocDirectory>(directory: T): T {
   directory.forEach((file) => {
     file.path = formatPath(file.path);
+    if (Array.isArray(file?.children)) {
+      formatDirectory(file.children)
+    }
   });
   return directory;
 }

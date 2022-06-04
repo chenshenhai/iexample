@@ -1,44 +1,54 @@
 <template>
-  <tree-view 
-    :data="treeData"
-    :expandAll="expandAll"
-    :selectedId="state.selectedId"
-    @select="select"
+  <tree-view
+    :data="props.defaultData"
+    :expandAll="props.expandAll"
+    :selectedFilePath="state.selectedFilePath"
+    @selectFile="props.select"
   />
 </template>
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, onMounted } from 'vue';
 import TreeView from './tree-view.vue';
 
-const state = reactive<{
-  selectedId: string | null
-}>({ selectedId: null })
+const props = defineProps<{
+  defaultData?: DocFile[],
+  expandAll?: boolean,
+  selectedFilePath?: string,
+  select?: (node: DocFile) => void,
+}>()
 
-const expandAll = true;
-const  treeData = [0,1,2].map((i) => {
-  return {
-    id: `${i}`,
-    text: `item-${i}`,
-    children: [0,1,2,3].map((j) => {
-      return {
-        id: `${i}-${j}`,
-        text: `item-${i}-${j}`,
-        children:  [0,1,2,3,4].map((k) => {
-          return {
-            id: `${i}-${j}-${k}`,
-            text: `item-${i}-${j}-${k}`,
-            children: []
-          }
-        })
-      }
-    })
-  };
+const state = reactive<{
+  selectedFilePath?: string | null
+}>({ selectedFilePath: null })
+
+onMounted(() => {
+  state.selectedFilePath = props.selectedFilePath
 })
 
-const select = (node) => {
-  if (!(node.children && node.children.length > 0)) {
-    state.selectedId = node.id;
-    console.log('node ===', node);
-  }
-};
+// const expandAll = true;
+// const  treeData = [0,1,2].map((i) => {
+//   return {
+//     id: `${i}`,
+//     text: `item-${i}`,
+//     children: [0,1,2,3].map((j) => {
+//       return {
+//         id: `${i}-${j}`,
+//         text: `item-${i}-${j}`,
+//         children:  [0,1,2,3,4].map((k) => {
+//           return {
+//             id: `${i}-${j}-${k}`,
+//             text: `item-${i}-${j}-${k}`,
+//             children: []
+//           }
+//         })
+//       }
+//     })
+//   };
+// })
+// const select = (node) => {
+//   if (!(node.children && node.children.length > 0)) {
+//     state.selectedFilePath = node.path;
+//     console.log('node ===', node);
+//   }
+// };
 </script>

@@ -10,7 +10,7 @@
           :unit="'%'"
         >
           <template #top>
-            <Tree />
+            <doc-list />
           </template>
           <template #bottom>
             <code-list />
@@ -53,10 +53,10 @@ import LayoutColumn from '../components/layout-column.vue';
 import LayoutRow from '../components/layout-row.vue';
 import CodeEditor from './code-editor.vue';
 import CodeList from './code-list.vue';
+import DocList from './doc-list.vue';
 import HtmlPreview from '../components/html-preview/index.vue';
-import { storeGlobal } from '../store/global';
+import { storeCode } from '../store/code';
 import { runtime } from '../runtime/common';
-import Tree from '../components/tree/index.vue';
 
 const state = reactive<{
   source: string | null,
@@ -65,19 +65,24 @@ const state = reactive<{
 })
 
 onMounted(() => {
-  if (storeGlobal.entryPath) {
+  if (storeCode.entryCodeFilePath) {
     state.source = runtime(
-      toRaw(storeGlobal.entryPath),
-      toRaw(storeGlobal.directory)
+      toRaw(storeCode.entryCodeFilePath),
+      toRaw(storeCode.codeDirectory)
     )
   }
 })
 
-watch(storeGlobal.directory, () => {
-  if (storeGlobal.entryPath) {
+watch(() => [
+  storeCode.codeDirectory,
+  storeCode.entryCodeFilePath,
+  storeCode.currentCodeFile,
+  storeCode.currentCodeFilePath,
+], () => {
+  if (storeCode.entryCodeFilePath) {
     state.source = runtime(
-      toRaw(storeGlobal.entryPath),
-      toRaw(storeGlobal.directory)
+      toRaw(storeCode.entryCodeFilePath),
+      toRaw(storeCode.codeDirectory)
     )
   }
 })

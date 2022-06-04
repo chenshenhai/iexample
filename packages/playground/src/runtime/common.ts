@@ -3,7 +3,7 @@ import { formatPath } from '../util/format';
 import injectScript from './inject-script.js?raw';
 
 
-function getEntryContent(entryPath: string, directory: IProjectDirectory): string | null {
+function getEntryContent(entryPath: string, directory: CodeDirectory): string | null {
   for (let i = 0; i < directory.length; i++) {
     const file = directory[i];
     if (file.type === 'file' && entryPath === file.path) {
@@ -13,7 +13,7 @@ function getEntryContent(entryPath: string, directory: IProjectDirectory): strin
   return null;
 }
 
-export function runtime(entryPath: string, directory: IProjectDirectory): string | null {
+export function runtime(entryPath: string, directory: CodeDirectory): string | null {
   const main = getEntryContent(formatPath(entryPath), toRaw(directory));
   let result: string | null = main
   if (main) {

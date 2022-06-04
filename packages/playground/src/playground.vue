@@ -15,47 +15,74 @@
 </template>
 
 <script lang="ts" setup>
-import { toRaw, reactive, watchEffect } from 'vue';
+import { toRaw, reactive, watchEffect, watch, onMounted } from 'vue';
 import MainNav from './modules/main-nav.vue';
 import Footer from './modules/footer.vue';
 import MainView from './modules/main-view.vue';
 import { storeGlobal } from './store/global';
+import { storeCode } from './store/code';
+import { storeDoc } from './store/doc';
 import { formatDirectory, formatPath } from './util/format';
 
 const props = defineProps<{
-  theme?: IPlaygroundTheme,
-  directory?: IProjectDirectory,
-  currentFilePath?: string | null,
-  entryPath?: string,
-}>();
-const state = reactive<{
-  theme?: IPlaygroundTheme,
-  directory?: IProjectDirectory,
-  currentFilePath?: string | null,
-  entryPath?: string,
-}>({})
+  theme?: PlaygroundTheme,
 
-watchEffect(() => {
-  state.theme = props.theme;
-  if (props.currentFilePath) {
-    state.currentFilePath = formatPath(toRaw(props.currentFilePath));
+  // code
+  codeDirectory?: CodeDirectory,
+  currentCodeFilePath?: string | null,
+  entryCodeFilePath?: string,
+
+  // doc
+  docDirectory?: DocDirectory,
+  selectedDocFilePath?: string | null,
+  expandAllDocFiles?: boolean,
+  onSelectDocFile?: (node: DocFile) => void,
+}>();
+
+
+storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
+
+const refreshStoreCode = () => {
+  if (props.currentCodeFilePath) {
+    storeCode.currentCodeFilePath = formatPath(toRaw(props.currentCodeFilePath));
   }
-  if (props.directory) {
-    state.directory = formatDirectory(toRaw(props.directory));
+  if (props.codeDirectory) {
+    storeCode.codeDirectory = formatDirectory(toRaw(props.codeDirectory));
+  } else {
+    storeCode.codeDirectory = []
   }
-  if (props.entryPath) {
-    state.entryPath = formatPath(toRaw(props.entryPath));
+  if (props.entryCodeFilePath) {
+    storeCode.entryCodeFilePath = formatPath(toRaw(props.entryCodeFilePath));
   }
-  storeGlobal.entryPath = state.entryPath;
-  storeGlobal.theme = state.theme === 'dark' ? 'dark' : 'light';
-  storeGlobal.directory = Array.isArray(state.directory) ? state.directory : [];
-  if (state.currentFilePath) {
-    for (let i = 0; i < storeGlobal.directory.length; i++) {
-      if (storeGlobal.directory[i]?.type === 'file' && storeGlobal.directory[i]?.path === state.currentFilePath) {
-        storeGlobal.currentFile = toRaw(storeGlobal.directory[i]) as IProjectFile;
+  if (storeCode.currentCodeFilePath) {
+    for (let i = 0; i < storeCode.codeDirectory.length; i++) {
+      if (storeCode.codeDirectory[i]?.type === 'file' && storeCode.codeDirectory[i]?.path === storeCode.currentCodeFilePath) {
+        storeCode.currentCodeFile = toRaw(storeCode.codeDirectory[i]) as CodeFile;
       }
     }
   }
+}
+
+const refreshStoreDoc = () => {
+  if (props.selectedDocFilePath) {
+    storeDoc.selectedDocFilePath = formatPath(toRaw(props.selectedDocFilePath));
+  }
+  if (props.docDirectory) {
+    storeDoc.docDirectory = formatDirectory(toRaw(props.docDirectory));
+  } else {
+    storeDoc.docDirectory = []
+  }
+  if (typeof props.expandAllDocFiles === 'boolean') {
+    storeDoc.expandAllDocFiles = props.expandAllDocFiles;
+  }
+  if (typeof props.onSelectDocFile === 'function') {
+    storeDoc.onSelectDocFile = props.onSelectDocFile;
+  }
+}
+
+watchEffect(() => {
+  refreshStoreCode();
+  refreshStoreDoc();
 })
 
 </script>

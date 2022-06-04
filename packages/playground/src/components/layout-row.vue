@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, defineProps } from 'vue';
+  import { ref, reactive } from 'vue';
   const props = defineProps<{
     defaultTopHeight: number,
     onSplitChange?: (data: {top: number, bottom: number}) => void;

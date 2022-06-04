@@ -3,28 +3,28 @@
     <input 
       :style="{display: 'none'}" 
       type="radio"
-      v-model="checked" 
-      :id="itemData.id" 
-      :value="itemData.id" />        
+      :id="itemData.path" 
+      :value="itemData.path" />        
     <div
       class="tree-item-text" 
       :class="{
-        active: !isFolder && selectedId === itemData.id
+        active: !isFolder && selectedFilePath === itemData.path
       }"
-      :for="itemData.id" 
       @click="toggle">
       <icon-down v-if="isFolder && expand" class="tree-item-icon" :style="{fontSize: 12}" />
       <icon-right v-else-if="isFolder && !expand" class="tree-item-icon" :style="{fontSize: 12}" />
       <icon-file v-else class="tree-item-icon" />
-      <span>{{itemData.text}}</span>
+      <span>
+        {{itemData.name}}
+      </span>
     </div>
     <ul class="tree-item-view" v-show="expand" v-if="isFolder">
       <tree-item 
         v-for="child in itemData.children" 
-        :key="child.id" 
+        :key="child.path" 
         :itemData="child" 
         :expandAll="expandAll"
-        :selectedId="selectedId"
+        :selectedFilePath="selectedFilePath"
         @select="select" 
         @expandTree="expandTree"
       >
@@ -56,7 +56,7 @@ export default {
       type: Boolean,
       required: false
     },
-    selectedId: {
+    selectedFilePath: {
       type: String,
       required: false
     }
@@ -75,7 +75,7 @@ export default {
   methods: {
     select(node) {
       this.checked = null
-      this.checked = this.itemData.id
+      this.checked = this.itemData.path
       this.$emit('select', node)
     },
     expandTree(node) {

@@ -9,35 +9,26 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import CodeEditor from '../components/code-editor.vue'
-import { storeGlobal } from '../store/global';
+import { storeCode } from '../store/code';
 import { debounce } from '../util/time'
 
-const codeValue = ref<string>(storeGlobal.currentFile?.content || '');
-const codeType = ref<ICodeType>(storeGlobal.currentFile?.fileType || 'plaintext');
-
-// watch(() => {
-//   return [
-//     storeGlobal.currentFile,
-//   ]
-// }, () => {
-//   codeValue.value = storeGlobal.currentFile?.content || '';
-//   codeType.value = storeGlobal.currentFile?.fileType || 'plaintext';
-// })
+const codeValue = ref<string>(storeCode.currentCodeFile?.content || '');
+const codeType = ref<CodeType>(storeCode.currentCodeFile?.fileType || 'plaintext');
 
 
-watch(() => [storeGlobal.currentFile], () => {
-  codeValue.value = storeGlobal.currentFile?.content || '';
-  codeType.value = storeGlobal.currentFile?.fileType || 'plaintext';
+watch(() => [storeCode.currentCodeFile], () => {
+  codeValue.value = storeCode.currentCodeFile?.content || '';
+  codeType.value = storeCode.currentCodeFile?.fileType || 'plaintext';
 })
 
 const onChange = debounce((code: string) => {
-  for (let i = 0; i < storeGlobal?.directory?.length; i++) {
+  for (let i = 0; i < storeCode?.codeDirectory?.length; i++) {
     if(
-      storeGlobal?.directory[i].type === 'file' 
-      && storeGlobal?.directory[i]?.path === storeGlobal.currentFile?.path
+      storeCode?.codeDirectory[i].type === 'file' 
+      && storeCode?.codeDirectory[i]?.path === storeCode.currentCodeFile?.path
     ) {
-      storeGlobal.directory[i].content = code;
-      storeGlobal.currentFile.content = code;
+      storeCode.codeDirectory[i].content = code;
+      storeCode.currentCodeFile.content = code;
       break;
     }
   }

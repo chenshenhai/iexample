@@ -85,6 +85,4 @@ watch(() => [
   text-align: left;
   background: #2196f340;
 }
-
-
 </style>

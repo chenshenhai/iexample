@@ -1,7 +1,7 @@
 <template>
   <div class='main-view-code'>
     <div class='main-view-code-sider' :style="{width: leftWidth + 'px'}">
-      <main-sider />
+      <!-- <main-sider /> -->
     </div>
     <div class='main-view-code-main' :style="{width: rightWidth + 'px'}">
       <main-layout 
@@ -13,9 +13,9 @@
 
 <script setup lang="ts">
 import MainLayout from './main-layout.vue';
-import MainSider from './main-sider.vue';
+// import MainSider from './main-sider.vue';
 
-const leftWidth = 50;
+const leftWidth = 0;
 const rightWidth = window.innerWidth - leftWidth;
 
 </script>

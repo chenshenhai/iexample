@@ -11,7 +11,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { PreviewProxy } from './proxy';
-// import srcdocHTML from './srcdoc.html?raw';
 import ResultStatus from './result-status.vue';
 
 const props = defineProps<{

@@ -2,32 +2,35 @@
   <ul class="tree-view-container">
     <tree-item
       v-for="item in props.data" 
-      :key="item.id" 
+      :key="item.path" 
       :itemData="item"
       :expandAll="props.expandAll" 
-      :selectedId="props.selectedId"
+      :selectedFilePath="props.selectedFilePath"
       @select="select" 
       @expandTree="expandTree" />            
   </ul>
 </template>
 
 <script setup lang="ts">
+import { toRaw } from 'vue';
 import { TreeData } from './types';
 import TreeItem from './tree-item.vue'
 
-const emit = defineEmits<(e: 'select' | 'expandTree', value: any) => void>()
+const emit = defineEmits<(e: 'selectFile' | 'expandTree', value: any) => void>()
 
 const props = defineProps<{
   data: TreeData,
   expandAll: boolean,
-  selectedId?: string | null,
+  selectedFilePath?: string | null,
 }>();
 
 const select = (node) =>{
-  emit('select', node)
+  if (!(node.children && node.children.length > 0)) {
+    emit('selectFile', toRaw(node))
+  }
 };
 const expandTree = (node) =>{
-  emit('expandTree', node)
+  emit('expandTree', toRaw(node))
 };
 </script>
 

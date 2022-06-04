@@ -33,15 +33,16 @@ const props = defineProps<{
   entryCodeFilePath?: string,
 
   // doc
-  docDirectory: DocDirectory,
-  selectedDocFilePath: string | null,
-  expandAllDocFiles: boolean,
+  docDirectory?: DocDirectory,
+  selectedDocFilePath?: string | null,
+  expandAllDocFiles?: boolean,
+  onSelectDocFile?: (node: DocFile) => void,
 }>();
 
 
 storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
 
-const refreshStore = () => {
+const refreshStoreCode = () => {
   if (props.currentCodeFilePath) {
     storeCode.currentCodeFilePath = formatPath(toRaw(props.currentCodeFilePath));
   }
@@ -64,7 +65,7 @@ const refreshStore = () => {
 
 const refreshStoreDoc = () => {
   if (props.selectedDocFilePath) {
-    storeDoc.selectedDocFilePath = formatPath(toRaw(props.currentCodeFilePath));
+    storeDoc.selectedDocFilePath = formatPath(toRaw(props.selectedDocFilePath));
   }
   if (props.docDirectory) {
     storeDoc.docDirectory = formatDirectory(toRaw(props.docDirectory));
@@ -74,10 +75,13 @@ const refreshStoreDoc = () => {
   if (typeof props.expandAllDocFiles === 'boolean') {
     storeDoc.expandAllDocFiles = props.expandAllDocFiles;
   }
+  if (typeof props.onSelectDocFile === 'function') {
+    storeDoc.onSelectDocFile = props.onSelectDocFile;
+  }
 }
 
 watchEffect(() => {
-  refreshStore();
+  refreshStoreCode();
   refreshStoreDoc();
 })
 

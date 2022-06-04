@@ -2,8 +2,8 @@
   <tree-view
     :data="props.defaultData"
     :expandAll="props.expandAll"
-    :selectedId="state.selectedId"
-    @select="props.select"
+    :selectedFilePath="state.selectedFilePath"
+    @selectFile="props.select"
   />
 </template>
 <script setup lang="ts">
@@ -13,16 +13,16 @@ import TreeView from './tree-view.vue';
 const props = defineProps<{
   defaultData?: DocFile[],
   expandAll?: boolean,
-  selectedId?: string,
+  selectedFilePath?: string,
   select?: (node: DocFile) => void,
 }>()
 
 const state = reactive<{
-  selectedId?: string | null
-}>({ selectedId: null })
+  selectedFilePath?: string | null
+}>({ selectedFilePath: null })
 
 onMounted(() => {
-  state.selectedId = props.selectedId
+  state.selectedFilePath = props.selectedFilePath
 })
 
 // const expandAll = true;
@@ -47,7 +47,7 @@ onMounted(() => {
 // })
 // const select = (node) => {
 //   if (!(node.children && node.children.length > 0)) {
-//     state.selectedId = node.id;
+//     state.selectedFilePath = node.path;
 //     console.log('node ===', node);
 //   }
 // };

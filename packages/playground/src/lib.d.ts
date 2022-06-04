@@ -7,11 +7,11 @@ declare type CodeType = 'javascript' | 'typescript' | 'json' | 'html' | 'css' | 
 // }
 
 declare interface CodeFile {
-  name: string;
   path: string;
-  type: 'file',
+  name: string;
+  type: 'file';
   content: string;
-  fileType: CodeType,
+  fileType: CodeType;
 }
 
 declare interface CodeFolder extends Omit<CodeFile, 'type'> {
@@ -25,8 +25,7 @@ declare type IResultStatus = 'LOADING' | 'LOADED' | 'NOT_FOUND' | 'NOT_FINISHED'
 
 
 declare interface DocFile {
-  id: string,
-  text: string,
+  name: string,
   path: string,
   children?: DocFile[]
 }

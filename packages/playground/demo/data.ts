@@ -1,10 +1,7 @@
 import '../src/lib.d';
 
-import { createApp } from 'vue';
-// import { add } from '@iexample/util';
-import Playground from '../src/index';
 
-const codeDirectory: CodeDirectory = [
+export const codeDirectory: CodeDirectory = [
   {
     name: 'index.js',
     path: '/index.js',
@@ -66,23 +63,18 @@ html, body {
   }
 ]
 
-
-// const expandAll = true;
-const  docDirectory = [0,1,2].map((i) => {
+export const docDirectory: DocDirectory = [0,1,2].map((i) => {
   return {
-    id: `${i}`,
-    text: `item-${i}`,
     path: [`item-${i}`].join('/'),
+    name: `item-${i}`,
     children: [0,1,2,3].map((j) => {
       return {
-        id: `${i}-${j}`,
         path: [`item-${i}`, `item-${i}-${j}`].join('/'),
-        text: `item-${i}-${j}`,
+        name: `item-${i}-${j}`,
         children:  [0,1,2,3,4].map((k) => {
           return {
-            id: `${i}-${j}-${k}`,
             path: [`item-${i}`, `item-${i}-${j}`, `item-${i}-${j}-${k}`].join('/'),
-            text: `item-${i}-${j}-${k}`,
+            name: `item-${i}-${j}-${k}`,
             children: []
           }
         })
@@ -90,27 +82,3 @@ const  docDirectory = [0,1,2].map((i) => {
     })
   };
 })
-// const select = (node) => {
-//   if (!(node.children && node.children.length > 0)) {
-//     state.selectedId = node.id;
-//     console.log('node ===', node);
-//   }
-// };
-
-const app = createApp(Playground, {
-  theme: 'dark',
-
-  // code
-  codeDirectory,
-  currentCodeFilePath: './index.html',
-  entryCodeFilePath: '/index.html',
-
-  // doc
-  docDirectory,
-  selectedDocFilePath: '',
-  expandAllDocFiles: true,
-})
-app.mount('#app');
-
-// fetch('/example/public/data.json')
-// .then(res => res.json()).then(console.log)

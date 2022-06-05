@@ -1,7 +1,6 @@
 {
   "name": "iexample",
   "version": "0.0.0",
-  "type": "module",
   "bin": "dist/bin/index.js",
   "main": "dist/server/index.js",
   "files": [

@@ -1,6 +1,5 @@
 {
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "init": "pnpm i",
     "dev:mod": "vite-node ./scripts/dev-mod.ts",

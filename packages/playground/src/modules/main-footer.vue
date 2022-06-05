@@ -1,11 +1,10 @@
 <template>
-  <footer class="footer">
+  <footer class="main-footer">
     Footer
   </footer>
 </template>
 
 <script lang="ts">
-
 export default {
   setup() {
     
@@ -15,7 +14,7 @@ export default {
 
 <style scoped lang="less">
 
-.footer {
+.main-footer {
   display: flex;
   align-items: center;
   justify-content: center;

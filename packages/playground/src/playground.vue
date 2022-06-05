@@ -4,25 +4,26 @@
       'iexample-theme-dark': storeGlobal.theme === 'dark',
     }"
   >
-    <main-nav class="iexample-header"></main-nav>
+    <main-header class="iexample-header"></main-header>
     <div class="iexample-main">
       <div class="iexample-main-container">
        <main-view />
       </div>
     </div>
-    <Footer class="iexample-footer"></Footer>
+    <main-footer class="iexample-footer"></main-footer>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { toRaw, reactive, watchEffect, watch, onMounted } from 'vue';
-import MainNav from './modules/main-nav.vue';
-import Footer from './modules/footer.vue';
+import { toRaw, watchEffect, watch, } from 'vue';
+import MainHeader from './modules/main-header.vue';
+import MainFooter from './modules/main-footer.vue';
 import MainView from './modules/main-view.vue';
 import { storeGlobal } from './store/global';
 import { storeCode } from './store/code';
 import { storeDoc } from './store/doc';
 import { formatDirectory, formatPath } from './util/format';
+import { searchFileFormDocDirectory } from './util/file';
 
 const props = defineProps<{
   theme?: PlaygroundTheme,
@@ -41,6 +42,7 @@ const props = defineProps<{
 
 
 storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
+
 
 const refreshStoreCode = () => {
   if (props.currentCodeFilePath) {
@@ -78,7 +80,13 @@ const refreshStoreDoc = () => {
   if (typeof props.onSelectDocFile === 'function') {
     storeDoc.onSelectDocFile = props.onSelectDocFile;
   }
+
+  storeDoc.selectedDocFile = searchFileFormDocDirectory(
+    toRaw(storeDoc.selectedDocFilePath || ''),
+    toRaw(storeDoc.docDirectory || []),
+  )
 }
+
 
 watchEffect(() => {
   refreshStoreCode();
@@ -88,9 +96,8 @@ watchEffect(() => {
 </script>
 
 <style scoped lang="less">
-@header-height: 40px;
+@header-height: 30px;
 @footer-height: 30px;
-
 
 .iexample {
   --iexample-bg: #ffffff;

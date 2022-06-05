@@ -9,17 +9,14 @@ declare type CodeType = 'javascript' | 'typescript' | 'json' | 'html' | 'css' | 
 declare interface CodeFile {
   path: string;
   name: string;
-  type: 'file';
+  type: 'file' | 'folder';
   content: string;
   fileType: CodeType;
+  children: Array<CodeFile>;
 }
 
-declare interface CodeFolder extends Omit<CodeFile, 'type'> {
-  type: 'folder',
-  children: Array<CodeFile | CodeFolder>;
-}
 
-declare type CodeDirectory = Array<CodeFolder | CodeFile>
+declare type CodeDirectory = Array<CodeFile>
 
 declare type IResultStatus = 'LOADING' | 'LOADED' | 'NOT_FOUND' | 'NOT_FINISHED'
 

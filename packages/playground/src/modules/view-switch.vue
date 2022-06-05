@@ -3,23 +3,53 @@
     <div class="view-switch-header">
       <div>Left</div>
       <div class="view-switch-tablist">
-        <div class="view-switch-tab">
-          Markdown
-        </div>
-        <div class="view-switch-tab active">
-          Demo
+        <div
+          v-for="item in tabs"
+          class="view-switch-tab"
+          :class="{active: item.key === state.activeTabKey}"
+          @click="onSwicth(item.key)"
+        >
+          {{item.name}}
         </div>
       </div>
       <div>Right</div>
     </div>
     <div class="view-switch-content">
-      <code-view></code-view>
+      <code-view v-if="state.activeTabKey === 'demo'" />
+      <markdown-view v-else />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup >
+import { reactive } from 'vue';
 import CodeView from './code-view.vue';
+import MarkdownView from './markdown-view.vue'
+
+const tabs = [
+  {
+    name: 'Demo',
+    key: 'demo',
+  },
+  {
+    name: 'Markdown',
+    key: 'markdown',
+  },
+]
+
+const state = reactive<{
+  activeTabKey: string,
+}>({
+  activeTabKey: tabs[0].key
+})
+
+
+
+const onSwicth = (key: string) => {
+  console.log('key ===', key)
+  state.activeTabKey = key
+}
+
 </script>
 
 <style lang="less" scoped>

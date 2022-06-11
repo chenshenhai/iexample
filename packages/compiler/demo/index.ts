@@ -2,8 +2,6 @@ import { compileVueSetupFile } from '../src';
 import tpl from './tpl.html?raw';
 
 function main() {
-  console.log('main-----', tpl)
-
   const source = `
   <template>
     <h1 class="title">{{ msg }}</h1>
@@ -20,20 +18,36 @@ function main() {
   `;
 
   const result = compileVueSetupFile(source, { filename: 'hello.vue' })
-  // console.log('result ===', result)
+  console.log('result ===', result)
   const html = tpl.replace('<!--INJECT_SCRIPT-->', `
     <script type="module">
       ${result.js}
       window.___module___ = ___module___;
+    </script>
+
+    <script type="module">
+      import { createApp } from "vue"
+      const run = () => {
+        const App = window.___module___ 
+        App.name = 'Repl'
+        const app = createApp(App)
+        app.mount('#app')
+      }
+      run();
     </script>
   `).replace('<!--INJECT_SCRIPT-->', `
   <style>
     ${result.css}
   </style>
   `)
-  document.write(html)
+  
+  const iframe = document.createElement('iframe');
+  iframe.srcdoc = html;
+
+  const app = document.querySelector('#app');
+  app.appendChild(iframe);
+
 }
 
-window.addEventListener('load', () => {
-  main();
-})
+
+main()

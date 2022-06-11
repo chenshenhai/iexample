@@ -89,7 +89,7 @@ function mergeJs(jsResult: CompileResult, tplResult: CompileResult) {
   const importAst: any[] = [];
   let moduleAst: any = null;
   const tplAst: any[] = [];
-  let renderAst: any[] = []
+  let renderAst: any = null;
   jsResult?.ast?.forEach((item: any) => {
     if (item.type === 'ImportDeclaration') {
       importAst.push(item);
@@ -101,7 +101,10 @@ function mergeJs(jsResult: CompileResult, tplResult: CompileResult) {
     if (item.type === 'ImportDeclaration') {
       importAst.push(item);
     } else if (item.type === 'ExportNamedDeclaration' && item.declaration) {
-      renderAst = item.declaration
+      renderAst = item.declaration;
+      const ctxKey = renderAst?.params?.[0]?.name;
+      // TODO
+      console.log('renderAst ===', renderAst)
     } else {
       tplAst.push(item)
     }
@@ -110,6 +113,7 @@ function mergeJs(jsResult: CompileResult, tplResult: CompileResult) {
   moduleAst = wrapSetupModule(moduleAst, renderAst)
   ast = [
     ...importAst,
+    ...tplAst,
     ...[
       createConst(SINGLE_MODULE_DECLARE_NAME, moduleAst)
     ]

@@ -1,1 +1,1 @@
-export { compileVueFileStr } from './compile/vue-file';
+export { compileVueSetupFile } from './compile/vue-setup-file';

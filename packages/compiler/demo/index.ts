@@ -1,7 +1,8 @@
-import { compileVueFileStr } from '../src';
+import { compileVueSetupFile } from '../src';
+import tpl from './tpl.html?raw';
 
 function main() {
-  console.log('main-----')
+  console.log('main-----', tpl)
 
   const source = `
   <template>
@@ -18,8 +19,21 @@ function main() {
   </style>
   `;
 
-  const result = compileVueFileStr(source, { filename: 'hello.vue' })
-  console.log('result ===', result)
+  const result = compileVueSetupFile(source, { filename: 'hello.vue' })
+  // console.log('result ===', result)
+  const html = tpl.replace('<!--INJECT_SCRIPT-->', `
+    <script type="module">
+      ${result.js}
+      window.___module___ = ___module___;
+    </script>
+  `).replace('<!--INJECT_SCRIPT-->', `
+  <style>
+    ${result.css}
+  </style>
+  `)
+  document.write(html)
 }
 
-main();
+window.addEventListener('load', () => {
+  main();
+})

@@ -6,6 +6,7 @@ import {
 } from '@vue/compiler-sfc';
 import { extractCode } from '../util/extract';
 import { parse as babelParse } from '@babel/parser';
+import { generate } from 'astring'
 
 interface CompileOptions { 
   id: string,
@@ -36,10 +37,13 @@ function compileTpl(source: string, opts: CompileOptions): CompileResult {
     scoped: true,
     filename: opts.filename,
   });
-  console.log('tplCode ===', tplCode)
+  const ast = babelParse(tplCode.code || '', {
+    sourceType: "module",
+    plugins: [],
+  });
   return {
     code: tplCode.code,
-    ast: tplCode.ast || null,
+    ast: ast?.program?.body || null,
   };
 }
 
@@ -59,13 +63,27 @@ function compileCss(source: string, opts: CompileOptions): CompileResult {
 
 function mergeJs(jsResult: CompileResult, tplResult: CompileResult) {
   const ast: any[] = [];
-  const importAst = [];
+  const importAst: any[] = [];
   jsResult?.ast?.forEach((item: any) => {
     if (item.type === 'ImportDeclaration') {
       importAst.push(item);
     }
   })
-  tplResult
+  tplResult?.ast?.forEach((item: any) => {
+    if (item.type === 'ImportDeclaration') {
+      importAst.push(item);
+    }
+  })
+  console.log('importAst ===', importAst)
+
+  // @ts-ignore
+  const code = generate({
+    "type": "Program",
+
+  // @ts-ignore
+    "body": importAst,
+  });
+  console.log('code ===', code)
 }
 
 export const compileVueFileStr = (source: string, opts: { filename: string }) => {

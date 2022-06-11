@@ -8,8 +8,12 @@
     "dist"
   ],
   "devDependencies": {
+    "@babel/generator": "^7.18.2",
     "@babel/parser": "^7.18.4",
+    "@types/babel__generator": "^7.6.4",
     "@vue/compiler-sfc": "^3.2.37",
+    "astring": "^1.8.3",
+    "sucrase": "^3.21.0",
     "vue": "^3.2.36"
   },
   "peerDependencies": {

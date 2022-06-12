@@ -15,8 +15,7 @@ export const createConst = (name: string, value: any) => {
   }
 }
 
-export const createFunc = (name: string, params: any[], body: any) => {
-  console.log('body ===', body)
+export const createObjectFunc = (name: string, params: any[], body: any) => {
   return {
     "type": "Property",
     "method": true,
@@ -37,6 +36,23 @@ export const createFunc = (name: string, params: any[], body: any) => {
         "type": "BlockStatement",
         "body": body
       }
+    }
+  }
+}
+
+export const createObjectPreporty = (name: string, valueName: string) => {
+  return {
+    "type": "ObjectProperty",
+    "method": false,
+    "key": {
+      "type": "Identifier",
+      "name": name
+    },
+    "computed": false,
+    "shorthand": false,
+    "value": {
+      "type": "Identifier",
+      "name": valueName
     }
   }
 }

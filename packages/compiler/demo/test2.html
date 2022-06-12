@@ -16,20 +16,30 @@
         }
       }
     </script>
-    <!--INJECT_STYLE-->
+    
+  <style>
+    
+.title[data-v-92246f1d11f82] { color: #666666;
+}
+  
+  </style>
+  
   </head>
   <body>
 
     <div id="app">Loading...</div>
     
+    
+    
     <script type="module">
+      import {toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, vModelText as _vModelText, withDirectives as _withDirectives, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, pushScopeId as _pushScopeId, popScopeId as _popScopeId} from "vue";
       import {ref} from 'vue';
-      import {toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, vModelText as _vModelText, withDirectives as _withDirectives, openBlock as _openBlock, createElementBlock as _createElementBlock, pushScopeId as _pushScopeId, popScopeId as _popScopeId} from "vue";
-      const _withScopeId = n => (_pushScopeId("data-v-fd89e1cc91eee"), n = n(), _popScopeId(), n);
+      const _withScopeId = n => (_pushScopeId("data-v-92246f1d11f82"), n = n(), _popScopeId(), n);
       const _hoisted_1 = {
         class: "title"
       };
       const ___module___ = {
+        __scopeId: "data-v-92246f1d11f82",
         setup(__props, {expose}) {
           expose();
           const msg = ref('Hello World!');
@@ -44,10 +54,10 @@
           return __returned__;
         },
         render(_ctx, _cache) {
-          return (_openBlock(), _createElementBlock("template", null, [_createElementVNode("h1", _hoisted_1, _toDisplayString(_ctx.msg), 1), _withDirectives(_createElementVNode("input", {
+          return (_openBlock(), _createElementBlock(_Fragment, null, [_createElementVNode("h1", _hoisted_1, _toDisplayString(_ctx.msg), 1), _withDirectives(_createElementVNode("input", {
             "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => _ctx.msg = $event)
-          }, null, 512), [[_vModelText, _ctx.msg]])]));
-        },
+          }, null, 512), [[_vModelText, _ctx.msg]])], 64));
+        }
       };
 
       window.___module___ = ___module___;
@@ -66,5 +76,3 @@
   
   </body>
 </html>
-
-

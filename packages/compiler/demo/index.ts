@@ -1,4 +1,5 @@
 import { compileVueSetupFile } from '../src';
+// @ts-ignore
 import tpl from './tpl.html?raw';
 
 function main() {
@@ -35,7 +36,7 @@ function main() {
       }
       run();
     </script>
-  `).replace('<!--INJECT_SCRIPT-->', `
+  `).replace('<!--INJECT_STYLE-->', `
   <style>
     ${result.css}
   </style>
@@ -45,7 +46,7 @@ function main() {
   iframe.srcdoc = html;
 
   const app = document.querySelector('#app');
-  app.appendChild(iframe);
+  app?.appendChild(iframe);
 
 }
 

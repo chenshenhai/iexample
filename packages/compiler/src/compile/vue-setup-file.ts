@@ -1,4 +1,4 @@
-import { createConst, createFunc } from './../ast/estree';
+import { createConst, createObjectFunc } from './../ast/estree';
 import {
   parse,
   compileTemplate,
@@ -64,7 +64,7 @@ function compileCss(source: string, opts: CompileOptions): CompileResult {
 
 function wrapSetupModule(moduleAst: any, renderAst: any) {
   if (moduleAst.type === 'ObjectExpression' && Array.isArray(moduleAst.properties)) {
-    moduleAst.properties.push(createFunc('render', renderAst.params, renderAst.body.body))
+    moduleAst.properties.push(createObjectFunc('render', renderAst.params, renderAst.body.body))
   }
   return moduleAst;
 }
@@ -115,14 +115,7 @@ export const compileVueSetupFile = (source: string, opts: { filename: string }) 
   const js = compileJs(source, { id: scopedId, filename: opts.filename })
   const tpl = compileTpl(source, { id: scopedId, filename: opts.filename })
   const css = compileCss(source, { id: scopedId, filename: opts.filename })
-
-  console.log('js ==', js);
-  console.log('tpl ====', tpl)
-  console.log('css ====', css)
-
   const result = mergeJs(js, tpl);
-  
-  // console.log('merge ===', result);
   return {
     js: result.code,
     css: css.code

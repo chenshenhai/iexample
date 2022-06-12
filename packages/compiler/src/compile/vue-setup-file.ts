@@ -1,4 +1,4 @@
-import { createConst } from './../ast/estree';
+import { createConst, createFunc } from './../ast/estree';
 import {
   parse,
   compileTemplate,
@@ -33,9 +33,10 @@ function compileJs(source: string, opts: CompileOptions): CompileResult {
 }
 
 function compileTpl(source: string, opts: CompileOptions): CompileResult {
+  const mainTpl = extractCode(source, { type: 'template' }) || '';
   const tplCode = compileTemplate({
     id: opts.id,
-    source: source,
+    source: mainTpl,
     scoped: true,
     filename: opts.filename,
   });
@@ -63,23 +64,7 @@ function compileCss(source: string, opts: CompileOptions): CompileResult {
 
 function wrapSetupModule(moduleAst: any, renderAst: any) {
   if (moduleAst.type === 'ObjectExpression' && Array.isArray(moduleAst.properties)) {
-    for (let i = 0; i < moduleAst.properties.length; i++) {
-      if (moduleAst.properties[i]?.key?.name === 'setup'
-        && moduleAst.properties[i]?.value?.type === 'FunctionExpression'
-      ) {
-        const setupAst = moduleAst.properties[i];
-        if (Array.isArray(setupAst?.value?.body?.body)) {
-          for (let j = setupAst.value.body.body.length - 1; j >= 0; j--) {
-            console.log('setupAst.value.body[j]?.type =', setupAst.value.body.body[j]?.type)
-            if (setupAst.value.body.body[j]?.type === 'ReturnStatement') {
-              setupAst.value.body.body[j].argument = renderAst
-              break;
-            }
-          }
-        }
-      }
-      break;
-    }
+    moduleAst.properties.push(createFunc('render', renderAst.params, renderAst.body.body))
   }
   return moduleAst;
 }
@@ -90,6 +75,16 @@ function mergeJs(jsResult: CompileResult, tplResult: CompileResult) {
   let moduleAst: any = null;
   const tplAst: any[] = [];
   let renderAst: any = null;
+  tplResult?.ast?.forEach((item: any) => {
+    if (item.type === 'ImportDeclaration') {
+      importAst.push(item);
+    } else if (item.type === 'ExportNamedDeclaration' && item.declaration) {
+      renderAst = item.declaration;
+    } else {
+      tplAst.push(item)
+    }
+  })
+
   jsResult?.ast?.forEach((item: any) => {
     if (item.type === 'ImportDeclaration') {
       importAst.push(item);
@@ -97,18 +92,7 @@ function mergeJs(jsResult: CompileResult, tplResult: CompileResult) {
       moduleAst = item.declaration;
     }
   })
-  tplResult?.ast?.forEach((item: any) => {
-    if (item.type === 'ImportDeclaration') {
-      importAst.push(item);
-    } else if (item.type === 'ExportNamedDeclaration' && item.declaration) {
-      renderAst = item.declaration;
-      const ctxKey = renderAst?.params?.[0]?.name;
-      // TODO
-      console.log('renderAst ===', renderAst)
-    } else {
-      tplAst.push(item)
-    }
-  })
+  
 
   moduleAst = wrapSetupModule(moduleAst, renderAst)
   ast = [
@@ -132,9 +116,9 @@ export const compileVueSetupFile = (source: string, opts: { filename: string }) 
   const tpl = compileTpl(source, { id: scopedId, filename: opts.filename })
   const css = compileCss(source, { id: scopedId, filename: opts.filename })
 
-  // console.log('js ==', js);
-  // console.log('tpl ====', tpl)
-  // console.log('css ====', css)
+  console.log('js ==', js);
+  console.log('tpl ====', tpl)
+  console.log('css ====', css)
 
   const result = mergeJs(js, tpl);
   
@@ -144,5 +128,6 @@ export const compileVueSetupFile = (source: string, opts: { filename: string }) 
     css: css.code
   }
 }
+
 
 

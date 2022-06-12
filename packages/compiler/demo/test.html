@@ -1,0 +1,147 @@
+ <html>
+  <head>
+    <style>
+      body {
+        font-family: Menlo, Consolas, monospace;
+        color: #444;
+      }
+      .item {
+        cursor: pointer;
+      }
+      .bold {
+        font-weight: bold;
+      }
+      ul {
+        padding-left: 1em;
+        line-height: 1.5em;
+        list-style-type: dot;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "vue": "https://unpkg.com/vue@3.2.37/dist/vue.esm-browser.js"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    
+    
+
+    <!-- the app root element -->
+    <div id="demo"></div>
+
+
+    <script type="module">
+      import * as Vue from 'vue';
+      const { reactive, computed, toRefs } = Vue
+      const Component = {
+        name: 'TreeItem', // necessary for self-reference
+        template: `<li>
+          <div
+            :class="{bold: isFolder}"
+            @click="toggle"
+            @dblclick="changeType">
+            {{model.name}}
+            <span v-if="isFolder">[{{open ? '-' : '+'}}]</span>
+          </div>
+          <ul v-if="isFolder" v-show="open">
+            <tree-item
+              class="item"
+              v-for="model in model.children"
+              :model="model">
+            </tree-item>
+            <li class="add" @click="addChild">+</li>
+          </ul>
+        </li>`,
+        props: {
+          model: Object
+        },
+        setup(props) {
+          const state = reactive({
+            open: false,
+            isFolder: computed(() => {
+              return props.model.children && props.model.children.length
+            })
+          })
+
+          function toggle() {
+            state.open = !state.open
+          }
+
+          function changeType() {
+            if (!state.isFolder) {
+              props.model.children = []
+              addChild()
+              state.open = true
+            }
+          }
+
+          function addChild() {
+            props.model.children.push({ name: 'new stuff' })
+          }
+
+          return {
+            ...toRefs(state),
+            toggle,
+            changeType,
+            addChild
+          }
+        }
+      }
+      window.TreeItem = Component;
+    </script>
+    <script type="module">
+      import * as Vue from 'vue';
+      const TreeItem = window.TreeItem;
+      const treeData = {
+        name: 'My Tree',
+        children: [
+          { name: 'hello' },
+          { name: 'wat' },
+          {
+            name: 'child folder',
+            children: [
+              {
+                name: 'child folder',
+                children: [
+                  { name: 'hello' },
+                  { name: 'wat' }
+                ]
+              },
+              { name: 'hello' },
+              { name: 'wat' },
+              {
+                name: 'child folder',
+                children: [
+                  { name: 'hello' },
+                  { name: 'wat' }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+      Vue.createApp({
+      template: `
+    <ul>
+      <tree-item class="item" :model="treeData"></tree-item>
+    </ul>
+      `,
+      components: {
+        TreeItem
+      },
+      data: () => ({
+        treeData
+      })
+    }).mount('#demo')
+    </script>
+
+  </body>
+</html>
+
+ 
+ 
+
+

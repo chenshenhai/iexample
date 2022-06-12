@@ -1,0 +1,70 @@
+<html>
+  <head>
+    <style>
+      html,body {
+        margin: 0;
+        padding: 0;
+        background: #f0f0f0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "vue": "https://unpkg.com/vue@3.2.37/dist/vue.runtime.esm-browser.js"
+        }
+      }
+    </script>
+    <!--INJECT_STYLE-->
+  </head>
+  <body>
+
+    <div id="app">Loading...</div>
+    
+    <script type="module">
+      import {ref} from 'vue';
+      import {toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, vModelText as _vModelText, withDirectives as _withDirectives, openBlock as _openBlock, createElementBlock as _createElementBlock, pushScopeId as _pushScopeId, popScopeId as _popScopeId} from "vue";
+      const _withScopeId = n => (_pushScopeId("data-v-fd89e1cc91eee"), n = n(), _popScopeId(), n);
+      const _hoisted_1 = {
+        class: "title"
+      };
+      const ___module___ = {
+        setup(__props, {expose}) {
+          expose();
+          const msg = ref('Hello World!');
+          const __returned__ = {
+            msg,
+            ref
+          };
+          Object.defineProperty(__returned__, '__isScriptSetup', {
+            enumerable: false,
+            value: true
+          });
+          return __returned__;
+        },
+        render(_ctx, _cache) {
+          return (_openBlock(), _createElementBlock("template", null, [_createElementVNode("h1", _hoisted_1, _toDisplayString(_ctx.msg), 1), _withDirectives(_createElementVNode("input", {
+            "onUpdate:modelValue": _cache[0] || (_cache[0] = $event => _ctx.msg = $event)
+          }, null, 512), [[_vModelText, _ctx.msg]])]));
+        },
+      };
+
+      window.___module___ = ___module___;
+    </script>
+
+    <script type="module">
+      import { createApp } from "vue"
+      const run = () => {
+        const App = window.___module___ 
+        App.name = 'Repl'
+        const app = createApp(App)
+        app.mount('#app')
+      }
+      run();
+    </script>
+  
+  </body>
+</html>
+
+

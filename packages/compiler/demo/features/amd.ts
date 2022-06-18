@@ -25,10 +25,10 @@ const appId = "@/components/app"
 const mainCode = `
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App2 from "${appId}";
+import App from "${appId}";
 
 const root = ReactDOM.createRoot(document.querySelector('#app'));
-root.render(React.createElement(App2, {}))
+root.render(React.createElement(App, {}))
 `
 
 const appResult = compileCodeToAMD(appCode, {
@@ -36,19 +36,19 @@ const appResult = compileCodeToAMD(appCode, {
 });
 const mainResult = compileCodeToAMD(mainCode);
 
-console.log('appResult ===', appResult)
+// console.log('appResult ===', appResult)
 
 const html = tpl.replace('<!--INJECT_SCRIPT_LIB-->', `
 <script>
-  ${defineLib}
+${defineLib}
 </script>
 `).replace('<!--INJECT_SCRIPT-->', `
-  <script type="module">
-    ${appResult.code}
-  </script>
-  <script type="module">
-    ${mainResult.code}
-  </script>
+<script type="module">
+${appResult.code}
+</script>
+<script type="module">
+${mainResult.code}
+</script>
 `)
 
 const iframe = document.createElement('iframe');

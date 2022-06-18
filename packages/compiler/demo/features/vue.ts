@@ -1,6 +1,6 @@
-import { compileVueSetupFile } from '../src';
+import { compileVueSetupFile } from '../../src';
 // @ts-ignore
-import tpl from './tpl.html?raw';
+import tpl from './vue-tpl.html?raw';
 
 function main() {
   const source = `

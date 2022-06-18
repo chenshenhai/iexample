@@ -8,16 +8,7 @@ import {
 import { extractCode } from '../util/extract';
 import { parseJsToAst, generateAstToJs } from '../ast/js';
 import { SINGLE_MODULE_DECLARE_NAME } from '../config/name';
-
-interface CompileOptions { 
-  id: string,
-  filename: string
-}
-
-interface CompileResult {
-  code: string,
-  ast: any[] | any | null,
-}
+import { CompileOptions, CompileResult } from '../types';
 
 function compileJs(source: string, opts: CompileOptions): CompileResult {
   const { descriptor } = parse(source)

@@ -56,3 +56,13 @@ export const createObjectPreporty = (name: string, valueName: string) => {
     }
   }
 }
+
+export const createReturn = (name: string) => {
+  return {
+    "type": "ReturnStatement",
+    "argument": {
+      "type": "Identifier",
+      "name": name
+    }
+  }
+}

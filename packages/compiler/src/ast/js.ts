@@ -1,7 +1,8 @@
 // import { parse as babelParse } from '@babel/parser';
 import { generate } from 'astring'
 import { parse as acornParse, } from 'acorn';
-import { createConst } from './estree';
+
+// import { createConst } from './estree';
 
 interface CompileResult {
   code: string,
@@ -35,3 +36,4 @@ export function generateAstToJs(ast: any[]): string {
   });
   return code || '';
 }
+

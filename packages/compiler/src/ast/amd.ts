@@ -1,7 +1,7 @@
 
 import { createReturn } from './estree';
 
-export const parseToAMDModule = (name: string, moduleAst: any[]) => {
+export const parseToAMDModule = (name: string | undefined, moduleAst: any[]) => {
   const depIds: string[] = [];
   const depNames: string[] = [];
   const bodyAst: any[] = [];

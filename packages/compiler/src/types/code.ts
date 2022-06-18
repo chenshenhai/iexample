@@ -1,6 +1,6 @@
 export interface CompileOptions { 
-  id: string,
-  filename: string
+  id?: string,
+  filename?: string
 }
 
 export interface CompileResult {

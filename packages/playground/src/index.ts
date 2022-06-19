@@ -1,4 +1,7 @@
-import Playground from './playground.vue';
+import PlaygroundComponent from './playground.vue';
 import './css/index.less';
 
-export default Playground;
+export const Playground = PlaygroundComponent;
+
+export * from './types'
+

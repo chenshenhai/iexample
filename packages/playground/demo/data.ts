@@ -1,5 +1,4 @@
-import '../src/lib.d';
-
+import { CodeDirectory, DocDirectory } from '../src';
 
 export const codeDirectory: CodeDirectory = [
   {

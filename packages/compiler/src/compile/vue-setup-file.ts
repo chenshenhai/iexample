@@ -10,7 +10,7 @@ import { parseJsToAst, generateAstToJs } from '../ast/js';
 import { SINGLE_MODULE_DECLARE_NAME } from '../config/name';
 import { CompileOptions, CompileResult } from '../types';
 
-function compileJs(source: string, opts: CompileOptions): CompileResult {
+function compileJs(source: string, opts: Required<CompileOptions>): CompileResult {
   const { descriptor } = parse(source)
   const jsCode = compileScript(
     descriptor,
@@ -23,7 +23,7 @@ function compileJs(source: string, opts: CompileOptions): CompileResult {
   };
 }
 
-function compileTpl(source: string, opts: CompileOptions): CompileResult {
+function compileTpl(source: string, opts: Required<CompileOptions>): CompileResult {
   const mainTpl = extractCode(source, { type: 'template' }) || '';
   const tplCode = compileTemplate({
     id: opts.id,
@@ -38,7 +38,7 @@ function compileTpl(source: string, opts: CompileOptions): CompileResult {
   };
 }
 
-function compileCss(source: string, opts: CompileOptions): CompileResult {
+function compileCss(source: string, opts: Required<CompileOptions>): CompileResult {
   const style = extractCode(source, { type: 'style' }) || '';
   const styleCode = compileStyle({
     source: style,

@@ -9,6 +9,7 @@
 </template>
 
 <script setup lang="ts">
+import { IResultStatus } from '../../types'
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { PreviewProxy } from './proxy';
 import ResultStatus from './result-status.vue';
@@ -28,7 +29,7 @@ let proxy: PreviewProxy
 // create sandbox on mount
 onMounted(() => {
   watch(props, () => {
-    createSandbox(props.source);
+    createSandbox(props.source || '');
   })
 })
 

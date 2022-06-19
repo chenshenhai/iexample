@@ -5,6 +5,7 @@
 <script setup lang='ts'>
 import { ref, onMounted, watchEffect } from 'vue';
 import CodeMirror from '../util/codemirror';
+import { CodeType } from '../types'
 
 const refMount = ref<HTMLDivElement>();
 const refEditor = ref<CodeMirror.Editor>();

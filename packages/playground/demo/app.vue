@@ -14,9 +14,8 @@
 </template>
 
 <script lang="ts" setup >
-import '../src/lib.d';
-import { reactive, toRaw } from 'vue';
-import Playground from '../src';
+import { reactive } from 'vue';
+import { Playground, CodeDirectory } from '../src';
 import { codeDirectory, codeDirectory2, docDirectory } from './data';
 
 const state = reactive<{

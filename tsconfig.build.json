@@ -20,7 +20,9 @@
     "emitDeclarationOnly": true
   },
   "include": [
-    "packages/**/src",
-    "!packages/iexample/src"
+    "packages/**/src"
   ],
+  "exclude": [
+    "packages/iexample/"
+  ]
 }

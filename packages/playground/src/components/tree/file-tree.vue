@@ -20,11 +20,12 @@
 <script lang="ts" setup>
 import { watch, reactive } from 'vue';
 import IconFile from '@ant-design/icons-vue/FileOutlined';
+import { CodeDirectory, CodeFile } from '../../types';
 
 const props = defineProps<{
   directory: CodeDirectory,
   currentFilePath: string | null,
-  onSelect?: (data: CodeFile | CodeFolder) => void,
+  onSelect?: (data: CodeFile) => void,
 }>();
 
 const { directory = [], currentFilePath, onSelect } = props;
@@ -37,7 +38,7 @@ const state = reactive<{
   directory,
 })
 
-const onClick = (data: CodeFile | CodeFolder) => {
+const onClick = (data: CodeFile) => {
   onSelect && onSelect(data)
 }
 

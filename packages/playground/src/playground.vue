@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { toRaw, watchEffect, watch, } from 'vue';
+import { toRaw, watchEffect, } from 'vue';
 import MainHeader from './modules/main-header.vue';
 import MainFooter from './modules/main-footer.vue';
 import MainView from './modules/main-view.vue';
@@ -24,6 +24,7 @@ import { storeCode } from './store/code';
 import { storeDoc } from './store/doc';
 import { formatDirectory, formatPath } from './util/format';
 import { searchFileFormDocDirectory } from './util/file';
+import { PlaygroundTheme, CodeDirectory, DocDirectory, DocFile, CodeFile } from './types'
 
 const props = defineProps<{
   theme?: PlaygroundTheme,

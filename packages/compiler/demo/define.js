@@ -1,21 +1,10 @@
 (function() {
-  var __AMD__ = {};
 
-  var __AMDModuleStorage__ = {};
+  const __AMDModuleStorage__ = {};
 
-  /*
-  * @name define
-  * @param {string} name 
-  * @param {array} dependencies 
-  * @param {function} factory 
-  * @return {object}
-  * */
-  __AMD__.define = function(name, dependencies, factory){
-
-    var that = this;
-
-    var _name, _dependencies, _factory;
-    var _exec = false;
+  const define = function(name, dependencies, factory){
+    let _name, _dependencies, _factory;
+    let _exec = false;
 
     if( factory ) {
       _name = name;
@@ -48,79 +37,47 @@
     }
 
     if( !__AMDModuleStorage__.hasOwnProperty(_name) ) {
-      var _module = {
+      let _module = {
         name : _name,
         dependencies : _dependencies,
         factory : _factory
       };
-
       __AMDModuleStorage__[_name] = _module;
     }
-
-
     if( _exec ) {
-      that.emit(_name);
+      emit(_name);
     } else {
       return __AMDModuleStorage__[_name];
     }
   };
 
-
-  /*
-  * 发射模块
-  * @name emit
-  * @param {string} name 模块名字
-  * @return {}
-  * */
-  __AMD__.emit = function(name){
-    var that = this;
-    var module = __AMDModuleStorage__[name];
+  const emit = function(name){
+    let module = __AMDModuleStorage__[name];
 
     if( typeof module.entity === "undefined") {
-      var _args = [];
+      let _args = [];
 
-      for( var i= 0, len=module.dependencies.length; i<len; i++ ) {
-        var _entity = module.dependencies[i].entity;
+      for( let i= 0, len=module.dependencies.length; i<len; i++ ) {
+        let _entity = module.dependencies[i].entity;
 
         if( typeof _entity !== "undefined" ) {
           _args.push(_entity);
-          console.log(_entity);
         } else {
-          _args.push(that.emit(module.dependencies[i]));
-          console.log(that.emit(module.dependencies[i]));
+          _args.push(emit(module.dependencies[i]));
         }
       }
       module.entity = module.factory.apply(function(){}, _args);
-
-
     }
-
     return module.entity;
   };
 
-  /*
-  * @name require
-  * @param {string} name
-  * */
-  __AMD__.require = function(name) {
-    return this.emit(name);
-  };
-
-
-  //TODO
-  //window.__AMD__ = __AMD__;
-  //__AMD__.debug = {
-  //  getModuleStroage : function() {
-  //    console.log(__AMDModuleStorage__);
-  //  }
-  //};
-
   window.define = function(name, dependencies, factory){
-    __AMD__.define(name, dependencies, factory)
+    define(name, dependencies, factory)
   };
 
-  window.require = function(name ){
-    return __AMD__.require(name )
-  };
+  // window.require = function(name ){
+  //   return require(name)
+  // };
+  window.__AMDModuleStorage__ = __AMDModuleStorage__
 
 })()

@@ -1,3 +1,4 @@
+import { DocDirectory, DocFile } from '../types'; 
 
 export function searchFileFormDocDirectory(
   path: string,

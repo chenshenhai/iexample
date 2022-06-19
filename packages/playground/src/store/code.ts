@@ -1,5 +1,5 @@
 import { reactive } from 'vue';
-
+import { CodeDirectory, CodeFile } from '../types';
 
 export interface StoreCode {
   codeDirectory: CodeDirectory,

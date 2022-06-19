@@ -1,5 +1,3 @@
-import '../src/lib.d';
-
 import { createApp } from 'vue';
 // import { add } from '@iexample/util';
 import App from './app.vue';

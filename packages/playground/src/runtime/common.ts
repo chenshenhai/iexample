@@ -1,6 +1,7 @@
 import { toRaw } from 'vue';
 import { formatPath } from '../util/format';
-import injectScript from './inject-script.js?raw';
+import injectScript from './assets/inject-script.js?raw';
+import { CodeDirectory } from '../types'
 
 
 function getEntryContent(entryPath: string, directory: CodeDirectory): string | null {

@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+// import { ref, watch } from 'vue';
 import IconBulbOutlined from '@ant-design/icons-vue/BulbOutlined';
 import IconBulbFilled from '@ant-design/icons-vue/BulbFilled';
 import { storeGlobal } from '../store/global';

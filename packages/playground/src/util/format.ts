@@ -1,3 +1,5 @@
+import { CodeDirectory, DocDirectory } from '../types'
+
 export function formatPath(path: string): string {
   if (path.startsWith('./')) {
     return path.replace(/^.\//, '');

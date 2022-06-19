@@ -1,3 +1,4 @@
+import { DocFile } from '../../types';
 
 export interface TreeDataItem extends DocFile {};
 

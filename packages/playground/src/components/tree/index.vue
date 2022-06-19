@@ -1,7 +1,7 @@
 <template>
   <tree-view
-    :data="props.defaultData"
-    :expandAll="props.expandAll"
+    :data="props.defaultData || []"
+    :expandAll="props.expandAll || false"
     :selectedFilePath="state.selectedFilePath"
     @selectFile="props.select"
   />
@@ -9,6 +9,7 @@
 <script setup lang="ts">
 import { reactive, onMounted } from 'vue';
 import TreeView from './tree-view.vue';
+import { DocFile } from '../../types';
 
 const props = defineProps<{
   defaultData?: DocFile[],

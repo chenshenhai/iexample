@@ -1,4 +1,5 @@
 import { reactive } from 'vue';
+import { DocDirectory, DocFile } from '../types';
 
 
 export interface StoreDoc {

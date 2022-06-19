@@ -5,6 +5,14 @@ export const modulePackages = [
     globalName: 'iExampleUtil',
   },
   {
+    dirName: 'define',
+    globalName: 'define',
+  },
+  {
+    dirName: 'compiler',
+    globalName: 'iExampleCompiler',
+  },
+  {
     dirName: 'playground',
     globalName: 'iExamplePlayground',
   },

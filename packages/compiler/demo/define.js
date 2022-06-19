@@ -1,63 +1,62 @@
 (function() {
 
-  const __AMDModuleStorage__ = {};
+  const modStorage = {};
 
   const define = function(name, dependencies, factory){
-    let _name, _dependencies, _factory;
-    let _exec = false;
+    let modName, modDeps, modFn;
+    let canExec = false;
 
     if( factory ) {
-      _name = name;
-      _dependencies = dependencies;
-      _factory = factory;
+      modName = name;
+      modDeps = dependencies;
+      modFn = factory;
     } else {
       if( dependencies ) {
         if( typeof name === "string" && typeof dependencies === "function") {
-          _name = name;
-          _dependencies = [];
-          _factory = dependencies;
+          modName = name;
+          modDeps = [];
+          modFn = dependencies;
         }
         else if( name instanceof Array && typeof dependencies === "function" ) {
-          _dependencies = name;
-          _factory = dependencies;
-          _name = "temp-" + new Date().getTime();
-          _exec = true;
+          modDeps = name;
+          modFn = dependencies;
+          modName = "temp-" + new Date().getTime();
+          canExec = true;
         }
-
       } else {
         if( typeof name === "function") {
-          _name = "temp-" + new Date().getTime();
-          _dependencies = [];
-          _factory = name;
-          _exec = true;
+          modName = "temp-" + new Date().getTime();
+          modDeps = [];
+          modFn = name;
+          canExec = true;
         } else {
           return false;
         }
       }
     }
 
-    if( !__AMDModuleStorage__.hasOwnProperty(_name) ) {
-      let _module = {
-        name : _name,
-        dependencies : _dependencies,
-        factory : _factory
+    if(!modStorage.hasOwnProperty(modName)) {
+      let modObj = {
+        name : modName,
+        dependencies : modDeps,
+        factory : modFn
       };
-      __AMDModuleStorage__[_name] = _module;
+      modStorage[modName] = modObj;
     }
-    if( _exec ) {
-      emit(_name);
+    if( canExec ) {
+      emit(modName);
     } else {
-      return __AMDModuleStorage__[_name];
+      return modStorage[modName];
     }
   };
 
   const emit = function(name){
-    let module = __AMDModuleStorage__[name];
+    let module = modStorage[name];
 
     if( typeof module.entity === "undefined") {
       let _args = [];
 
-      for( let i= 0, len=module.dependencies.length; i<len; i++ ) {
+      for( let i= 0, len = module.dependencies.length; i<len; i++ ) {
         let _entity = module.dependencies[i].entity;
 
         if( typeof _entity !== "undefined" ) {
@@ -78,6 +77,6 @@
   // window.require = function(name ){
   //   return require(name)
   // };
-  window.__AMDModuleStorage__ = __AMDModuleStorage__
+  window.__AMDModuleStorage__ = modStorage
 
 })()

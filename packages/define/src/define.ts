@@ -1,15 +1,19 @@
 
 const modStorage: {[key: string]: any} = {};
 
-function define(name?: string, dependencies?: any[], factory?: Function) {
+function define(name?: string | any[], dependencies?: any[] | Function, factory?: Function) {
   let modName: string = '';
   let modDeps: any[] = []; 
   let modFn: Function = () => {};
   let canExec = false;
 
   if (name && dependencies && factory) {
-    modName = name;
-    modDeps = dependencies;
+    if (typeof name === 'string') {
+      modName = name;
+    }
+    if (Array.isArray(dependencies)) {
+      modDeps = dependencies;
+    }
     modFn = factory;
   } else {
     if (dependencies) {

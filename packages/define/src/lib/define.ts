@@ -1,22 +1,23 @@
-import { compose } from './compose';
+import { compose, Middleware } from './compose';
 import { DefineModule } from './type';
+import { isNPM } from './util';
 
 const modStorage: { [key: string]: DefineModule } = {};
 
-function define(name?: string | any[] | Function, dependencies?: any[] | Function, factory?: Function) {
+async function define(name?: string | any[] | Function, dependencies?: any[] | Function, callback?: Function) {
   let modName: string = '';
   let modDeps: any[] = []; 
   let modFn: Function = () => {};
   let canExec = false;
 
-  if (name && dependencies && factory) {
+  if (name && dependencies && callback) {
     if (typeof name === 'string') {
       modName = name;
     }
     if (Array.isArray(dependencies)) {
       modDeps = dependencies;
     }
-    modFn = factory;
+    modFn = callback;
   } else {
     if (dependencies) {
       if (typeof name === "string" && typeof dependencies === "function") {
@@ -42,42 +43,82 @@ function define(name?: string | any[] | Function, dependencies?: any[] | Functio
   }
 
   if(!modStorage.hasOwnProperty(modName)) {
-    const modObj = {
+    const modObj: DefineModule = {
       name : modName,
       dependencies : modDeps,
-      factory : modFn,
-      entity: null,
+      callback : modFn,
+      content: null,
+      isLoaded: false,
     };
     modStorage[modName] = modObj;
   }
   if(canExec) {
-    emit(modName);
+    await emit(modName);
   } else {
     return modStorage[modName];
   }
 };
 
-function emit(name: string){
+type TaskContext =  {
+  contentList: any[]
+}
+
+async function emit(name: string){
   const module: DefineModule = modStorage[name];
-  if(module.entity === null) {
-    const argvs = [];
-    for( let i = 0, len = module.dependencies.length; i<len; i++ ) {
+  const tasks: Middleware[] = [];
+  const taskContext: TaskContext = { contentList: [] };
+  let content: any = undefined;
+  if (module?.isLoaded === true) {
+    return module.content
+  } else {
+    for ( let i = 0, len = module.dependencies.length; i<len; i++ ) {
       const depName = module.dependencies[i];
-      if(modStorage.hasOwnProperty(depName) && modStorage[depName].entity) {
-        argvs.push(modStorage[depName].entity);
+      if (modStorage.hasOwnProperty(depName) && modStorage[depName].content) {
+        tasks.push(async (ctx: TaskContext, next) => {
+          ctx.contentList.push(modStorage[depName].content);
+        })
+      } else if (isNPM(depName)) {
+        tasks.push(async (ctx: TaskContext, next) => {
+          let esModule: any = null
+          try {
+            esModule = await import(depName);
+          } catch (err) {
+            console.log(err);
+          }
+          modStorage[depName] = {
+            name: depName,
+            dependencies: [],
+            content: esModule,
+            callback: null,
+            isLoaded: true,
+          }
+          ctx.contentList.push(esModule);
+          await next();
+        })
       } else {
-        argvs.push(emit(module.dependencies[i]));
+        tasks.push(async (ctx: TaskContext, next) => {
+          let defModule: any;
+          try {
+            defModule = await emit(module.dependencies[i]);
+          } catch (err) {
+            defModule = null
+          }
+          ctx.contentList.push(defModule);
+           await next();
+        })
       }
     }
-    const entity = module.factory.apply(function(){}, argvs);
-    modStorage[name] = {
-      name,
-      dependencies: [...module.dependencies],
-      entity,
-      factory: module.factory,
-    }
+    await compose(tasks)(taskContext);
+    content = await module?.callback?.apply(function(){}, taskContext.contentList);
   }
-  return modStorage[name]?.entity;
+  modStorage[name] = {
+    name,
+    dependencies: [...module.dependencies],
+    content,
+    callback: module.callback,
+    isLoaded: true,
+  }
+  return modStorage[name]?.content;
 };
 
 

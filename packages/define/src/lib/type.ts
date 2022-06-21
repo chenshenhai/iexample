@@ -1,8 +1,9 @@
-export type ModuleEntity = any;
+export type ModuleContent = any;
 
 export interface DefineModule {
   name : string,
   dependencies : string[],
-  factory : Function,
-  entity: any,
+  callback : Function | null,
+  content: any,
+  isLoaded: boolean,
 }

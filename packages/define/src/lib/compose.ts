@@ -1,4 +1,4 @@
-type  Middleware = (ctx: any, next: Middleware) => any;
+export type Middleware = (ctx: any, next: Function) => any;
 
 export function compose (middleware: Middleware[]): (context: any, next?: Middleware) => any {
   return function (context: any, next?: Middleware) {

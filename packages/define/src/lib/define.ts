@@ -1,7 +1,9 @@
+import { compose } from './compose';
+import { DefineModule } from './type';
 
-const modStorage: {[key: string]: any} = {};
+const modStorage: { [key: string]: DefineModule } = {};
 
-function define(name?: string | any[], dependencies?: any[] | Function, factory?: Function) {
+function define(name?: string | any[] | Function, dependencies?: any[] | Function, factory?: Function) {
   let modName: string = '';
   let modDeps: any[] = []; 
   let modFn: Function = () => {};
@@ -21,8 +23,7 @@ function define(name?: string | any[], dependencies?: any[] | Function, factory?
         modName = name;
         modDeps = [];
         modFn = dependencies;
-      }
-      else if (Array.isArray(name)  && typeof dependencies === "function" ) {
+      } else if (Array.isArray(name)  && typeof dependencies === "function" ) {
         modDeps = name;
         modFn = dependencies;
         modName = "temp-uuid-" + new Date().getTime();
@@ -41,10 +42,11 @@ function define(name?: string | any[], dependencies?: any[] | Function, factory?
   }
 
   if(!modStorage.hasOwnProperty(modName)) {
-    let modObj = {
+    const modObj = {
       name : modName,
       dependencies : modDeps,
-      factory : modFn
+      factory : modFn,
+      entity: null,
     };
     modStorage[modName] = modObj;
   }
@@ -55,29 +57,32 @@ function define(name?: string | any[], dependencies?: any[] | Function, factory?
   }
 };
 
-const emit = function(name: string){
-  let module = modStorage[name];
-
-  if( typeof module.entity === "undefined") {
-    let _args = [];
-
-    for( let i= 0, len = module.dependencies.length; i<len; i++ ) {
-      let _entity = module.dependencies[i].entity;
-
-      if( typeof _entity !== "undefined" ) {
-        _args.push(_entity);
+function emit(name: string){
+  const module: DefineModule = modStorage[name];
+  if(module.entity === null) {
+    const argvs = [];
+    for( let i = 0, len = module.dependencies.length; i<len; i++ ) {
+      const depName = module.dependencies[i];
+      if(modStorage.hasOwnProperty(depName) && modStorage[depName].entity) {
+        argvs.push(modStorage[depName].entity);
       } else {
-        _args.push(emit(module.dependencies[i]));
+        argvs.push(emit(module.dependencies[i]));
       }
     }
-    module.entity = module.factory.apply(function(){}, _args);
+    const entity = module.factory.apply(function(){}, argvs);
+    modStorage[name] = {
+      name,
+      dependencies: [...module.dependencies],
+      entity,
+      factory: module.factory,
+    }
   }
-  return module.entity;
+  return modStorage[name]?.entity;
 };
 
-// window.define = function(name, dependencies, factory){
-//   define(name, dependencies, factory)
-// };
 
+define._getModules = function () {
+  return modStorage;
+}
 
 export default define;

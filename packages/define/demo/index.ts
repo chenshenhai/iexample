@@ -1,5 +1,8 @@
 import define from '../src';
 
+// @ts-ignore
+window.define = define;
+
 const appId = "@/components/app"
 
 define('react', () => {

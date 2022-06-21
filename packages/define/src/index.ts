@@ -1,3 +1,3 @@
-import define from './define';
+import define from './lib/define';
 
 export default define;

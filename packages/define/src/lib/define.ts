@@ -8,6 +8,7 @@ async function define(name?: string | any[] | Function, dependencies?: any[] | F
   let modName: string = '';
   let modDeps: any[] = []; 
   let modFn: Function = () => {};
+  let canEmit = false;
   let canExec = false;
 
   if (name && dependencies && callback) {
@@ -24,22 +25,34 @@ async function define(name?: string | any[] | Function, dependencies?: any[] | F
         modName = name;
         modDeps = [];
         modFn = dependencies;
+        canExec = true;
       } else if (Array.isArray(name)  && typeof dependencies === "function" ) {
         modDeps = name;
         modFn = dependencies;
         modName = "temp-uuid-" + new Date().getTime();
-        canExec = true;
+        canEmit = true;
       }
     } else {
       if( typeof name === "function") {
         modName = "temp-uuid-" + new Date().getTime();
         modDeps = [];
         modFn = name;
-        canExec = true;
+        canEmit = true;
       } else {
         return false;
       }
     }
+  }
+  if (canExec) {
+    const modObj: DefineModule = {
+      name : modName,
+      dependencies : modDeps,
+      callback : modFn,
+      content: modFn(),
+      isLoaded: true,
+    };
+    modStorage[modName] = modObj;
+    return modStorage[modName]
   }
 
   if(!modStorage.hasOwnProperty(modName)) {
@@ -52,7 +65,7 @@ async function define(name?: string | any[] | Function, dependencies?: any[] | F
     };
     modStorage[modName] = modObj;
   }
-  if(canExec) {
+  if(canEmit) {
     await emit(modName);
   } else {
     return modStorage[modName];
@@ -73,9 +86,10 @@ async function emit(name: string){
   } else {
     for ( let i = 0, len = module.dependencies.length; i<len; i++ ) {
       const depName = module.dependencies[i];
-      if (modStorage.hasOwnProperty(depName) && modStorage[depName].content) {
+      if (modStorage.hasOwnProperty(depName) && modStorage[depName].isLoaded) {
         tasks.push(async (ctx: TaskContext, next) => {
           ctx.contentList.push(modStorage[depName].content);
+          await next();
         })
       } else if (isNPM(depName)) {
         tasks.push(async (ctx: TaskContext, next) => {
@@ -83,7 +97,7 @@ async function emit(name: string){
           try {
             esModule = await import(depName);
           } catch (err) {
-            console.log(err);
+            console.warn(err);
           }
           modStorage[depName] = {
             name: depName,
@@ -99,12 +113,14 @@ async function emit(name: string){
         tasks.push(async (ctx: TaskContext, next) => {
           let defModule: any;
           try {
-            defModule = await emit(module.dependencies[i]);
+            defModule = await emit(depName);
           } catch (err) {
+            console.warn(err)
             defModule = null
           }
+          modStorage[depName].isLoaded = true;
           ctx.contentList.push(defModule);
-           await next();
+          await next();
         })
       }
     }

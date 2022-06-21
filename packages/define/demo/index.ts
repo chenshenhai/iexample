@@ -1,18 +1,19 @@
-import '../src';
+import define from '../src';
 
 // @ts-ignore
-const { define } = window;
+window.define = define;
+
 const appId = "@/components/app"
 
-define('react', () => {
-  // @ts-ignore
-  return window.React;
-})
+// define('react', () => {
+//   // @ts-ignore
+//   return window.React;
+// })
 
-define('react-dom', () => {
-  // @ts-ignore
-  return window.ReactDOM;
-})
+// define('react-dom', () => {
+//   // @ts-ignore
+//   return window.ReactDOM;
+// })
 
 define(appId, ['react'], (React) => {
   const App = () => {

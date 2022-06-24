@@ -1,4 +1,5 @@
 {
+  "extends": "@vue/tsconfig/tsconfig.node.json",
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "dist",
@@ -23,6 +24,7 @@
     "packages/**/src"
   ],
   "exclude": [
-    "packages/iexample/"
+    "packages/iexample/",
+    "packages/**/*.html"
   ]
 }

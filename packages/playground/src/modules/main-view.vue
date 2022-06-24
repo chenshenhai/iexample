@@ -1,23 +1,20 @@
 <template>
-  <div class='main-view-code'>
-    <div class='main-view-code-sider' :style="{width: leftWidth + 'px'}">
+  <div class="main-view-code">
+    <div class="main-view-code-sider" :style="{ width: leftWidth + 'px' }">
       <main-sider />
     </div>
-    <div class='main-view-code-main' :style="{width: rightWidth + 'px'}">
-      <main-layout 
-        :width="rightWidth"
-      />
+    <div class="main-view-code-main" :style="{ width: rightWidth + 'px' }">
+      <main-layout :width="rightWidth" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import MainLayout from './main-layout.vue';
-import MainSider from './main-sider.vue';
+import MainLayout from "./main-layout.vue";
+import MainSider from "./main-sider.vue";
 
 const leftWidth = 50;
 const rightWidth = window.innerWidth - leftWidth;
-
 </script>
 
 <style scoped lang="less">

@@ -13,9 +13,9 @@
 </template>
 
 <script lang="ts" setup>
-import IconCode from '@ant-design/icons-vue/CodeSandboxOutlined'
-import IconFileMarkdown from '@ant-design/icons-vue/FileMarkdownOutlined'
-import IconMenu from '@ant-design/icons-vue/MenuOutlined'
+import IconCode from "@ant-design/icons-vue/CodeSandboxOutlined";
+import IconFileMarkdown from "@ant-design/icons-vue/FileMarkdownOutlined";
+import IconMenu from "@ant-design/icons-vue/MenuOutlined";
 </script>
 
 <style lang="less" scoped>
@@ -37,7 +37,7 @@ import IconMenu from '@ant-design/icons-vue/MenuOutlined'
     cursor: pointer;
 
     &:hover {
-      color: var(--iexample-font-color-hover)
+      color: var(--iexample-font-color-hover);
     }
 
     &.active {
@@ -48,5 +48,4 @@ import IconMenu from '@ant-design/icons-vue/MenuOutlined'
     }
   }
 }
-
 </style>

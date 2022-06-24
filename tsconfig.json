@@ -1,4 +1,5 @@
 {
+  "extends": "@vue/tsconfig/tsconfig.node.json",
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
@@ -12,9 +13,9 @@
   },
   "include": [
     "packages/**/src/**/*.ts",
-    "packages/**src/**/*.d.ts",
-    "packages/**src/**/*.tsx",
-    "packages/**src/**/*.vue",
+    "packages/**/src/**/*.d.ts",
+    "packages/**/src/**/*.tsx",
+    "packages/**/src/**/*.vue",
     "scripts/**/*.ts"
   ]
 }

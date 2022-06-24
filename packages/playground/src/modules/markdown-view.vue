@@ -1,9 +1,5 @@
 <template>
-  <div>
-    Hello Markdown
-  </div>
+  <div>Hello Markdown</div>
 </template>
 
-<script lang="ts" setup>
-
-</script>
+<script lang="ts" setup></script>

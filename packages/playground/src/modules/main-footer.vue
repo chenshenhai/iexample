@@ -1,19 +1,14 @@
 <template>
-  <footer class="main-footer">
-    Footer
-  </footer>
+  <footer class="main-footer">Footer</footer>
 </template>
 
 <script lang="ts">
 export default {
-  setup() {
-    
-  },
-}
+  setup() {},
+};
 </script>
 
 <style scoped lang="less">
-
 .main-footer {
   display: flex;
   align-items: center;

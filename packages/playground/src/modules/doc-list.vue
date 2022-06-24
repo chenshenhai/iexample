@@ -7,6 +7,6 @@
   />
 </template>
 <script setup lang="ts">
-import TreeView from '../components/tree/tree-view.vue';
-import { storeDoc } from '../store/doc';
+import TreeView from "../components/tree/tree-view.vue";
+import { storeDoc } from "../store/doc";
 </script>

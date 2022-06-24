@@ -1,55 +1,55 @@
 <template>
   <div class="iexample-file-tree">
-    <div class="iexample-file-item"
+    <div
+      class="iexample-file-item"
       v-for="item in state.directory"
       :class="{
-        'active': state.currentFilePath === item.path
+        active: state.currentFilePath === item.path,
       }"
       @click="onClick(item)"
     >
-      <icon-file class="iexample-file-icon"/>
+      <icon-file class="iexample-file-icon" />
       <span class="iexample-file-name">
-         <span class="iexample-file-name-text">
-          {{item.name}}
-         </span>
+        <span class="iexample-file-name-text">
+          {{ item.name }}
+        </span>
       </span>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { watch, reactive } from 'vue';
-import IconFile from '@ant-design/icons-vue/FileOutlined';
-import { CodeDirectory, CodeFile } from '../../types';
+import { watch, reactive } from "vue";
+import IconFile from "@ant-design/icons-vue/FileOutlined";
+import type { CodeDirectory, CodeFile } from "../../types";
 
 const props = defineProps<{
-  directory: CodeDirectory,
-  currentFilePath: string | null,
-  onSelect?: (data: CodeFile) => void,
+  directory: CodeDirectory;
+  currentFilePath: string | null;
+  onSelect?: (data: CodeFile) => void;
 }>();
 
 const { directory = [], currentFilePath, onSelect } = props;
 
 const state = reactive<{
-  currentFilePath: string | null,
-  directory: CodeDirectory,
+  currentFilePath: string | null;
+  directory: CodeDirectory;
 }>({
   currentFilePath,
   directory,
-})
+});
 
 const onClick = (data: CodeFile) => {
-  onSelect && onSelect(data)
-}
+  onSelect && onSelect(data);
+};
 
-watch(() => [
-  props.currentFilePath,
-  props.directory
-], () => {
-  state.currentFilePath = props.currentFilePath,
-  state.directory = props.directory || []
-})
-
+watch(
+  () => [props.currentFilePath, props.directory],
+  () => {
+    (state.currentFilePath = props.currentFilePath),
+      (state.directory = props.directory || []);
+  }
+);
 </script>
 
 <style lang="less" scoped>
@@ -79,7 +79,7 @@ watch(() => [
 
   .iexample-file-icon {
     display: flex;
-    align-items: center; 
+    align-items: center;
     width: 28px;
     justify-content: center;
   }

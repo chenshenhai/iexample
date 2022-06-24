@@ -2,7 +2,7 @@ import { build } from 'vite';
 import chalk from 'chalk';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import { UserConfig } from 'vite';
+import type { UserConfig } from 'vite';
 import { resolvePackagePath } from './util/project';
 import { generateDts } from './util/dts';
 import { lessOptions } from './config/less';

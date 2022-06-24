@@ -8,18 +8,17 @@
   </div>
 </template>
 
-<script lang="ts" setup >
-import { toRaw } from 'vue';
-import FileTree from '../components/tree/file-tree.vue';
-import { storeCode } from '../store/code';
-import { CodeFile } from '../types';
+<script lang="ts" setup>
+import { toRaw } from "vue";
+import FileTree from "../components/tree/file-tree.vue";
+import { storeCode } from "../store/code";
+import type { CodeFile } from "../types";
 
 const onSelect = (data: CodeFile) => {
-  if (data.type === 'file') {
-    storeCode.currentCodeFile = toRaw(data)
+  if (data.type === "file") {
+    storeCode.currentCodeFile = toRaw(data);
   }
-}
-
+};
 </script>
 
 <style lang="less" scoped>

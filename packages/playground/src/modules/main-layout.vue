@@ -1,11 +1,13 @@
 <template>
   <div class="main-layout-container">
-    <layout-column class="main-layout-preview" 
-      :defaultLeftWidth="220" 
+    <layout-column
+      class="main-layout-preview"
+      :defaultLeftWidth="220"
       :unit="'px'"
     >
       <template #left>
-        <layout-row style="{{width: '100%', height: '100%'}}"
+        <layout-row
+          style="{{width: '100%', height: '100%'}}"
           :defaultTopHeight="50"
           :unit="'%'"
         >
@@ -25,13 +27,13 @@
   </div>
 </template>
 
-<script setup lang="ts" >
-import LayoutColumn from '../components/layout-column.vue';
-import LayoutRow from '../components/layout-row.vue';
+<script setup lang="ts">
+import LayoutColumn from "../components/layout-column.vue";
+import LayoutRow from "../components/layout-row.vue";
 // import CodeView from './code-view.vue';
-import CodeList from './code-list.vue';
-import DocList from './doc-list.vue';
-import ViewSwitch from './view-switch.vue';
+import CodeList from "./code-list.vue";
+import DocList from "./doc-list.vue";
+import ViewSwitch from "./view-switch.vue";
 </script>
 
 <style scoped>
@@ -43,5 +45,4 @@ import ViewSwitch from './view-switch.vue';
 .main-layout-preview {
   height: 100%;
 }
-
 </style>

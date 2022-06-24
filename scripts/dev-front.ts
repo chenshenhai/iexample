@@ -1,7 +1,8 @@
 import chalk from 'chalk';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import { createServer, UserConfig } from 'vite';
+import { createServer } from 'vite';
+import type { UserConfig } from 'vite';
 import { resolvePackagePath } from './util/project';
 import { lessOptions } from './config/less';
 

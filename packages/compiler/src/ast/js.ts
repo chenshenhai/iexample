@@ -1,23 +1,23 @@
 // import { parse as babelParse } from '@babel/parser';
-import { generate } from 'astring'
-import { parse as acornParse, } from 'acorn';
+import { generate } from "astring";
+import { parse as acornParse } from "acorn";
 
 // import { createConst } from './estree';
 
 interface CompileResult {
-  code: string,
-  ast: any[] | any | null,
+  code: string;
+  ast: any[] | any | null;
 }
- 
+
 export function parseJsToAst(code: string): CompileResult {
   // const ast = babelParse(tplCode.code || '', {
   //   sourceType: "module",
   //   plugins: [],
   // });
 
-  const ast = acornParse(code || '', {
+  const ast = acornParse(code || "", {
     ecmaVersion: 2015,
-    sourceType: 'module',
+    sourceType: "module",
   });
 
   return {
@@ -30,10 +30,9 @@ export function parseJsToAst(code: string): CompileResult {
 
 export function generateAstToJs(ast: any[]): string {
   const code = generate({
-    "type": "Program",
+    type: "Program",
     // @ts-ignore
-    "body": ast,
+    body: ast,
   });
-  return code || '';
+  return code || "";
 }
-

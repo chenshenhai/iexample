@@ -2,7 +2,7 @@ import { build } from 'vite';
 import chalk from 'chalk';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import { UserConfig } from 'vite';
+import type { UserConfig } from 'vite';
 import { resolvePackagePath } from './util/project';
 import { modulePackages } from './config/package'
 import { generateDts } from './util/dts';
@@ -12,7 +12,8 @@ start();
 
 async function start() {
   for (let i = 0; i < modulePackages.length; i++) {
-    const { dirName, globalName, formats } = modulePackages[i];
+    const { dirName, globalName } = modulePackages[i];
+    const formats = modulePackages[i].formats as ("es" | "cjs" | "umd")[];
     const pkgName = dirName;
     const viteConfig = getViteConfig(pkgName, globalName, formats);
     const result = await build({

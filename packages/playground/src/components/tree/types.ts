@@ -1,5 +1,5 @@
-import { DocFile } from '../../types';
+import type { DocFile } from "../../types";
 
-export interface TreeDataItem extends DocFile {};
+export type TreeDataItem = DocFile;
 
 export type TreeData = TreeDataItem[];

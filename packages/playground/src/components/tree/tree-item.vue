@@ -1,103 +1,113 @@
 <template>
-  <li class="tree-item-node" >
-    <input 
-      :style="{display: 'none'}" 
+  <li class="tree-item-node">
+    <input
+      :style="{ display: 'none' }"
       type="radio"
-      :id="itemData.path" 
-      :value="itemData.path" />        
+      :id="itemData.path"
+      :value="itemData.path"
+    />
     <div
-      class="tree-item-text" 
+      class="tree-item-text"
       :class="{
-        active: !isFolder && selectedFilePath === itemData.path
+        active: !isFolder && selectedFilePath === itemData.path,
       }"
-      @click="toggle">
-      <icon-down v-if="isFolder && expand" class="tree-item-icon" :style="{fontSize: 12}" />
-      <icon-right v-else-if="isFolder && !expand" class="tree-item-icon" :style="{fontSize: 12}" />
+      @click="toggle"
+    >
+      <icon-down
+        v-if="isFolder && expand"
+        class="tree-item-icon"
+        :style="{ fontSize: 12 }"
+      />
+      <icon-right
+        v-else-if="isFolder && !expand"
+        class="tree-item-icon"
+        :style="{ fontSize: 12 }"
+      />
       <icon-file v-else class="tree-item-icon" />
       <span>
-        {{itemData.name}}
+        {{ itemData.name }}
       </span>
     </div>
     <ul class="tree-item-view" v-show="expand" v-if="isFolder">
-      <tree-item 
-        v-for="child in itemData.children" 
-        :key="child.path" 
-        :itemData="child" 
+      <tree-item
+        v-for="child in itemData.children"
+        :key="child.path"
+        :itemData="child"
         :expandAll="expandAll"
         :selectedFilePath="selectedFilePath"
-        @select="select" 
+        @select="select"
         @expandTree="expandTree"
       >
-      </tree-item>      
+      </tree-item>
     </ul>
   </li>
 </template>
 
 <script lang="ts">
-import IconDown from '@ant-design/icons-vue/DownOutlined';
-import IconRight from '@ant-design/icons-vue/RightOutlined';
-import IconFile from '@ant-design/icons-vue/FileOutlined'
-import { TreeData } from './types';
+// @ts-nocheck
+import IconDown from "@ant-design/icons-vue/DownOutlined";
+import IconRight from "@ant-design/icons-vue/RightOutlined";
+import IconFile from "@ant-design/icons-vue/FileOutlined";
+import type { TreeData } from "./types";
 
 export default {
-  name: 'tree-item',
+  name: "tree-item",
   components: {
-    'icon-down': IconDown,
-    'icon-right': IconRight,
-    'icon-file': IconFile,
+    "icon-down": IconDown,
+    "icon-right": IconRight,
+    "icon-file": IconFile,
   },
   props: {
     itemData: {
-      // @ts-ignore
-      type: Object as TreeData,
-      required: false
+      type: Object as unknown as TreeData,
+      required: false,
     },
     expandAll: {
       type: Boolean,
-      required: false
+      required: false,
     },
     selectedFilePath: {
       type: String,
-      required: false
-    }
+      required: false,
+    },
   },
   data() {
     return {
       expand: false,
       checked: null,
-    }
+    };
   },
   computed: {
     isFolder() {
-      return this.itemData.children && this.itemData.children.length > 0
+      return this.itemData.children && this.itemData.children.length > 0;
     },
   },
   methods: {
-    select(node) {
-      this.checked = null
-      this.checked = this.itemData.path
-      this.$emit('select', node)
+    select(node: any) {
+      this.checked = null;
+      this.checked = this.itemData.path;
+      this.$emit("select", node);
     },
     expandTree(node) {
-      this.expand = true
-      this.$emit('expandTree', node)
+      this.expand = true;
+      this.$emit("expandTree", node);
     },
     toggle() {
       if (this.isFolder) {
-        this.expand = !this.expand
+        this.expand = !this.expand;
       }
-      this.select(this.itemData)
-    }
+      this.select(this.itemData);
+    },
   },
   created() {
-    this.expand = this.expandAll
+    this.expand = this.expandAll;
   },
   watch: {
     expandAll(expandAll) {
-      this.expand = expandAll
-    }
-  }
-}
+      this.expand = expandAll;
+    },
+  },
+};
 </script>
 
 <style scoped lang="less">
@@ -107,7 +117,7 @@ export default {
   height: 26px;
   line-height: 26px;
   &:hover {
-    background: var(--iexample-bg-hover)
+    background: var(--iexample-bg-hover);
   }
 
   &.active {

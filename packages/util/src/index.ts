@@ -1,4 +1,3 @@
-
 export function add1(a: number) {
   return a + 1;
 }

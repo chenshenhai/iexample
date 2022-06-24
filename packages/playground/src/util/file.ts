@@ -1,4 +1,4 @@
-import { DocDirectory, DocFile } from '../types'; 
+import type { DocDirectory, DocFile } from "../types";
 
 export function searchFileFormDocDirectory(
   path: string,
@@ -15,10 +15,10 @@ export function searchFileFormDocDirectory(
         file = _dir[i];
       }
       if (Array.isArray(_dir[i]?.children)) {
-        _search(path, _dir[i]?.children || [])
+        _search(path, _dir[i]?.children || []);
       }
     }
-  }
-  _search(path, directory)
+  };
+  _search(path, directory);
   return file;
 }

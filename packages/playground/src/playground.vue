@@ -1,5 +1,6 @@
 <template>
-  <div class="iexample iexample-container"
+  <div
+    class="iexample iexample-container"
     :class="{
       'iexample-theme-dark': storeGlobal.theme === 'dark',
     }"
@@ -7,7 +8,7 @@
     <main-header class="iexample-header"></main-header>
     <div class="iexample-main">
       <div class="iexample-main-container">
-       <main-view />
+        <main-view />
       </div>
     </div>
     <main-footer class="iexample-footer"></main-footer>
@@ -15,56 +16,67 @@
 </template>
 
 <script lang="ts" setup>
-import { toRaw, watchEffect, } from 'vue';
-import MainHeader from './modules/main-header.vue';
-import MainFooter from './modules/main-footer.vue';
-import MainView from './modules/main-view.vue';
-import { storeGlobal } from './store/global';
-import { storeCode } from './store/code';
-import { storeDoc } from './store/doc';
-import { formatDirectory, formatPath } from './util/format';
-import { searchFileFormDocDirectory } from './util/file';
-import { PlaygroundTheme, CodeDirectory, DocDirectory, DocFile, CodeFile } from './types'
+import { toRaw, watchEffect } from "vue";
+import MainHeader from "./modules/main-header.vue";
+import MainFooter from "./modules/main-footer.vue";
+import MainView from "./modules/main-view.vue";
+import { storeGlobal } from "./store/global";
+import { storeCode } from "./store/code";
+import { storeDoc } from "./store/doc";
+import { formatDirectory, formatPath } from "./util/format";
+import { searchFileFormDocDirectory } from "./util/file";
+import type {
+  PlaygroundTheme,
+  CodeDirectory,
+  DocDirectory,
+  DocFile,
+  CodeFile,
+} from "./types";
 
 const props = defineProps<{
-  theme?: PlaygroundTheme,
+  theme?: PlaygroundTheme;
 
   // code
-  codeDirectory?: CodeDirectory,
-  currentCodeFilePath?: string | null,
-  entryCodeFilePath?: string,
+  codeDirectory?: CodeDirectory;
+  currentCodeFilePath?: string | null;
+  entryCodeFilePath?: string;
 
   // doc
-  docDirectory?: DocDirectory,
-  selectedDocFilePath?: string | null,
-  expandAllDocFiles?: boolean,
-  onSelectDocFile?: (node: DocFile) => void,
+  docDirectory?: DocDirectory;
+  selectedDocFilePath?: string | null;
+  expandAllDocFiles?: boolean;
+  onSelectDocFile?: (node: DocFile) => void;
 }>();
 
-
-storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
-
+storeGlobal.theme = props.theme === "dark" ? "dark" : "light";
 
 const refreshStoreCode = () => {
   if (props.currentCodeFilePath) {
-    storeCode.currentCodeFilePath = formatPath(toRaw(props.currentCodeFilePath));
+    storeCode.currentCodeFilePath = formatPath(
+      toRaw(props.currentCodeFilePath)
+    );
   }
   if (props.codeDirectory) {
     storeCode.codeDirectory = formatDirectory(toRaw(props.codeDirectory));
   } else {
-    storeCode.codeDirectory = []
+    storeCode.codeDirectory = [];
   }
   if (props.entryCodeFilePath) {
     storeCode.entryCodeFilePath = formatPath(toRaw(props.entryCodeFilePath));
   }
   if (storeCode.currentCodeFilePath) {
     for (let i = 0; i < storeCode.codeDirectory.length; i++) {
-      if (storeCode.codeDirectory[i]?.type === 'file' && storeCode.codeDirectory[i]?.path === storeCode.currentCodeFilePath) {
-        storeCode.currentCodeFile = toRaw(storeCode.codeDirectory[i]) as CodeFile;
+      if (
+        storeCode.codeDirectory[i]?.type === "file" &&
+        storeCode.codeDirectory[i]?.path === storeCode.currentCodeFilePath
+      ) {
+        storeCode.currentCodeFile = toRaw(
+          storeCode.codeDirectory[i]
+        ) as CodeFile;
       }
     }
   }
-}
+};
 
 const refreshStoreDoc = () => {
   if (props.selectedDocFilePath) {
@@ -73,27 +85,25 @@ const refreshStoreDoc = () => {
   if (props.docDirectory) {
     storeDoc.docDirectory = formatDirectory(toRaw(props.docDirectory));
   } else {
-    storeDoc.docDirectory = []
+    storeDoc.docDirectory = [];
   }
-  if (typeof props.expandAllDocFiles === 'boolean') {
+  if (typeof props.expandAllDocFiles === "boolean") {
     storeDoc.expandAllDocFiles = props.expandAllDocFiles;
   }
-  if (typeof props.onSelectDocFile === 'function') {
+  if (typeof props.onSelectDocFile === "function") {
     storeDoc.onSelectDocFile = props.onSelectDocFile;
   }
 
   storeDoc.selectedDocFile = searchFileFormDocDirectory(
-    toRaw(storeDoc.selectedDocFilePath || ''),
-    toRaw(storeDoc.docDirectory || []),
-  )
-}
-
+    toRaw(storeDoc.selectedDocFilePath || ""),
+    toRaw(storeDoc.docDirectory || [])
+  );
+};
 
 watchEffect(() => {
   refreshStoreCode();
   refreshStoreDoc();
-})
-
+});
 </script>
 
 <style scoped lang="less">
@@ -109,8 +119,8 @@ watchEffect(() => {
   --iexample-font-color: #555555;
   --iexample-font-color-hover: #222222;
   --iexample-font-color-active: #1277f2;
-  
-  --iexample-font-family: Monaco, Consolas, monospace, 'Courier New';
+
+  --iexample-font-family: Monaco, Consolas, monospace, "Courier New";
   --iexample-border-color: #dddddd;
 
   &.iexample-theme-dark {
@@ -160,9 +170,5 @@ watchEffect(() => {
     width: 100%;
     overflow: auto;
   }
-
 }
-
-
 </style>
-

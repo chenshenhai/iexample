@@ -7,24 +7,24 @@
   />
 </template>
 <script setup lang="ts">
-import { reactive, onMounted } from 'vue';
-import TreeView from './tree-view.vue';
-import { DocFile } from '../../types';
+import { reactive, onMounted } from "vue";
+import TreeView from "./tree-view.vue";
+import type { DocFile } from "../../types";
 
 const props = defineProps<{
-  defaultData?: DocFile[],
-  expandAll?: boolean,
-  selectedFilePath?: string,
-  select?: (node: DocFile) => void,
-}>()
+  defaultData?: DocFile[];
+  expandAll?: boolean;
+  selectedFilePath?: string;
+  select?: (node: DocFile) => void;
+}>();
 
 const state = reactive<{
-  selectedFilePath?: string | null
-}>({ selectedFilePath: null })
+  selectedFilePath?: string | null;
+}>({ selectedFilePath: null });
 
 onMounted(() => {
-  state.selectedFilePath = props.selectedFilePath
-})
+  state.selectedFilePath = props.selectedFilePath;
+});
 
 // const expandAll = true;
 // const  treeData = [0,1,2].map((i) => {

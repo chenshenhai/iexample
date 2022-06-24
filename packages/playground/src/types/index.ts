@@ -1,10 +1,16 @@
-import CodeMirror from 'codemirror';
+import type CodeMirror from "codemirror";
 
-export type ICodeEditor = typeof CodeMirror & {}
+export type ICodeEditor = typeof CodeMirror & {};
 
-export type PlaygroundTheme = 'light' | 'dark';
+export type PlaygroundTheme = "light" | "dark";
 
-export type CodeType = 'javascript' | 'typescript' | 'json' | 'html' | 'css' | 'plaintext';
+export type CodeType =
+  | "javascript"
+  | "typescript"
+  | "json"
+  | "html"
+  | "css"
+  | "plaintext";
 
 // export interface IProject {
 //   name: string;
@@ -13,22 +19,20 @@ export type CodeType = 'javascript' | 'typescript' | 'json' | 'html' | 'css' | '
 export interface CodeFile {
   path: string;
   name: string;
-  type: 'file' | 'folder';
+  type: "file" | "folder";
   content: string;
   fileType: CodeType;
   children?: Array<CodeFile>;
 }
 
+export type CodeDirectory = Array<CodeFile>;
 
-export type CodeDirectory = Array<CodeFile>
-
-export type IResultStatus = 'LOADING' | 'LOADED' | 'NOT_FOUND' | 'NOT_FINISHED'
-
+export type IResultStatus = "LOADING" | "LOADED" | "NOT_FOUND" | "NOT_FINISHED";
 
 export interface DocFile {
-  name: string,
-  path: string,
-  children?: DocFile[]
+  name: string;
+  path: string;
+  children?: DocFile[];
 }
 
-export type DocDirectory = Array<DocFile>
+export type DocDirectory = Array<DocFile>;

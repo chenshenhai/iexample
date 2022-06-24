@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import Playground from "@iexample/playground";
+import { Playground } from "@iexample/playground";
 import "@iexample/playground/dist/style.css";
 import "./index.less";
 

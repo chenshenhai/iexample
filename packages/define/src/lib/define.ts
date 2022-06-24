@@ -95,6 +95,7 @@ async function emit(name: string){
         tasks.push(async (ctx: TaskContext, next) => {
           let esModule: any = null
           try {
+            /*  @vite-ignore */ 
             esModule = await import(depName);
           } catch (err) {
             console.warn(err);

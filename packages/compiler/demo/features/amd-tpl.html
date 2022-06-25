@@ -1,4 +1,12 @@
 <html>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://jspm.dev/react",
+        "react-dom": "https://jspm.dev/react-dom"
+      }
+    }
+  </script>
   <head>
     <style>
       html,body {
@@ -9,11 +17,9 @@
         width: 100%;
       }
     </style>
-    <!-- <script src="https://unpkg.com/requirejs@2.3.6/require.js" ></script> -->
-    <!-- <script src="https://unpkg.com/requirejs@2.3.6/bin/r.js"></script> -->
-    <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    
+    <!-- <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
-    <!--INJECT_SCRIPT_LIB-->
     <script>
       define('react', [], function() {
         return window.React;
@@ -21,7 +27,10 @@
       define('react-dom', [], function() {
         return window.ReactDOM;
       });
-    </script>
+    </script> -->
+
+    <!--INJECT_SCRIPT_LIB-->
+   
     <!--INJECT_STYLE-->
   </head>
   <body>

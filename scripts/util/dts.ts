@@ -5,7 +5,7 @@ import { Extractor, ExtractorConfig } from '@microsoft/api-extractor';
 import { resolvePackagePath } from './project';
 // import { getPakcages } from './util/project';
 
-export function generateDts(pkgName) {
+export function generateDts(pkgName: string) {
   
   // build types
   const target = pkgName;

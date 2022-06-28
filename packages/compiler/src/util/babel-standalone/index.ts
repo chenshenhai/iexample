@@ -5,16 +5,27 @@
 import {
   transformFromAstSync as babelTransformFromAstSync,
   transformSync as babelTransformSync,
-  buildExternalHelpers as babelBuildExternalHelpers,
+  // buildExternalHelpers as babelBuildExternalHelpers,
 } from "@babel/core";
+
+
+// // @ts-ignore
+// import { transformFromAstSync as babelTransformFromAstSync, } from '@babel/core/lib/transform-ast.js'
+// // @ts-ignore
+// import { transformSync as babelTransformSync } from '@babel/core/lib/transform.js'
+
+
 import { all } from "./generated/plugins";
 // import preset2015 from "./preset-es2015";
 // import presetStage0 from "./preset-stage-0";
 // import presetStage1 from "./preset-stage-1";
 // import presetStage2 from "./preset-stage-2";
 // import presetStage3 from "./preset-stage-3";
+// @ts-ignore
 import presetReact from "@babel/preset-react";
+// @ts-ignore
 import presetTypescript from "@babel/preset-typescript";
+// @ts-ignore
 import type { InputOptions } from "@babel/core";
 
 import { runScripts } from "./transformScriptTags";
@@ -48,7 +59,7 @@ function loadBuiltin(builtinTable: Record<string, unknown>, name: any) {
  */
 function processOptions(options: InputOptions) {
   // Parse preset names
-  const presets = (options.presets || []).map(presetName => {
+  const presets = (options.presets || []).map((presetName: string) => {
     const preset = loadBuiltin(availablePresets, presetName);
 
     if (preset) {
@@ -71,7 +82,7 @@ function processOptions(options: InputOptions) {
   });
 
   // Parse plugin names
-  const plugins = (options.plugins || []).map(pluginName => {
+  const plugins = (options.plugins || []).map((pluginName: string) => {
     const plugin = loadBuiltin(availablePlugins, pluginName);
 
     if (!plugin) {
@@ -103,7 +114,7 @@ export function transformFromAst(
 }
 export const availablePlugins: typeof all = {};
 
-export const buildExternalHelpers = babelBuildExternalHelpers;
+// export const buildExternalHelpers = babelBuildExternalHelpers;
 /**
  * Registers a named plugin for use with Babel.
  */
@@ -166,8 +177,8 @@ registerPlugins(all);
 // Want to get rid of this list of allowed presets?
 // Wait! Please read https://github.com/babel/babel/pull/6177 first.
 export const availablePresets = {
-  env: presetEnv,
-  es2015: preset2015,
+  // env: presetEnv,
+  // es2015: preset2015,
   es2016: () => {
     return {
       plugins: [availablePlugins["transform-exponentiation-operator"]],
@@ -179,19 +190,19 @@ export const availablePresets = {
     };
   },
   react: presetReact,
-  "stage-0": presetStage0,
-  "stage-1": presetStage1,
-  "stage-2": presetStage2,
-  "stage-3": presetStage3,
-  "es2015-loose": {
-    presets: [[preset2015, { loose: true }]],
-  },
-  // ES2015 preset with es2015-modules-commonjs removed
-  "es2015-no-commonjs": {
-    presets: [[preset2015, { modules: false }]],
-  },
+  // "stage-0": presetStage0,
+  // "stage-1": presetStage1,
+  // "stage-2": presetStage2,
+  // "stage-3": presetStage3,
+  // "es2015-loose": {
+  //   presets: [[preset2015, { loose: true }]],
+  // },
+  // // ES2015 preset with es2015-modules-commonjs removed
+  // "es2015-no-commonjs": {
+  //   presets: [[preset2015, { modules: false }]],
+  // },
   typescript: presetTypescript,
-  flow: presetFlow,
+  // flow: presetFlow,
 };
 
 // @ts-ignore VERSION is to be replaced by rollup

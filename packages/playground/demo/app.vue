@@ -15,7 +15,8 @@
 
 <script lang="ts" setup >
 import { reactive } from 'vue';
-import { Playground, CodeDirectory } from '../src';
+import { Playground } from '../src';
+import type { CodeDirectory } from '../src';
 import { codeDirectory, codeDirectory2, docDirectory } from './data';
 
 const state = reactive<{

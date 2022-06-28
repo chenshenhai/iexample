@@ -9,6 +9,7 @@
   ],
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
+    "@iexample/types": "0.0.0",
     "@iexample/util": "0.0.0",
     "codemirror": "^5.65.3"
   },

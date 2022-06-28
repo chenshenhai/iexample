@@ -1,4 +1,4 @@
-import { CodeDirectory, DocDirectory } from '../src';
+import type { CodeDirectory, DocDirectory } from '../src';
 
 export const codeDirectory: CodeDirectory = [
   {

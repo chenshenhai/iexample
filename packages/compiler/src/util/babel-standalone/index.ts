@@ -153,7 +153,7 @@ export function registerPreset(name: string, preset: any | Function): void {
       );
     }
   }
-  // @ts-expect-error mutating available presets
+  // @ts-ignore
   availablePresets[name] = preset;
 }
 /**

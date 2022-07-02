@@ -10,9 +10,6 @@ export const compileReactFile = (source: string, opts: CompileOptions): CompileR
       'react'
     ]
   })
-
-  console.log('result ===', result.code)
-
   return {
     code: '',
     ast: []

@@ -28,7 +28,7 @@ root.render(<App />)
   console.log('result ===', result)
   const html = tpl.replace('<!--INJECT_SCRIPT-->', `
     <script type="module">
-      ${result.code}
+      ${result}
     </script>
   `)
   

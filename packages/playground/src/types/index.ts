@@ -1,6 +1,6 @@
 import type CodeMirror from "codemirror";
 
-export type { CodeType, CodeFile, CodeDirectory } from '@iexample/types';
+export type { CodeType, CodeFileType, CodeFile, CodeDirectory } from '@iexample/types';
 
 export type ICodeEditor = typeof CodeMirror & {};
 

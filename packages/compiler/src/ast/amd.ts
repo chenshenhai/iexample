@@ -1,4 +1,4 @@
-import { createReturn } from "./estree";
+import { createReturn, createString } from "./estree";
 
 export const parseToAMDModule = (
   name: string | undefined,
@@ -7,7 +7,7 @@ export const parseToAMDModule = (
   const depIds: string[] = [];
   const depNames: string[] = [];
   const bodyAst: any[] = [];
-
+  
   moduleAst.forEach((item: any) => {
     if (item?.type === "ImportDeclaration") {
       depIds.push(item?.source?.value);
@@ -21,19 +21,13 @@ export const parseToAMDModule = (
 
   const args = [];
   if (name) {
-    args.push({
-      type: "Literal", // "StringLiteral",
-      value: name,
-    });
+    args.push(createString(name));
   }
   if (Array.isArray(depIds)) {
     args.push({
       type: "ArrayExpression",
       elements: depIds.map((id: string) => {
-        return {
-          type: "Literal", // "StringLiteral",
-          value: id,
-        };
+        return createString(id);
       }),
     });
   }

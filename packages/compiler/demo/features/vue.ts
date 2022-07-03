@@ -38,35 +38,33 @@ function main() {
 
   const result = compileVueSetupFile(modSource, { filename: 'hello.vue' });
 
-  console.log('result.code  ===', result.js)
   const modResult = compileCodeToAMD(result.js, { id: modId });
-  // // const appResult = compileCodeToAMD(appSource);
-  console.log('modResult.code ====', modResult)
+  const appResult = compileCodeToAMD(appSource);
 
-  // const html = tpl
-  //   .replace('<!--INJECT_SCRIPT_LIB-->', `
-  //   <script>
-  //   ${defineLib}
-  //   </script>
-  //   `)
-  //   .replace('<!--INJECT_SCRIPT-->', `
-  //   <script type="module">
-  //     ${modResult.code}
-  //   </script>
-  //   <script type="module">
-  //    ${appResult.code}
-  //   </script>
-  // `).replace('<!--INJECT_STYLE-->', `
-  // <style>
-  //   ${result.css}
-  // </style>
-  // `)
-  
-  // const iframe = document.createElement('iframe');
-  // iframe.srcdoc = html;
+  const html = tpl
+    .replace('<!--INJECT_SCRIPT_LIB-->', `
+    <script>
+    ${defineLib}
+    </script>
+    `)
+    .replace('<!--INJECT_SCRIPT-->', `
+    <script type="module">
+      ${modResult.code}
+    </script>
+    <script type="module">
+     ${appResult.code}
+    </script>
+  `).replace('<!--INJECT_STYLE-->', `
+  <style>
+    ${result.css}
+  </style>
+  `)
 
-  // const app = document.querySelector('#app');
-  // app?.appendChild(iframe);
+  const iframe = document.createElement('iframe');
+  iframe.srcdoc = html;
+
+  const app = document.querySelector('#app');
+  app?.appendChild(iframe);
 
 }
 

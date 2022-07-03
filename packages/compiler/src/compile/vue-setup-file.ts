@@ -1,4 +1,3 @@
-import { createConst, createObjectFunc } from "./../ast/estree";
 import {
   parse,
   compileTemplate,
@@ -8,6 +7,7 @@ import {
 import { extractCode } from "../util/extract";
 import { parseJsToAst, generateAstToJs } from "../ast/js";
 import { SINGLE_MODULE_DECLARE_NAME } from "../config/name";
+import { createConst, createObjectFunc, createDefaultExport } from "./../ast/estree";
 import type { CompileOptions, CompileResult } from "../types";
 
 function compileJs(
@@ -99,6 +99,7 @@ function mergeJs(jsResult: CompileResult, tplResult: CompileResult) {
     ...importAst,
     ...tplAst,
     ...[createConst(SINGLE_MODULE_DECLARE_NAME, moduleAst)],
+    ...[createDefaultExport(SINGLE_MODULE_DECLARE_NAME)]
   ];
   const code = generateAstToJs(ast);
   return {

@@ -1,8 +1,8 @@
 import { compileCodeToAMD } from '../../src';
 // @ts-ignore
-import tpl from './amd-tpl.html?raw';
+import tpl from './tpl.html?raw';
 // @ts-ignore
-import defineLib from '../define.js?raw';
+import defineLib from '@iexample/define/dist/index.umd.js?raw';
 
 const appCode = `
 import React from 'react';

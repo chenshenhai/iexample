@@ -106,3 +106,5 @@ dist
 pnpm-lock.yaml
 
 temp/
+
+.DS_Store

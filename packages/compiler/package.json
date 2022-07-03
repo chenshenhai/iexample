@@ -7,16 +7,21 @@
   "files": [
     "dist"
   ],
+  "dependencies": {
+    "@babel/preset-react": "^7.17.12",
+    "@babel/preset-typescript": "^7.17.12",
+    "@babel/standalone": "^7.18.5",
+    "@iexample/define": "0.0.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.18.5",
     "@babel/generator": "^7.18.2",
     "@babel/parser": "^7.18.4",
     "@babel/plugin-transform-modules-amd": "^7.18.0",
+    "@types/babel__core": "^7.1.19",
     "@types/babel__generator": "^7.6.4",
+    "@types/babel__standalone": "^7.1.4",
     "@vue/compiler-sfc": "^3.2.37",
-    "acorn": "^8.7.1",
-    "astring": "^1.8.3",
-    "sucrase": "^3.21.0",
     "vue": "^3.2.36"
   },
   "peerDependencies": {

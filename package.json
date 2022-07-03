@@ -1,5 +1,6 @@
 {
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "init": "pnpm i",
     "dev:mod": "vite-node ./scripts/dev-mod.ts",
@@ -18,6 +19,8 @@
     "lint": "eslint ./packages/*/src/ --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
+    "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
     "@microsoft/api-extractor": "^7.26.0",
     "@rushstack/eslint-patch": "^1.1.3",
     "@tsconfig/node18": "^1.0.1",

@@ -7,10 +7,10 @@ import { ref, watch } from "vue";
 import CodeEditor from "../components/code-editor.vue";
 import { storeCode } from "../store/code";
 import { debounce } from "../util/time";
-import type { CodeType } from "../types";
+import type { CodeFileType } from "../types";
 
 const codeValue = ref<string>(storeCode.currentCodeFile?.content || "");
-const codeType = ref<CodeType>(
+const codeType = ref<CodeFileType>(
   storeCode.currentCodeFile?.fileType || "plaintext"
 );
 

@@ -15,29 +15,54 @@ export const createConst = (name: string, value: any) => {
   };
 };
 
+export const createConstProp = (name: string, objectName: string, propName: string) => {
+  return {
+    "type": "VariableDeclaration",
+    "declarations": [
+      {
+        "type": "VariableDeclarator",
+        "id": {
+          "type": "Identifier",
+          "name": name
+        },
+        "init": {
+          "type": "MemberExpression",
+          "object": {
+            "type": "Identifier",
+            "name": objectName
+          },
+          "computed": false,
+          "property": {
+            "type": "Identifier",
+            "name": propName
+          }
+        }
+      }
+    ],
+    "kind": "const"
+  }
+}
+
 export const createObjectFunc = (name: string, params: any[], body: any) => {
   return {
-    type: "Property",
-    method: true,
-    shorthand: false,
-    computed: false,
-    key: {
-      type: "Identifier",
-      name: name,
+    "type": "ObjectMethod",
+    "method": true,
+    "key": {
+      "type": "Identifier",
+      "name": name
     },
-    kind: "init",
-    value: {
-      type: "FunctionExpression",
-      id: null,
-      expression: false,
-      generator: false,
-      params: params,
-      body: {
-        type: "BlockStatement",
-        body: body,
-      },
-    },
-  };
+    "computed": false,
+    "kind": "method",
+    "id": null,
+    "generator": false,
+    "async": false,
+    "params": params,
+    "body": {
+      "type": "BlockStatement",
+      "body": body,
+      "directives": []
+    }
+  }
 };
 
 export const createObjectPreporty = (name: string, valueName: string) => {
@@ -66,3 +91,21 @@ export const createReturn = (name: string) => {
     },
   };
 };
+
+
+export const createDefaultExport = (name: string) => {
+  return {
+    "type": "ExportDefaultDeclaration",
+    "declaration": {
+      "type": "Identifier",
+      "name": name
+    }
+  }
+}
+
+export const createString = (value: string) => {
+  return {
+    type: "StringLiteral",
+    value,
+  }
+}

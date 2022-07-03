@@ -1,9 +1,15 @@
-import { compileVueSetupFile } from '../../src';
+
 // @ts-ignore
-import tpl from './vue-tpl.html?raw';
+import defineLib from '@iexample/define/dist/index.umd.js?raw';
+import { compileVueSetupFile } from '../../src';
+import { compileCodeToAMD } from '../../src';
+// @ts-ignore
+import tpl from './tpl.html?raw';
 
 function main() {
-  const source = `
+
+  const modId = '@/module.vue';
+  const modSource = `
   <template>
     <h1 class="title">{{ msg }}</h1>
     <input v-model="msg">
@@ -18,30 +24,42 @@ function main() {
   </style>
   `;
 
-  const result = compileVueSetupFile(source, { filename: 'hello.vue' })
-  console.log('result ===', result)
-  const html = tpl.replace('<!--INJECT_SCRIPT-->', `
-    <script type="module">
-      ${result.js}
-      window.___module___ = ___module___;
-    </script>
+  const appSource = `
+  import Vue from "vue"
+  const { createApp } = Vue;
+  import Mod from "${modId}"
+  const run = () => {
+    Mod.name = 'Repl'
+    const app = createApp(Mod)
+    app.mount('#app')
+  }
+  run();
+  `
 
+  const result = compileVueSetupFile(modSource, { filename: 'hello.vue' });
+
+  const modResult = compileCodeToAMD(result.js, { id: modId });
+  const appResult = compileCodeToAMD(appSource);
+
+  const html = tpl
+    .replace('<!--INJECT_SCRIPT_LIB-->', `
+    <script>
+    ${defineLib}
+    </script>
+    `)
+    .replace('<!--INJECT_SCRIPT-->', `
     <script type="module">
-      import { createApp } from "vue"
-      const run = () => {
-        const App = window.___module___ 
-        App.name = 'Repl'
-        const app = createApp(App)
-        app.mount('#app')
-      }
-      run();
+      ${modResult.code}
+    </script>
+    <script type="module">
+     ${appResult.code}
     </script>
   `).replace('<!--INJECT_STYLE-->', `
   <style>
     ${result.css}
   </style>
   `)
-  
+
   const iframe = document.createElement('iframe');
   iframe.srcdoc = html;
 

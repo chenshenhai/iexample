@@ -3,7 +3,11 @@ import AutoComplete from 'enquirer/lib/prompts/autocomplete';
 import chalk from 'chalk';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import { createServer, UserConfig } from 'vite';
+import { createServer } from 'vite';
+import type { UserConfig } from 'vite';
+import NodeModulesPolyfills from '@esbuild-plugins/node-modules-polyfill/dist/index';
+import GlobalsPolyfills from '@esbuild-plugins/node-globals-polyfill/dist/index';
+
 import { resolvePackagePath } from './util/project';
 import { modulePackages } from './config/package'
 import { lessOptions } from './config/less';
@@ -54,6 +58,14 @@ function getViteConfig(pkgName: string): UserConfig {
         /\.html$/
       ]
     },
+    optimizeDeps: {
+      esbuildOptions: {
+        plugins: [
+          NodeModulesPolyfills(),
+          GlobalsPolyfills(),
+        ]
+      }
+    }
   };
   return viteConfig;
 }

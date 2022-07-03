@@ -1,6 +1,4 @@
-// import { parse as babelParse } from '@babel/parser';
-import { generate } from "astring";
-import { parse as acornParse } from "acorn";
+import { transform, transformFromAst } from '@babel/standalone';
 
 // import { createConst } from './estree';
 
@@ -9,30 +7,55 @@ interface CompileResult {
   ast: any[] | any | null;
 }
 
+// export function parseJsToAst(code: string): CompileResult {
+//   const ast = babelParse(code || '', {
+//     sourceType: "module",
+//     plugins: [],
+//   });
+
+//   // const ast = acornParse(code || "", {
+//   //   ecmaVersion: 2015,
+//   //   sourceType: "module",
+//   // });
+
+//   return {
+//     code,
+//     ast: ast?.program?.body || [],
+//     // @ts-ignore
+//     // ast: ast?.body || [],
+//   };
+// }
+
 export function parseJsToAst(code: string): CompileResult {
-  // const ast = babelParse(tplCode.code || '', {
-  //   sourceType: "module",
-  //   plugins: [],
-  // });
-
-  const ast = acornParse(code || "", {
-    ecmaVersion: 2015,
-    sourceType: "module",
-  });
-
+  const result = transform(code, {
+    ast: true,
+    presets: [
+      'react'
+    ]
+  })
   return {
     code,
-    // ast: ast?.program?.body || null,
-    // @ts-ignore
-    ast: ast?.body || [],
+    ast: result?.ast?.program?.body || []
   };
 }
 
+
+// @ts-ignore
 export function generateAstToJs(ast: any[]): string {
-  const code = generate({
-    type: "Program",
-    // @ts-ignore
-    body: ast,
-  });
-  return code || "";
+  const result = transformFromAst({
+    type: "File",
+    program: {
+      type: "Program",
+      body: ast,
+      directives: [],
+      sourceType: "module",
+      sourceFile: '',
+    }
+  }, undefined, {
+    ast: true,
+    code: true,
+  })
+  // @ts-ignore
+  const code = result?.code || '';
+  return code;
 }

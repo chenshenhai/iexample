@@ -8,15 +8,12 @@ export function compileCodeToAMD(
 ): CompileResult {
   const target = parseJsToAst(code);
   // console.log('ast ====', target)
-  const amdAst = parseToAMDModule(opts?.id, target.ast);
+  const amdAst: any = parseToAMDModule(opts?.id, target.ast);
 
   // console.log('amdAst ===', amdAst)
 
-  const resultCode = generateAstToJs([amdAst]);
-  // console.log('amdCode ===', `
-  // ${resultCode}
-  // `)
-
+  const resultCode: string = generateAstToJs([amdAst]);
+  
   return {
     code: resultCode,
     ast: amdAst,

@@ -1,6 +1,6 @@
 import { compileCodeToAMD } from '../../src';
 // @ts-ignore
-import tpl from './amd-tpl.html?raw';
+import tpl from './tpl.html?raw';
 // @ts-ignore
 import defineLib from '@iexample/define/dist/index.umd.js?raw';
 

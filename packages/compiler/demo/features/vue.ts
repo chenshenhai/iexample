@@ -4,7 +4,7 @@ import defineLib from '@iexample/define/dist/index.umd.js?raw';
 import { compileVueSetupFile } from '../../src';
 import { compileCodeToAMD } from '../../src';
 // @ts-ignore
-import tpl from './vue-tpl.html?raw';
+import tpl from './tpl.html?raw';
 
 function main() {
 

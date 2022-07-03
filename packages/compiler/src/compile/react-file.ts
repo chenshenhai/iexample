@@ -11,7 +11,7 @@ export const compileReactFile = (source: string, opts: CompileOptions): CompileR
     ]
   })
   return {
-    code: '',
-    ast: []
+    code: result?.code || '',
+    ast: result?.ast || []
   }
 }

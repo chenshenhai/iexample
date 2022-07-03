@@ -29,13 +29,20 @@ export const parseToAMDModule = (
       if (item?.specifiers?.length === 1 && item?.specifiers[0]?.type === 'ImportDefaultSpecifier') {
          //  import a from 'a';
         depNames.push(item?.specifiers[0]?.local?.name);
-      } else if (item?.specifiers?.length >= 1) {  
-        const tempName = createTempName(item?.source?.value);
+      } else if (item?.specifiers?.length >= 1) {
+        let tempName = createTempName(item?.source?.value);
+        for (let i = 0; i < item?.specifiers.length; i++) {
+          if (item?.specifiers[i].type === 'ImportDefaultSpecifier') {
+            tempName = item?.specifiers[i]?.local?.name
+            break;
+          }
+        }
         depNames.push(tempName);
+
         item?.specifiers.forEach((spec: any) => {
           if (spec.type === 'ImportDefaultSpecifier') {
             // import a, { ... } from 'a';
-            depNames.push(spec?.local?.name);
+            // depNames.push(spec?.local?.name);
           } else if  (spec.type === 'ImportSpecifier') {
             // import { a, b as _b } from 'a';
             declareConstPropsAst.push(createConstProp(

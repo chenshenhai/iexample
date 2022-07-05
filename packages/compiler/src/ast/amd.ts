@@ -7,7 +7,7 @@ const generateTempNameCreator = () => {
     index++;
     return [
       '_', 
-      typeof name === 'string' ? name : '', 
+      typeof name === 'string' ? name.match(/[a-z0-9]{1,}/ig)?.join('_') : '', 
       index
     ].join('_')
   }

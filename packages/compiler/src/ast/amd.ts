@@ -1,4 +1,5 @@
-import { createReturn, createString, createConstProp } from "./estree";
+import { getReturn, getString, getConstProp, getEmptyObject, getIdentifier, getObjectPropertyExpression } from './estree';
+import { SINGLE_MODULE_DECLARE_NAME } from '../config/name';
 
 const generateTempNameCreator = () => {
   let index: number = -1;
@@ -22,13 +23,22 @@ export const parseToAMDModule = (
   const depNames: string[] = [];
   const declareConstPropsAst: any[] = [];
   const bodyAst: any[] = [];
+  const declareExportAst: any[] = [];
   
   moduleAst.forEach((item: any) => {
-    if (item?.type === "ImportDeclaration") {
+    if (item?.type === 'ImportDeclaration') {
       depIds.push(item?.source?.value);
       if (item?.specifiers?.length === 1 && item?.specifiers[0]?.type === 'ImportDefaultSpecifier') {
          //  import a from 'a';
-        depNames.push(item?.specifiers[0]?.local?.name);
+        // depNames.push(item?.specifiers[0]?.local?.name);
+
+        const tempName = createTempName(item?.specifiers[0]?.local?.name);
+        depNames.push(tempName);
+        declareConstPropsAst.push(getConstProp(
+          item?.specifiers[0]?.local?.name,
+          tempName,
+          'default',
+        ));
       } else if (item?.specifiers?.length >= 1) {
         let tempName = createTempName(item?.source?.value);
         for (let i = 0; i < item?.specifiers.length; i++) {
@@ -45,7 +55,7 @@ export const parseToAMDModule = (
             // depNames.push(spec?.local?.name);
           } else if  (spec.type === 'ImportSpecifier') {
             // import { a, b as _b } from 'a';
-            declareConstPropsAst.push(createConstProp(
+            declareConstPropsAst.push(getConstProp(
               spec.local.name,
               tempName,
               spec.imported.name
@@ -53,9 +63,39 @@ export const parseToAMDModule = (
           }
         });
       }
-
-    } else if (item?.type === "ExportDefaultDeclaration") {
-      bodyAst.push(createReturn(item?.declaration?.name));
+    } else if (item?.type === 'ExportDefaultDeclaration') {
+      // export default xxx
+      const expression = getObjectPropertyExpression(SINGLE_MODULE_DECLARE_NAME, 'default', getIdentifier(item?.declaration?.name))
+      declareExportAst.push(expression);
+    } else if (item?.type === 'ExportNamedDeclaration') {
+      // export xxx
+      if (item?.declaration?.type === 'VariableDeclaration') {
+        // export const xxx = xxx
+        const expression = getObjectPropertyExpression(
+          SINGLE_MODULE_DECLARE_NAME,
+          item?.declaration?.declarations?.[0]?.id?.name,
+          item?.declaration?.declarations?.[0]?.init
+        )
+        declareExportAst.push(expression);
+      } else if (item?.declaration?.type === 'FunctionDeclaration') {
+        // export function xxxx() { }
+        const expression = getObjectPropertyExpression(
+          SINGLE_MODULE_DECLARE_NAME, 
+          item?.declaration?.id?.name,
+          item?.declaration
+        )
+        declareExportAst.push(expression);
+      }  else if (Array.isArray(item?.declaration?.specifiers)) {
+        // export { x, xxx, xxx }
+        item.declaration.specifiers.forEach((spec: any) => {
+          const expression = getObjectPropertyExpression(
+            SINGLE_MODULE_DECLARE_NAME, 
+            spec.local.name,
+            spec.exported
+          )
+          declareExportAst.push(expression);
+        })
+      } 
     } else {
       bodyAst.push(item);
     }
@@ -63,40 +103,44 @@ export const parseToAMDModule = (
 
   const args = [];
   if (name) {
-    args.push(createString(name));
+    args.push(getString(name));
   }
   if (Array.isArray(depIds)) {
     args.push({
-      type: "ArrayExpression",
+      type: 'ArrayExpression',
       elements: depIds.map((id: string) => {
-        return createString(id);
+        return getString(id);
       }),
     });
   }
+  if (declareExportAst.length > 0) {
+    declareExportAst.unshift(getEmptyObject(SINGLE_MODULE_DECLARE_NAME))
+    declareExportAst.push(getReturn(SINGLE_MODULE_DECLARE_NAME))
+  }
   return {
-    type: "ExpressionStatement",
+    type: 'ExpressionStatement',
     expression: {
-      type: "CallExpression",
+      type: 'CallExpression',
       callee: {
-        type: "Identifier",
-        name: "define",
+        type: 'Identifier',
+        name: 'define',
       },
       arguments: [
         ...args,
         {
-          type: "FunctionExpression",
+          type: 'FunctionExpression',
           id: null,
           generator: false,
           async: false,
           params: depNames.map((name) => {
             return {
-              type: "Identifier",
+              type: 'Identifier',
               name: name,
             };
           }),
           body: {
-            type: "BlockStatement",
-            body: [...declareConstPropsAst, ...bodyAst],
+            type: 'BlockStatement',
+            body: [...declareConstPropsAst, ...bodyAst, ...declareExportAst],
             directives: [],
           },
         },

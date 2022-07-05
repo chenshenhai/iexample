@@ -1,6 +1,6 @@
 import { transform, transformFromAst } from '@babel/standalone';
 
-// import { createConst } from './estree';
+// import { getConst } from './estree';
 
 interface CompileResult {
   code: string;

@@ -1,111 +1,161 @@
-export const createConst = (name: string, value: any) => {
+export const getConst = (name: string, value: any) => {
   return {
-    type: "VariableDeclaration",
+    type: 'VariableDeclaration',
     declarations: [
       {
-        type: "VariableDeclarator",
+        type: 'VariableDeclarator',
         id: {
-          type: "Identifier",
+          type: 'Identifier',
           name: name,
         },
         init: value,
       },
     ],
-    kind: "const",
+    kind: 'const',
   };
 };
 
-export const createConstProp = (name: string, objectName: string, propName: string) => {
+export const getConstProp = (name: string, objectName: string, propName: string) => {
   return {
-    "type": "VariableDeclaration",
-    "declarations": [
+    'type': 'VariableDeclaration',
+    'declarations': [
       {
-        "type": "VariableDeclarator",
-        "id": {
-          "type": "Identifier",
-          "name": name
+        'type': 'VariableDeclarator',
+        'id': {
+          'type': 'Identifier',
+          'name': name
         },
-        "init": {
-          "type": "MemberExpression",
-          "object": {
-            "type": "Identifier",
-            "name": objectName
+        'init': {
+          'type': 'MemberExpression',
+          'object': {
+            'type': 'Identifier',
+            'name': objectName
           },
-          "computed": false,
-          "property": {
-            "type": "Identifier",
-            "name": propName
+          'computed': false,
+          'property': {
+            'type': 'Identifier',
+            'name': propName
           }
         }
       }
     ],
-    "kind": "const"
+    'kind': 'const'
   }
 }
 
-export const createObjectFunc = (name: string, params: any[], body: any) => {
+export const getObjectFunc = (name: string, params: any[], body: any) => {
   return {
-    "type": "ObjectMethod",
-    "method": true,
-    "key": {
-      "type": "Identifier",
-      "name": name
+    'type': 'ObjectMethod',
+    'method': true,
+    'key': {
+      'type': 'Identifier',
+      'name': name
     },
-    "computed": false,
-    "kind": "method",
-    "id": null,
-    "generator": false,
-    "async": false,
-    "params": params,
-    "body": {
-      "type": "BlockStatement",
-      "body": body,
-      "directives": []
+    'computed': false,
+    'kind': 'method',
+    'id': null,
+    'generator': false,
+    'async': false,
+    'params': params,
+    'body': {
+      'type': 'BlockStatement',
+      'body': body,
+      'directives': []
     }
   }
 };
 
-export const createObjectPreporty = (name: string, valueName: string) => {
+export const getObjectPreporty = (name: string, valueName: string) => {
   return {
-    type: "ObjectProperty",
+    type: 'ObjectProperty',
     method: false,
     key: {
-      type: "Identifier",
+      type: 'Identifier',
       name: name,
     },
     computed: false,
     shorthand: false,
     value: {
-      type: "Identifier",
+      type: 'Identifier',
       name: valueName,
     },
   };
 };
 
-export const createReturn = (name: string) => {
+export const getReturn = (name: string) => {
   return {
-    type: "ReturnStatement",
+    type: 'ReturnStatement',
     argument: {
-      type: "Identifier",
+      type: 'Identifier',
       name: name,
     },
   };
 };
 
 
-export const createDefaultExport = (name: string) => {
+export const getDefaultExport = (name: string) => {
   return {
-    "type": "ExportDefaultDeclaration",
-    "declaration": {
-      "type": "Identifier",
-      "name": name
+    'type': 'ExportDefaultDeclaration',
+    'declaration': {
+      'type': 'Identifier',
+      'name': name
     }
   }
 }
 
-export const createString = (value: string) => {
+export const getString = (value: string) => {
   return {
-    type: "StringLiteral",
+    type: 'StringLiteral',
     value,
+  }
+}
+
+export const getEmptyObject = (name: string) => {
+  return {
+    'type': 'VariableDeclaration',
+    'declarations': [
+      {
+        'type': 'VariableDeclarator',
+        'id': {
+          'type': 'Identifier',
+          'name': name
+        },
+        'init': {
+          'type': 'ObjectExpression',
+          'properties': []
+        }
+      }
+    ],
+    'kind': 'const'
+  }
+}
+
+export const getIdentifier = (name: string) => {
+  return {
+    'type': 'Identifier',
+    'name': name
+  }
+}
+
+export const getObjectPropertyExpression = (objName: string, propertyName: string, value: any) => {
+  return {
+    'type': 'ExpressionStatement',
+    'expression': {
+      'type': 'AssignmentExpression',
+      'operator': '=',
+      'left': {
+        'type': 'MemberExpression',
+        'object': {
+          'type': 'Identifier',
+          'name': objName
+        },
+        'computed': false,
+        'property': {
+          'type': 'Identifier',
+          'name': propertyName
+        }
+      },
+      'right': value,
+    }
   }
 }

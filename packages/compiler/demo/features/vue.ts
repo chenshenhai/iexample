@@ -25,7 +25,9 @@ function main() {
   `;
 
   const appSource = `
-  import { createApp } from "vue"
+  // import { createApp } from "vue"
+  import * as Vue from 'vue';
+  const { createApp } = Vue;
   import Mod from "${modId}"
   const run = () => {
     Mod.name = 'Repl'

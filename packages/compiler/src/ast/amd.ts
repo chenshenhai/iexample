@@ -29,9 +29,7 @@ export const parseToAMDModule = (
     if (item?.type === 'ImportDeclaration') {
       depIds.push(item?.source?.value);
       if (item?.specifiers?.length === 1 && item?.specifiers[0]?.type === 'ImportDefaultSpecifier') {
-         //  import a from 'a';
-        // depNames.push(item?.specifiers[0]?.local?.name);
-
+        // import a from 'a';
         const tempName = createTempName(item?.specifiers[0]?.local?.name);
         depNames.push(tempName);
         declareConstPropsAst.push(getConstProp(
@@ -52,7 +50,7 @@ export const parseToAMDModule = (
         item?.specifiers.forEach((spec: any) => {
           if (spec.type === 'ImportDefaultSpecifier') {
             // import a, { ... } from 'a';
-            // depNames.push(spec?.local?.name);
+            // nothing
           } else if  (spec.type === 'ImportSpecifier') {
             // import { a, b as _b } from 'a';
             declareConstPropsAst.push(getConstProp(
@@ -60,6 +58,11 @@ export const parseToAMDModule = (
               tempName,
               spec.imported.name
             ));
+          } else if (spec.type === 'ImportNamespaceSpecifier') {
+            // parse: import * as X from "xxx"
+            // to: define(['xxx'], function(X) {})
+            depIds.push(item?.source?.value);
+            depNames.push(spec?.local?.name);
           }
         });
       }

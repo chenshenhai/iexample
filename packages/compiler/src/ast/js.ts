@@ -1,4 +1,4 @@
-import { transform, transformFromAst } from '@babel/standalone';
+import { transform, transformFromAst } from '../util/babel-standalone/babel';
 
 // import { getConst } from './estree';
 
@@ -51,7 +51,7 @@ export function generateAstToJs(ast: any[]): string {
       sourceType: "module",
       sourceFile: '',
     }
-  }, undefined, {
+  },  '', {
     ast: true,
     code: true,
   })

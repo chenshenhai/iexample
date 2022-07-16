@@ -3,6 +3,10 @@ import chalk from 'chalk';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import type { UserConfig } from 'vite';
+import rollupReplace from "@rollup/plugin-replace";
+import rollupPolyfillNode from "rollup-plugin-polyfill-node/dist/index";
+import rollupNodeResolve from "@rollup/plugin-node-resolve";
+import rollupInject from '@rollup/plugin-inject';
 import { resolvePackagePath } from './util/project';
 import { modulePackages } from './config/package'
 import { generateDts } from './util/dts';
@@ -40,7 +44,34 @@ function getViteConfig(pkgName: string, name: string, formats: Array<'es' |'cjs'
         },
       },
       rollupOptions: {
-        external: ['vue', 'vue/compiler-sfc']
+        external: ['vue', 'vue/compiler-sfc'],
+        plugins: [
+          rollupInject({
+            process: ['process', '*'],
+            Buffer: ['buffer', '*']
+          }),
+          rollupReplace({
+            preventAssignment: true,
+            values: {
+              "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+              // BABEL_VERSION: JSON.stringify(babelVersion),
+              // VERSION: JSON.stringify(version),
+            },
+          }),
+          rollupNodeResolve({
+            extensions: [".ts", ".js", ".mjs", ".cjs", ".json"],
+            browser: true,
+            exportConditions: ["browser"],
+            // It needs to be set to 'false' when using rollupNodePolyfills
+            // https://github.com/rollup/plugins/issues/772
+            preferBuiltins: false,
+          }),
+          rollupPolyfillNode({
+            include: [
+              resolvePackagePath('packages', 'compiler')
+            ]
+          })
+        ]
       }
     },
     plugins: [

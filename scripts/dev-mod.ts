@@ -60,9 +60,14 @@ function getViteConfig(pkgName: string): UserConfig {
     },
     optimizeDeps: {
       esbuildOptions: {
+        // define: {
+        //   global: 'globalThis',
+        // },
         plugins: [
           NodeModulesPolyfills(),
-          GlobalsPolyfills(),
+          GlobalsPolyfills({
+            buffer: true
+          }),
         ]
       }
     }

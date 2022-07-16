@@ -6,9 +6,11 @@ import {
 } from "@vue/compiler-sfc";
 import { extractCode } from "../util/extract";
 import { parseJsToAst, generateAstToJs } from "../ast/js";
-import { SINGLE_MODULE_DECLARE_NAME } from "../config/name";
-import { createConst, createObjectFunc, createDefaultExport } from "./../ast/estree";
+// import { SINGLE_MODULE_DECLARE_NAME } from "../config/name";
+import { getConst, getObjectFunc, getDefaultExport } from "./../ast/estree";
 import type { CompileOptions, CompileResult } from "../types";
+
+const MODULE_DECLARE_NAME = '__vue_mod__'
 
 function compileJs(
   source: string,
@@ -64,7 +66,7 @@ function wrapSetupModule(moduleAst: any, renderAst: any) {
     Array.isArray(moduleAst.properties)
   ) {
     moduleAst.properties.push(
-      createObjectFunc("render", renderAst.params, renderAst.body.body)
+      getObjectFunc("render", renderAst.params, renderAst.body.body)
     );
   }
   return moduleAst;
@@ -98,8 +100,8 @@ function mergeJs(jsResult: CompileResult, tplResult: CompileResult) {
   ast = [
     ...importAst,
     ...tplAst,
-    ...[createConst(SINGLE_MODULE_DECLARE_NAME, moduleAst)],
-    ...[createDefaultExport(SINGLE_MODULE_DECLARE_NAME)]
+    ...[getConst(MODULE_DECLARE_NAME, moduleAst)],
+    ...[getDefaultExport(MODULE_DECLARE_NAME)]
   ];
   const code = generateAstToJs(ast);
   return {

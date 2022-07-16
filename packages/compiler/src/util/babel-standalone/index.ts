@@ -179,16 +179,16 @@ registerPlugins(all);
 export const availablePresets = {
   // env: presetEnv,
   // es2015: preset2015,
-  es2016: () => {
-    return {
-      plugins: [availablePlugins["transform-exponentiation-operator"]],
-    };
-  },
-  es2017: () => {
-    return {
-      plugins: [availablePlugins["transform-async-to-generator"]],
-    };
-  },
+  // es2016: () => {
+  //   return {
+  //     plugins: [availablePlugins["transform-exponentiation-operator"]],
+  //   };
+  // },
+  // es2017: () => {
+  //   return {
+  //     plugins: [availablePlugins["transform-async-to-generator"]],
+  //   };
+  // },
   react: presetReact,
   // "stage-0": presetStage0,
   // "stage-1": presetStage1,
@@ -206,7 +206,7 @@ export const availablePresets = {
 };
 
 // @ts-ignore VERSION is to be replaced by rollup
-export const version: string = VERSION;
+export const version: string = '0.0.0' // TODO;
 
 function onDOMContentLoaded() {
   transformScriptTags();

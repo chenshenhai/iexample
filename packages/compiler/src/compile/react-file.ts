@@ -1,6 +1,5 @@
 import type { CompileOptions, CompileResult } from '../types';
-// import { transform } from '../util/babel-standalone';
-import { transform } from '@babel/standalone';
+import { transform } from '../util/babel-standalone/babel';
 
 export const compileReactFile = (source: string, opts: CompileOptions): CompileResult => {
   

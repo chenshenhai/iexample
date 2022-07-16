@@ -1,6 +1,6 @@
-import { transform, transformFromAst } from '@babel/standalone';
+import { transform, transformFromAst } from '../util/babel-standalone/babel';
 
-// import { createConst } from './estree';
+// import { getConst } from './estree';
 
 interface CompileResult {
   code: string;
@@ -51,7 +51,7 @@ export function generateAstToJs(ast: any[]): string {
       sourceType: "module",
       sourceFile: '',
     }
-  }, undefined, {
+  },  '', {
     ast: true,
     code: true,
   })

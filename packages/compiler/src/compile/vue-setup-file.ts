@@ -6,7 +6,6 @@ import {
 } from "@vue/compiler-sfc";
 import { extractCode } from "../util/extract";
 import { parseJsToAst, generateAstToJs } from "../ast/js";
-// import { SINGLE_MODULE_DECLARE_NAME } from "../config/name";
 import { getConst, getObjectFunc, getDefaultExport } from "./../ast/estree";
 import type { CompileOptions, CompileResult } from "../types";
 

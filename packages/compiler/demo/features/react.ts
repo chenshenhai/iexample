@@ -1,31 +1,15 @@
-// @ts-ignore
+
 import defineLib from '@iexample/define/dist/index.umd.js?raw';
-import { compileReactFile, compileCodeToAMD } from '../../src';
-// @ts-ignore
+import simpleReactCode from './codes/react/simple.tsx?raw';
 import tpl from './tpl.html?raw';
 
+import { compileReactFile, compileCodeToAMD } from '../../src';
+
 function main() {
-  const source = `
-import React, { useState } from 'react';
-import ReactDOM, { createRoot } from 'react-dom';
+  const source = simpleReactCode;
 
-const App = () => {
-  const [count, setCount] = useState(0);
-  return (
-    <div>
-      <div>{count}</div>
-      <button onClick={() => {
-        setCount(count + 1);
-      }}>Add +</button>
-    </div>
-  )
-}
-
-const root = createRoot(document.querySelector('#app'));
-root.render(<App />)
-`;
-
-  const result = compileReactFile(source, { filename: 'hello.vue' })
+  const result = compileReactFile(source, { filename: 'hello.tsx' })
+  console.log('result ====', result)
   const amdResult = compileCodeToAMD(result.code);
   const html = tpl.replace('<!--INJECT_SCRIPT_LIB-->', `
     <script>

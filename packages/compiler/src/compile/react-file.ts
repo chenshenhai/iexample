@@ -2,12 +2,17 @@ import type { CompileOptions, CompileResult } from '../types';
 import { transform } from '../util/babel-standalone/babel';
 
 export const compileReactFile = (source: string, opts: CompileOptions): CompileResult => {
-  
-  // console.log('source ====', source)
+
   const result = transform(source, {
+    filename: '_temp_.tsx',
+    babelrc: false,
     presets: [
-      'react'
-    ]
+      'react',
+      ['typescript', {
+        allExtensions:true,
+        isTSX: true,
+      }]
+    ],
   })
   return {
     code: result?.code || '',

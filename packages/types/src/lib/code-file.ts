@@ -10,6 +10,7 @@ export type CodeType =
 
 export type CodeFileType =
   | 'javascript'
+  | 'typescript'
   | 'json'
   | 'html'
   | 'css'

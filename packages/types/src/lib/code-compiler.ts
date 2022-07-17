@@ -1,9 +1,9 @@
-import type { CodeType, CodeDirectory, CodeCompiledFolder } from './code-file';
+import type { CodeType, CodeDirectory, CodeCompiledFiles } from './code-file';
 
 
 export interface CodeCompiler<T extends CodeType> {
   getCodeType(): T;
-  compile(dir: CodeDirectory): CodeCompiledFolder[]
+  compile(dir: CodeDirectory): CodeCompiledFiles
   // TODO
 }
 

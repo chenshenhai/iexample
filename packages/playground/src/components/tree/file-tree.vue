@@ -22,6 +22,7 @@
 import { watch, reactive } from "vue";
 import IconFile from "@ant-design/icons-vue/FileOutlined";
 import type { CodeDirectory, CodeFile } from "../../types";
+import type { CodeFolder } from "@iexample/types";
 
 const props = defineProps<{
   directory: CodeDirectory;
@@ -39,8 +40,10 @@ const state = reactive<{
   directory,
 });
 
-const onClick = (data: CodeFile) => {
-  onSelect && onSelect(data);
+const onClick = (data: CodeFile | CodeFolder) => {
+  if (data.type === 'file') {
+    onSelect && onSelect(data);
+  }
 };
 
 watch(

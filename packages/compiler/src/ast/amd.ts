@@ -16,7 +16,7 @@ const generateTempNameCreator = () => {
 const createTempName = generateTempNameCreator();
 
 export const parseToAMDModule = (
-  name: string | undefined,
+  name: string | undefined | null,
   moduleAst: any[]
 ) => {
   const depIds: string[] = [];
@@ -105,7 +105,7 @@ export const parseToAMDModule = (
   });
 
   const args = [];
-  if (name) {
+  if (typeof name === 'string' && name) {
     args.push(getString(name));
   }
   if (Array.isArray(depIds)) {

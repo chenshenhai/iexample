@@ -34,21 +34,11 @@ export interface CodeFolder {
 }
 
 export interface CodeCompiledFile extends CodeFile {
-  fullPath: string,
-  compiledContent: string,
-  additionalFiles: Omit<CodeCompiledFile, 'additionalFile'>[],
+  compiledContent: string | null,
+  additionalFiles?: Omit<CodeCompiledFile, 'additionalFile'>[],
 }
 
-export interface CodeCompiledFolder {
-  path: string;
-  fullPath: string,
-  name: string;
-  type: 'folder';
-  children?: Array<CodeCompiledFile | CodeCompiledFolder>;
-}
+export type CodeDirectory = Array<CodeFile | CodeFolder>;
 
 
-export type CodeDirectory = Array<CodeFile | CodeCompiledFolder>;
-
-
-export type CodeCompiledDirectory = Array<CodeCompiledFile | CodeCompiledFolder>;
+export type CodeCompiledFiles = Array<CodeCompiledFile>;

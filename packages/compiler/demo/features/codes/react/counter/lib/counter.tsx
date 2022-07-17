@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { add } from './add';
+import { add } from '../util/add.ts';
 
 const Counter = () => {
   const [count, setCount] = useState<number>(0);

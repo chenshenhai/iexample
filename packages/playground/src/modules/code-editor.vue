@@ -28,6 +28,7 @@ const onChange = debounce((code: string) => {
       storeCode?.codeDirectory[i].type === "file" &&
       storeCode?.codeDirectory[i]?.path === storeCode.currentCodeFile?.path
     ) {
+      // @ts-ignore
       storeCode.codeDirectory[i].content = code;
       storeCode.currentCodeFile.content = code;
       break;

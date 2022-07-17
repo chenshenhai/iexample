@@ -1,4 +1,4 @@
-
+/// <reference types="vite/client" />
 import defineLib from '@iexample/define/dist/index.umd.js?raw';
 import simpleReactCode from './codes/react/simple.tsx?raw';
 import tpl from './tpl.html?raw';

@@ -22,7 +22,7 @@ const dir: CodeDirectory = [
     type: 'folder',
     children: [
       {
-        path: '@/lib/conter.tsx',
+        path: '@/lib/counter.tsx',
         name: 'conter.tsx',
         type: 'file',
         content: codeReactLibCounter,

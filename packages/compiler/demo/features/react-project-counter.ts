@@ -9,12 +9,19 @@ import type { CodeDirectory } from '@iexample/types'
 
 const dir: CodeDirectory = [
   {
-    path: '@/app.tsx',
-    name: 'app.tsx',
-    type: 'file',
-    content: codeReactApp,
-    codeType: 'react',
-    fileType: 'typescript',
+    path: '@/util',
+    name: 'lib',
+    type: 'folder',
+    children: [
+      {
+        path: '@/util/add.ts',
+        name: 'add.ts',
+        type: 'file',
+        content: codeReactUtilAdd,
+        codeType: 'react',
+        fileType: 'typescript',
+      },
+    ]
   },
   {
     path: '@/lib',
@@ -32,28 +39,19 @@ const dir: CodeDirectory = [
     ]
   },
   {
-    path: '@/util',
-    name: 'lib',
-    type: 'folder',
-    children: [
-      {
-        path: '@/util/add.ts',
-        name: 'add.ts',
-        type: 'file',
-        content: codeReactUtilAdd,
-        codeType: 'react',
-        fileType: 'typescript',
-      },
-    ]
+    path: '@/app.tsx',
+    name: 'app.tsx',
+    type: 'file',
+    content: codeReactApp,
+    codeType: 'react',
+    fileType: 'typescript',
   },
-  
 ]
 
 function main() {
 
-
   console.log('dir ====', dir);
-  const compiledDir = compileReactProject(dir);
+  const compiledDir = compileReactProject(dir, { entryPath: '@/app.tsx' });
   console.log('compiledDir ====', compiledDir);
   // const source = simpleReactCode;
   compiledDir.reverse();

@@ -4,13 +4,25 @@ import type {
 import { compileReactFile, } from './react-file';
 import { compileCodeToAMD } from './amd';
 // import { transform } from '../util/babel-standalone/babel';
-import { getFolderPath } from '../util/path'
+import { getFolderPath, isAbsolutePath } from '../util/path';
 
-export const compileReactProject = (dir: CodeDirectory): CodeCompiledFiles => {
+
+interface ModuleInfo {
+  path: string,
+  name: string | null,
+  deps: Array<string | null>
+}
+
+export const compileReactProject = (
+  dir: CodeDirectory,
+  opts: {
+    entryPath: string,
+  }
+): CodeCompiledFiles => {
   const compiledList: CodeCompiledFiles = [];
+  const modInfos: ModuleInfo[] = [];
 
-  const _compileFile = (file: CodeFile | CodeFolder, opts: { pathList: string[] }) => {
-    const { pathList } = opts;
+  const _compileFile = (file: CodeFile | CodeFolder) => {
     if (file.type === 'file') {
       let compiledContent: string | null = null;
       if (['react', 'javascript', 'typescript'].includes(file.codeType)) {
@@ -22,6 +34,28 @@ export const compileReactProject = (dir: CodeDirectory): CodeCompiledFiles => {
             baseFolderPath: getFolderPath(file.path),
             resolveImportPath: true,
           });
+          if (amdResult?.ast?.type === 'ExpressionStatement' && Array.isArray(amdResult?.ast?.expression?.arguments)) {
+            const info: ModuleInfo = {
+              path: file.path,
+              name: null,
+              deps: []
+            }
+            const args = amdResult.ast.expression.arguments;
+            args.forEach((item: any) => {
+              if (item?.type === 'StringLiteral' && typeof item.value === 'string') {
+                info.name = item.value;
+              } else if (item?.type === 'ArrayExpression' && Array.isArray(item?.elements)) {
+                item.elements.forEach((ele: any) => {
+                  if (ele?.type === 'StringLiteral' &&  typeof ele?.value === 'string') {
+                    info.deps.push(ele.value as string)
+                  } else {
+                    info.deps.push(null);
+                  }
+                });
+              }
+            });
+            modInfos.push(info);
+          }
           compiledContent = amdResult.code;
         } catch (err) {
           // TODO
@@ -40,14 +74,50 @@ export const compileReactProject = (dir: CodeDirectory): CodeCompiledFiles => {
       compiledList.push(compiledFile);
     } else if (file.type === 'folder') {
       file.children?.forEach((item) => {
-        _compileFile(item, {
-          pathList: [...pathList, file.path]
-        })
+        _compileFile(item)
       })
     }
   }
   dir.forEach((item: CodeFile | CodeFolder) => {
-    _compileFile(item, { pathList: ['@'] });
-  })  
-  return compiledList;
+    _compileFile(item);
+  });
+
+
+  // reset index for compiled files;
+  const needPathList: string[] = [];
+  const result: CodeCompiledFiles = [];
+  const depsMapByPath : {
+    [path: string]: (string | null)[]
+  } = {};
+  modInfos.forEach((mod: ModuleInfo) => {
+    depsMapByPath[mod.path] = mod.deps
+  })
+  const _readDeps = (path: string) => {
+    if (!needPathList.includes(path) && depsMapByPath?.[path]) {
+      needPathList.unshift(path);
+    }
+    const deps = depsMapByPath?.[path];
+    if (Array.isArray(deps)) {
+      deps.forEach((i: string | null) => {
+        if (typeof i === 'string') {
+          _readDeps(i);
+        }
+      })
+    }
+  }
+  _readDeps(opts.entryPath);
+
+  const compiledfileMapByPath: {
+    [path: string]: CodeCompiledFile
+  } = {};
+  compiledList.forEach((file) => {
+    compiledfileMapByPath[file.path] = file;
+  })
+
+  needPathList.forEach((path: string) => {
+    if (compiledfileMapByPath[path]) {
+      result.push(compiledfileMapByPath[path]);
+    }
+  });
+  return result;
 }

@@ -3,39 +3,15 @@
 import defineLib from '@iexample/define/dist/index.umd.js?raw';
 import { compileVueSetupFile } from '../../src';
 import { compileCodeToAMD } from '../../src';
-// @ts-ignore
 import tpl from './tpl.html?raw';
+import simpleVueCode from './codes/vue/simple.vue?raw';
+import simpleVueMainCode from './codes/vue/simple.ts?raw';
 
 function main() {
 
-  const modId = '@/module.vue';
-  const modSource = `
-  <template>
-    <h1 class="title">{{ msg }}</h1>
-    <input v-model="msg">
-  </template>
-  <script setup>
-  import { ref } from 'vue'
-
-  const msg = ref('Hello World!')
-  </script>
-  <style scoped>
-  .title { color: #666666; }
-  </style>
-  `;
-
-  const appSource = `
-  // import { createApp } from "vue"
-  import * as Vue from 'vue';
-  const { createApp } = Vue;
-  import Mod from "${modId}"
-  const run = () => {
-    Mod.name = 'Repl'
-    const app = createApp(Mod)
-    app.mount('#app')
-  }
-  run();
-  `
+  const modId = './simple.vue';
+  const modSource = simpleVueCode;
+  const appSource = simpleVueMainCode
 
   const result = compileVueSetupFile(modSource, { filename: 'hello.vue' });
 

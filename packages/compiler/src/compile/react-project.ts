@@ -13,6 +13,23 @@ interface ModuleInfo {
   deps: Array<string | null>
 }
 
+function getAllFilePaths(dir: CodeDirectory,) {
+  const paths: string[] = [];
+  const _read = (file: CodeFile | CodeFolder) => {
+    if (file.type === 'file') {
+      paths.push(file.path);
+    } else if (file.type === 'folder') {
+      file.children?.forEach((item) => {
+        _read(item)
+      })
+    }
+  }
+  dir.forEach((item: CodeFile | CodeFolder) => {
+    _read(item);
+  });
+  return paths;
+}
+
 export const compileReactProject = (
   dir: CodeDirectory,
   opts: {
@@ -21,6 +38,7 @@ export const compileReactProject = (
 ): CodeCompiledFiles => {
   const compiledList: CodeCompiledFiles = [];
   const modInfos: ModuleInfo[] = [];
+  const allFilePaths = getAllFilePaths(dir);
 
   const _compileFile = (file: CodeFile | CodeFolder) => {
     if (file.type === 'file') {
@@ -33,6 +51,7 @@ export const compileReactProject = (
             filename: file.name,
             baseFolderPath: getFolderPath(file.path),
             resolveImportPath: true,
+            allFilePaths,
           });
           if (amdResult?.ast?.type === 'ExpressionStatement' && Array.isArray(amdResult?.ast?.expression?.arguments)) {
             const info: ModuleInfo = {
@@ -81,7 +100,6 @@ export const compileReactProject = (
   dir.forEach((item: CodeFile | CodeFolder) => {
     _compileFile(item);
   });
-
 
   // reset index for compiled files;
   const needPathList: string[] = [];

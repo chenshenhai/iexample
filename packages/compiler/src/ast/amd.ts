@@ -1,5 +1,7 @@
 import { getReturn, getString, getConstProp, getEmptyObject, getIdentifier, getObjectPropertyExpression } from './estree';
 import { SINGLE_MODULE_DECLARE_NAME } from '../config/name';
+import { hasExtensionName } from '../util/path'; 
+import { EXTENSION_NAME_LIST } from '../config'
 
 const generateTempNameCreator = () => {
   let index: number = -1;
@@ -15,9 +17,24 @@ const generateTempNameCreator = () => {
 
 const createTempName = generateTempNameCreator();
 
+function getFullDepName(value: string, allFilePaths: string[]): string {
+  if (hasExtensionName(value) === true) {
+    return value;
+  }
+  for (let i = 0; i < EXTENSION_NAME_LIST.length; i++) {
+    const extname = EXTENSION_NAME_LIST[i];
+    const fullName = `${value}.${extname}`;
+    if (allFilePaths.includes(fullName)) {
+      return fullName;
+    }
+  }
+  return value;
+}
+
 export const parseToAMDModule = (
   name: string | undefined | null,
-  moduleAst: any[]
+  moduleAst: any[],
+  allFilePaths: string[]
 ) => {
   const depIds: string[] = [];
   const depNames: string[] = [];
@@ -27,7 +44,9 @@ export const parseToAMDModule = (
   
   moduleAst.forEach((item: any) => {
     if (item?.type === 'ImportDeclaration') {
-      depIds.push(item?.source?.value);
+      const importValue: string = getFullDepName(item?.source?.value, allFilePaths);
+
+      depIds.push(importValue);
       if (item?.specifiers?.length === 1 && item?.specifiers[0]?.type === 'ImportDefaultSpecifier') {
         // import a from 'a';
         const tempName = createTempName(item?.specifiers[0]?.local?.name);
@@ -38,7 +57,7 @@ export const parseToAMDModule = (
           'default',
         ));
       } else if (item?.specifiers?.length >= 1) {
-        let tempName = createTempName(item?.source?.value);
+        let tempName = createTempName(importValue);
         for (let i = 0; i < item?.specifiers.length; i++) {
           if (item?.specifiers[i].type === 'ImportDefaultSpecifier') {
             tempName = item?.specifiers[i]?.local?.name
@@ -61,7 +80,7 @@ export const parseToAMDModule = (
           } else if (spec.type === 'ImportNamespaceSpecifier') {
             // parse: import * as X from "xxx"
             // to: define(['xxx'], function(X) {})
-            depIds.push(item?.source?.value);
+            depIds.push(importValue);
             depNames.push(spec?.local?.name);
           }
         });

@@ -31,6 +31,7 @@ export function compileCodeToAMD(
   opts?: CompileOptions & {
     baseFolderPath?: string,
     resolveImportPath?: boolean
+    allFilePaths?: string[],
   },
 ): CompileResult {
   const target = parseJsToAst(code);
@@ -42,7 +43,12 @@ export function compileCodeToAMD(
     })
   }
 
-  const amdAst: any = parseToAMDModule(needId ? opts?.id : null, targetAst);
+  let allFilePaths: string[] = [];
+  if (Array.isArray(opts?.allFilePaths) && opts?.allFilePaths) {
+    allFilePaths = opts?.allFilePaths
+  }
+
+  const amdAst: any = parseToAMDModule(needId ? opts?.id : null, targetAst, allFilePaths);
   const resultCode: string = generateAstToJs([amdAst]);
   return {
     code: resultCode,

@@ -49,3 +49,10 @@ export function getFolderPath(path: string): string {
   const folderPath = pathList.join('/');
   return folderPath;
 }
+
+export function hasExtensionName(path: string) {
+  if (typeof path === 'string' && /\.[0-9a-zA-Z\-\_]{1,}$/.test(path)) {
+    return true;
+  }
+  return false;
+}

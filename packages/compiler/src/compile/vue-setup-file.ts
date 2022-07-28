@@ -4,20 +4,49 @@ import {
   compileScript,
   compileStyle,
 } from "@vue/compiler-sfc";
-import { extractCode } from "../util/extract";
+import { extractCode, parseScriptElementAttrs } from "../util/extract";
 import { parseJsToAst, generateAstToJs } from "../ast/js";
 import { getConst, getObjectFunc, getDefaultExport } from "./../ast/estree";
-import type { CompileOptions, CompileResult } from "../types";
+import { transform } from '../util/babel-standalone/babel'
+import type { CompileOptions, CompileResult, CompileVueScriptOptions } from "../types";
 
 const MODULE_DECLARE_NAME = '__vue_mod__'
 
 function compileJs(
   source: string,
-  opts: Required<CompileOptions>
+  opts: Required<CompileVueScriptOptions>
 ): CompileResult {
-  const { descriptor } = parse(source);
+
+  let scriptElement: string = extractCode(source, { type: 'script', withElement: true }) || '';
+  const scriptContent: string = extractCode(source, { type: 'script' }) || '';
+  const attrs = parseScriptElementAttrs(scriptElement || '');
+  if (attrs.lang === 'ts') {
+    const _scriptContent = transform(scriptContent, {
+      filename: '_temp_.vue',
+      babelrc: false,
+      presets: [
+        ['typescript', {
+          allExtensions:true,
+          isTSX: true,
+        }]
+      ],
+    })?.code || '';
+    delete attrs['lang'];
+    const attrStr = Object.keys(attrs).map((name) => {
+      if (attrs[name]) {
+        return `${name}=${attrs[name]}`
+      }
+      return name;
+    }).join(' ')
+    scriptElement = `<script ${attrStr}>\n${_scriptContent}\n</script>`
+  }
+
+  const { descriptor } = parse(scriptElement);
   const jsCode = compileScript(descriptor, opts);
-  const result = parseJsToAst(jsCode.content);
+
+
+  const result = parseJsToAst(jsCode.content || '');
+
   return {
     code: result.code,
     ast: result.ast,
@@ -114,7 +143,7 @@ export const compileVueSetupFile = (
   opts: { filename: string }
 ) => {
   const scopedId = `data-v-${Math.random().toString(16).substring(2)}`;
-  const js = compileJs(source, { id: scopedId, filename: opts.filename });
+  const js = compileJs(source, { id: scopedId, filename: opts.filename, ts: false });
   const tpl = compileTpl(source, { id: scopedId, filename: opts.filename });
   const css = compileCss(source, { id: scopedId, filename: opts.filename });
   const result = mergeJs(js, tpl);

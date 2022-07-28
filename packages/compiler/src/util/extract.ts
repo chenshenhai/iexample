@@ -1,6 +1,23 @@
 // const scriptReg = /<script\b(?:\s[^>]*>|>)([^]*?)<\/script>/gi;
 // const reg = /<style\b(?:\s[^>]*>|>)([^]*?)<\/style>/gi;
 
+export function parseScriptElementAttrs(elem: string): {[name: string]: string} {
+  const attrs: {[name: string]: string} = {};
+  const reg = /<script([^>]*?)>/;
+  const attrStr = reg.exec(elem)?.[1]?.trim() || '';
+  const items = attrStr.split(' ');
+  items.forEach((item: string) => {
+    const str = item?.trim();
+    if (str) {
+      const dataList = str.split('=');
+      const name: string = dataList[0]?.trim() || '';
+      const value: string = dataList[1]?.trim()?.replace(/(^"|"$)/ig, '')?.replace(/(^'|;$)/ig, '') || '';
+      attrs[name] = value;
+    }
+  });
+  return attrs;
+}
+
 export function extractCode(
   source: string,
   opts: {

@@ -2,9 +2,10 @@
 import defineLib from '@iexample/define/dist/index.umd.js?raw';
 import codeReactLibCounter from './codes/react/counter/lib/counter?raw';
 import codeReactUtilAdd from './codes/react/counter/util/add?raw';
+import codeReactUtilAdd2 from './codes/react/counter/util/add2?raw';
 import codeReactApp from './codes/react/counter/app?raw';
 import tpl from './tpl.html?raw';
-import { compileReactProject } from '../../src';
+import { ReactProjectCompiler } from '../../src';
 import type { CodeDirectory } from '@iexample/types'
 
 const dir: CodeDirectory = [
@@ -50,11 +51,13 @@ const dir: CodeDirectory = [
 
 function main() {
 
-  console.log('dir ====', dir);
-  const compiledDir = compileReactProject(dir, { entryPath: '@/app.tsx' });
-  console.log('compiledDir ====', compiledDir);
-  // const source = simpleReactCode;
-  compiledDir.reverse();
+  const compiler = new ReactProjectCompiler();
+  compiler.setFiles(dir);
+  compiler.setEntryPath('@/app.tsx');
+  let compiledDir = compiler.compile();
+
+  // update file
+  compiledDir = compiler.updateFileContent('@/util/add.ts', codeReactUtilAdd2);
    
   const html = tpl.replace('<!--INJECT_SCRIPT_LIB-->', `
     <script>

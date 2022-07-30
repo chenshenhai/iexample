@@ -4,14 +4,9 @@ import type {
 import { compileReactFile, } from './react-file';
 import { compileCodeToAMD } from './amd';
 // import { transform } from '../util/babel-standalone/babel';
-import { getFolderPath, isAbsolutePath } from '../util/path';
-
-
-interface ModuleInfo {
-  path: string,
-  name: string | null,
-  deps: Array<string | null>
-}
+import { getFolderPath } from '../util/path';
+import { sortProjectCompiledFiles, sortProjectPathList } from './sort';
+import type { ModuleInfo } from './sort';
 
 function getAllFilePaths(dir: CodeDirectory,) {
   const paths: string[] = [];
@@ -102,40 +97,7 @@ export const compileReactProject = (
   });
 
   // reset index for compiled files;
-  const needPathList: string[] = [];
-  const result: CodeCompiledFiles = [];
-  const depsMapByPath : {
-    [path: string]: (string | null)[]
-  } = {};
-  modInfos.forEach((mod: ModuleInfo) => {
-    depsMapByPath[mod.path] = mod.deps
-  })
-  const _readDeps = (path: string) => {
-    if (!needPathList.includes(path) && depsMapByPath?.[path]) {
-      needPathList.unshift(path);
-    }
-    const deps = depsMapByPath?.[path];
-    if (Array.isArray(deps)) {
-      deps.forEach((i: string | null) => {
-        if (typeof i === 'string') {
-          _readDeps(i);
-        }
-      })
-    }
-  }
-  _readDeps(opts.entryPath);
-
-  const compiledfileMapByPath: {
-    [path: string]: CodeCompiledFile
-  } = {};
-  compiledList.forEach((file) => {
-    compiledfileMapByPath[file.path] = file;
-  })
-
-  needPathList.forEach((path: string) => {
-    if (compiledfileMapByPath[path]) {
-      result.push(compiledfileMapByPath[path]);
-    }
-  });
+  const needPathList = sortProjectPathList(opts.entryPath, modInfos);
+  const result = sortProjectCompiledFiles(compiledList, needPathList)
   return result;
 }

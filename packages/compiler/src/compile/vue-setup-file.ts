@@ -93,6 +93,21 @@ function wrapSetupModule(moduleAst: any, renderAst: any) {
     moduleAst.type === "ObjectExpression" &&
     Array.isArray(moduleAst.properties)
   ) {
+    // Resolve custom components
+    renderAst.body.body.forEach((item: any) => {
+      if (
+        item?.type === 'VariableDeclaration' 
+        && item?.declarations?.length === 1
+        && item?.declarations?.[0]?.init?.callee?.name === '_resolveComponent'
+        && item?.declarations?.[0]?.init?.arguments?.[0]?.type === 'StringLiteral'
+      ) {
+        item.declarations[0].init = {
+          "type": "Identifier",
+          "name": item?.declarations?.[0]?.init?.arguments?.[0].value
+        }
+      }
+    })
+
     moduleAst.properties.push(
       getObjectFunc("render", renderAst.params, renderAst.body.body)
     );

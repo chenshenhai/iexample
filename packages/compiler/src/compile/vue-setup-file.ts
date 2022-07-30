@@ -10,7 +10,8 @@ import { getConst, getObjectFunc, getDefaultExport } from "./../ast/estree";
 import { transform } from '../util/babel-standalone/babel'
 import type { CompileOptions, CompileResult, CompileVueScriptOptions } from "../types";
 
-const MODULE_DECLARE_NAME = '__vue_mod__'
+const MODULE_DECLARE_NAME = '__vue_mod__';
+const DEFAULT_SCOPED = false;
 
 function compileJs(
   source: string,
@@ -58,10 +59,11 @@ function compileTpl(
   opts: Required<CompileOptions>
 ): CompileResult {
   const mainTpl = extractCode(source, { type: "template" }) || "";
+  console.log('opts ====', opts)
   const tplCode = compileTemplate({
     id: opts.id,
     source: mainTpl,
-    scoped: true,
+    scoped: DEFAULT_SCOPED,
     filename: opts.filename,
   });
   const result = parseJsToAst(tplCode.code || "");
@@ -78,7 +80,7 @@ function compileCss(
   const style = extractCode(source, { type: "style" }) || "";
   const styleCode = compileStyle({
     source: style,
-    scoped: true,
+    scoped: DEFAULT_SCOPED,
     id: opts.id,
     filename: opts.filename,
   });

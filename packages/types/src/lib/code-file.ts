@@ -33,9 +33,19 @@ export interface CodeFolder {
   children?: Array<CodeFile | CodeFolder>;
 }
 
+export interface CodeCompiledAdditionalFile {
+  path: string;
+  name: string;
+  type: 'file'
+  content: string;
+  compiledContent: string
+  codeType: 'css', // TODO
+  fileType: CodeFileType;
+}
+
 export interface CodeCompiledFile extends CodeFile {
   compiledContent: string | null,
-  additionalFiles?: Omit<CodeCompiledFile, 'additionalFile'>[],
+  additionalFiles?: CodeCompiledAdditionalFile[],
 }
 
 export type CodeDirectory = Array<CodeFile | CodeFolder>;

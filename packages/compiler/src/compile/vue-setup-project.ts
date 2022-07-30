@@ -39,8 +39,8 @@ export const compileVueSetupProject = (
   const _compileFile = (file: CodeFile | CodeFolder) => {
     if (file.type === 'file') {
       let compiledContent: string | null = null;
+      let compiledCssContent: string | null = null;
       if (['vue', 'javascript', 'typescript'].includes(file.codeType)) {
-
         if (file.codeType === 'vue') {
           try {
             const codeResult = compileVueSetupFile(file.content, { filename: file.name });
@@ -74,6 +74,7 @@ export const compileVueSetupProject = (
               modInfos.push(info);
             }
             compiledContent = amdResult.code;
+            compiledCssContent = codeResult.css;
           } catch (err) {
             // TODO
             console.warn(err);
@@ -86,6 +87,18 @@ export const compileVueSetupProject = (
             codeType: file.codeType,
             fileType: file.fileType,
             compiledContent: compiledContent,
+            additionalFiles: [],
+          }
+          if (typeof compiledCssContent === 'string') {
+            compiledFile.additionalFiles?.push({
+              path: `${file.path}.css`,
+              name: `${file.name}.css`,
+              type: 'file',
+              content: compiledCssContent,
+              codeType: 'css',
+              fileType: 'css',
+              compiledContent: compiledCssContent,
+            })
           }
           compiledList.push(compiledFile);
         } else {

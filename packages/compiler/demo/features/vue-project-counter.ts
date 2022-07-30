@@ -5,7 +5,7 @@ import codeVueUtilAdd from './codes/vue/counter/util/add.ts?raw';
 import codeVueLibNum from './codes/vue/counter/lib/num.vue?raw';
 import codeVueLibApp from './codes/vue/counter/lib/app.vue?raw';
 import tpl from './tpl.html?raw';
-import { compileVueSetupProject } from '../../src';
+import { VueSetupProjectCompiler, parseCompiledJsCodeList, parseCompiledCssCodeList  } from '../../src';
 import type { CodeDirectory } from '@iexample/types'
 
 const dir: CodeDirectory = [
@@ -60,23 +60,31 @@ const dir: CodeDirectory = [
 function main() {
 
   console.log('dir ====', dir);
-  const compiledDir = compileVueSetupProject(dir, { entryPath: '@/index.ts' });
-  console.log('compiledDir ====', compiledDir);
+  const compiler = new VueSetupProjectCompiler();
+  compiler.setFiles(dir);
+  compiler.setEntryPath('@/index.ts');
+  const compiledFiles = compiler.compile();
+  
+  console.log('compiledFiles ====', );
   // const source = simpleReactCode;
-  compiledDir.reverse();
+  // compiledDir.reverse();
+  const jsList = parseCompiledJsCodeList(compiledFiles)
+  const cssList = parseCompiledCssCodeList(compiledFiles)
+
+  console.log('cssList ===', cssList)
    
-  const html = tpl.replace('<!--INJECT_SCRIPT_LIB-->', `
-    <script>
-    ${defineLib}
-    </script>
+  const html = tpl.replace('<!--INJECT_STYLE-->', `
+  <style>
+  ${cssList.join('\n')}
+  </style>
+  `).replace('<!--INJECT_SCRIPT_LIB-->', `
+  <script>
+  ${defineLib}
+  </script>
   `).replace('<!--INJECT_SCRIPT-->', `
-  ${compiledDir.map((item, i) => {
-    return `
   <script type="module">
-    ${item.compiledContent}
-  </script>  
-    `
-  }).join('\n')}
+  ${jsList.join('\n')}
+  </script> 
   `)
   const iframe = document.createElement('iframe');
   iframe.srcdoc = html;

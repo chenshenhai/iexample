@@ -11,15 +11,15 @@
     });
   };
 
-  window.__dynamic_import__ = key => {
+  window.__dynamic_import__ = (key) => {
     return Promise.resolve(window.__modules__[key]);
   };
 
   async function handle_message(ev) {
     const { action, cmd_id } = ev.data;
-    const send_message = payload =>
+    const send_message = (payload) =>
       parent.postMessage({ ...payload }, ev.origin);
-    const send_reply = payload => send_message({ ...payload, cmd_id });
+    const send_reply = (payload) => send_message({ ...payload, cmd_id });
     const send_ok = () => send_reply({ action: 'cmd_ok' });
     const send_error = (message, stack) =>
       send_reply({ action: 'cmd_error', message, stack });
@@ -27,7 +27,7 @@
     if (action === 'eval') {
       try {
         if (scriptEls.length) {
-          scriptEls.forEach(el => {
+          scriptEls.forEach((el) => {
             document.head.removeChild(el);
           });
           scriptEls.length = 0;
@@ -41,12 +41,12 @@
           scriptEl.setAttribute('type', 'module');
           // send ok in the module script to ensure sequential evaluation
           // of multiple proxy.eval() calls
-          const done = new Promise(resolve => {
+          const done = new Promise((resolve) => {
             window.__next__ = resolve;
           });
           scriptEl.innerHTML = script + '\nwindow.__next__()';
           document.head.appendChild(scriptEl);
-          scriptEl.onrror = err => send_error(err.message, err.stack);
+          scriptEl.onrror = (err) => send_error(err.message, err.stack);
           scriptEls.push(scriptEl);
           await done;
         }
@@ -60,7 +60,7 @@
     if (action === 'catch_clicks') {
       try {
         const top_origin = ev.origin;
-        document.body.addEventListener('click', event => {
+        document.body.addEventListener('click', (event) => {
           if (event.which !== 1) return;
           if (event.metaKey || event.ctrlKey || event.shiftKey) return;
           if (event.defaultPrevented) return;
@@ -110,7 +110,7 @@
     }
   };
 
-  window.addEventListener('unhandledrejection', event => {
+  window.addEventListener('unhandledrejection', (event) => {
     if (event.reason.message.includes('Cross-origin')) {
       event.preventDefault();
       return;
@@ -130,7 +130,7 @@
 
   let previous = { level: null, args: null };
 
-  ['clear', 'log', 'info', 'dir', 'warn', 'error', 'table'].forEach(level => {
+  ['clear', 'log', 'info', 'dir', 'warn', 'error', 'table'].forEach((level) => {
     const original = console[level];
     console[level] = (...args) => {
       const msg = String(args[0]);
@@ -157,7 +157,7 @@
             {
               action: 'console',
               level,
-              args: args.map(a => {
+              args: args.map((a) => {
                 return a instanceof Error ? a.message : String(a);
               })
             },
@@ -174,9 +174,9 @@
     { method: 'group', action: 'console_group' },
     { method: 'groupEnd', action: 'console_group_end' },
     { method: 'groupCollapsed', action: 'console_group_collapsed' }
-  ].forEach(group_action => {
+  ].forEach((group_action) => {
     const original = console[group_action.method];
-    console[group_action.method] = label => {
+    console[group_action.method] = (label) => {
       parent.postMessage({ action: group_action.action, label }, '*');
 
       original(label);

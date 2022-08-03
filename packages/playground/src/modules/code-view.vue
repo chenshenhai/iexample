@@ -1,9 +1,9 @@
 <template>
   <layout-column class="code-view-preview" :defaultLeftWidth="50" :unit="'%'">
-    <template #left class="left">
+    <template #left>
       <code-editor />
     </template>
-    <template #right class="right">
+    <template #right>
       <layout-row
         style="{{width: '100%', height: '100%'}}"
         :defaultTopHeight="50"

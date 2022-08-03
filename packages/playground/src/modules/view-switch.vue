@@ -4,7 +4,8 @@
       <div>Left</div>
       <div class="view-switch-tablist">
         <div
-          v-for="item in tabs"
+          v-for="(item, index) in tabs"
+          v-bind:key="index"
           class="view-switch-tab"
           :class="{ active: item.key === state.activeTabKey }"
           @click="onSwicth(item.key)"

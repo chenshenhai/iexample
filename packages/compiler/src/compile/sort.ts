@@ -9,7 +9,7 @@ export function sortProjectCompiledFiles(
   } = {};
 
   const result: CodeCompiledFiles = [];
-  compiledList.forEach(file => {
+  compiledList.forEach((file) => {
     compiledfileMapByPath[file.path] = file;
   });
 

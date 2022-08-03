@@ -11,7 +11,7 @@ import { compileCodeToAMD } from './amd';
 import { getFolderPath } from '../util/path';
 import { sortProjectCompiledFiles, sortProjectPathList } from './sort';
 import type { ModuleInfo } from './sort';
-import { filterCssFiles } from './filter';
+// import { filterCssFiles } from './filter';
 
 function getAllFilePaths(dir: CodeDirectory) {
   const paths: string[] = [];
@@ -19,7 +19,7 @@ function getAllFilePaths(dir: CodeDirectory) {
     if (file.type === 'file') {
       paths.push(file.path);
     } else if (file.type === 'folder') {
-      file.children?.forEach(item => {
+      file.children?.forEach((item) => {
         _read(item);
       });
     }
@@ -106,7 +106,7 @@ export const compileReactProject = (
       };
       compiledList.push(compiledFile);
     } else if (file.type === 'folder') {
-      file.children?.forEach(item => {
+      file.children?.forEach((item) => {
         _compileFile(item);
       });
     }

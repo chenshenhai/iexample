@@ -2,7 +2,8 @@
   <div class="iexample-file-tree">
     <div
       class="iexample-file-item"
-      v-for="item in state.directory"
+      v-for="(item, index) in state.directory"
+      :key="index"
       :class="{
         active: state.currentFilePath === item.path
       }"

@@ -167,7 +167,7 @@ export const parseToAMDModule = (
           id: null,
           generator: false,
           async: false,
-          params: depNames.map(name => {
+          params: depNames.map((name) => {
             return {
               type: 'Identifier',
               name: name

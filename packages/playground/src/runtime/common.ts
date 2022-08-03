@@ -38,7 +38,7 @@ export function runtime(
       body.appendChild(inject);
     }
 
-    scripts.forEach(script => {
+    scripts.forEach((script) => {
       const src = script.getAttribute('src') || '';
       const path = formatPath(src);
       for (let i = 0; i < directory.length; i++) {
@@ -52,7 +52,7 @@ export function runtime(
       }
     });
 
-    links.forEach(link => {
+    links.forEach((link) => {
       const href = link.getAttribute('href') || '';
       const path = formatPath(href);
       for (let i = 0; i < directory.length; i++) {

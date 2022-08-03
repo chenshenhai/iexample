@@ -16,7 +16,7 @@ export function updateFileContent(
         hasUpdated = true;
       }
     } else if (file.type === 'folder') {
-      file.children?.forEach(item => {
+      file.children?.forEach((item) => {
         _update(item);
       });
     }

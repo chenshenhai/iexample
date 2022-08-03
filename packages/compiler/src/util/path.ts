@@ -11,14 +11,14 @@ export function joinPath(basePath: string, lastPath: string): string {
   const baseList = getPathList(basePath);
   const lastList = getPathList(lastPath);
   const pathList: string[] = [];
-  baseList.forEach(item => {
+  baseList.forEach((item) => {
     if (item === '..' && pathList.length > 0) {
       pathList.pop();
     } else if (item.length > 0 && item !== '.') {
       pathList.push(item);
     }
   });
-  lastList.forEach(item => {
+  lastList.forEach((item) => {
     if (item === '..' && pathList.length > 0) {
       pathList.pop();
     } else if (item.length > 0 && item !== '.') {
@@ -51,7 +51,7 @@ export function getFolderPath(path: string): string {
 }
 
 export function hasExtensionName(path: string) {
-  if (typeof path === 'string' && /\.[0-9a-zA-Z\-\_]{1,}$/.test(path)) {
+  if (typeof path === 'string' && /\.[0-9a-zA-Z\-_]{1,}$/.test(path)) {
     return true;
   }
   return false;

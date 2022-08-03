@@ -33,7 +33,7 @@ export function extractCode(
 ): string | null {
   let result: string | null = null;
   const reg = new RegExp(
-    `<${opts.type}\\b(?:\\s[^>]*>|>)([^]*?)<\/${opts.type}>`,
+    `<${opts.type}\\b(?:\\s[^>]*>|>)([^]*?)</${opts.type}>`,
     'gi'
   );
   const execResult = reg.exec(source);

@@ -18,7 +18,7 @@ function getAllFilePaths(dir: CodeDirectory) {
     if (file.type === 'file') {
       paths.push(file.path);
     } else if (file.type === 'folder') {
-      file.children?.forEach(item => {
+      file.children?.forEach((item) => {
         _read(item);
       });
     }
@@ -192,7 +192,7 @@ export const compileVueSetupProject = (
         }
       }
     } else if (file.type === 'folder') {
-      file.children?.forEach(item => {
+      file.children?.forEach((item) => {
         _compileFile(item);
       });
     }

@@ -42,7 +42,7 @@ function compileJs(
       })?.code || '';
     delete attrs['lang'];
     const attrStr = Object.keys(attrs)
-      .map(name => {
+      .map((name) => {
         if (attrs[name]) {
           return `${name}=${attrs[name]}`;
         }

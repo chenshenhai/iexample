@@ -153,7 +153,7 @@ function getPluginsOrPresetsFromScript(
     // setting, and should use the default.
     return null;
   }
-  return rawValue.split(',').map(item => item.trim());
+  return rawValue.split(',').map((item) => item.trim());
 }
 
 /**
@@ -205,7 +205,7 @@ function loadScripts(
 
       load(
         script.src,
-        content => {
+        (content) => {
           result[i].loaded = true;
           result[i].content = content;
           check();

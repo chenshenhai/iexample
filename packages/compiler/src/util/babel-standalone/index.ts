@@ -16,7 +16,7 @@ import { runScripts } from './transformScriptTags';
 
 const isArray =
   Array.isArray ||
-  (arg => Object.prototype.toString.call(arg) === '[object Array]');
+  ((arg) => Object.prototype.toString.call(arg) === '[object Array]');
 
 function loadBuiltin(builtinTable: Record<string, unknown>, name: any) {
   if (isArray(name) && typeof name[0] === 'string') {

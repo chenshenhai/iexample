@@ -93,6 +93,10 @@ export const parseToAMDModule = (
             depNames.push(spec?.local?.name);
           }
         });
+      } else if (item?.specifiers?.length === 0) {
+        // import 'xxxxxxx'
+        const tempName = createTempName('');
+        depNames.push(tempName);
       }
     } else if (item?.type === 'ExportDefaultDeclaration') {
       // export default xxx

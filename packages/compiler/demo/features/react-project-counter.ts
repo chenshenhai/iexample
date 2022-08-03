@@ -5,8 +5,12 @@ import codeReactUtilAdd from './codes/react/counter/util/add?raw';
 import codeReactUtilAdd2 from './codes/react/counter/util/add2?raw';
 import codeReactApp from './codes/react/counter/app?raw';
 import tpl from './tpl.html?raw';
-import { ReactProjectCompiler, parseCompiledJsCodeList, parseCompiledCssCodeList } from '../../src';
-import type { CodeDirectory } from '@iexample/types'
+import {
+  ReactProjectCompiler,
+  parseCompiledJsCodeList,
+  parseCompiledCssCodeList
+} from '../../src';
+import type { CodeDirectory } from '@iexample/types';
 
 const dir: CodeDirectory = [
   {
@@ -20,8 +24,8 @@ const dir: CodeDirectory = [
         type: 'file',
         content: codeReactUtilAdd,
         codeType: 'react',
-        fileType: 'typescript',
-      },
+        fileType: 'typescript'
+      }
     ]
   },
   {
@@ -35,8 +39,16 @@ const dir: CodeDirectory = [
         type: 'file',
         content: codeReactLibCounter,
         codeType: 'react',
-        fileType: 'typescript',
+        fileType: 'typescript'
       },
+      {
+        path: '@/lib/log.ts',
+        name: 'log.ts',
+        type: 'file',
+        content: codeReactLibCounter,
+        codeType: 'react',
+        fileType: 'typescript'
+      }
     ]
   },
   {
@@ -45,40 +57,54 @@ const dir: CodeDirectory = [
     type: 'file',
     content: codeReactApp,
     codeType: 'react',
-    fileType: 'typescript',
-  },
-]
+    fileType: 'typescript'
+  }
+];
 
 function main() {
-
   const compiler = new ReactProjectCompiler();
   compiler.setFiles(dir);
   compiler.setEntryPath('@/app.tsx');
   let compiledFiles = compiler.compile();
 
   // update file
-  compiledFiles = compiler.updateFileContent('@/util/add.ts', codeReactUtilAdd2);
-   
+  compiledFiles = compiler.updateFileContent(
+    '@/util/add.ts',
+    codeReactUtilAdd2
+  );
+
   console.log('compiledFiles ====', compiledFiles);
 
-  const jsList = parseCompiledJsCodeList(compiledFiles)
-  const cssList = parseCompiledCssCodeList(compiledFiles)
+  const jsList = parseCompiledJsCodeList(compiledFiles);
+  const cssList = parseCompiledCssCodeList(compiledFiles);
 
-  console.log('cssList ===', cssList)
-   
-  const html = tpl.replace('<!--INJECT_STYLE-->', `
+  console.log('cssList ===', cssList);
+
+  const html = tpl
+    .replace(
+      '<!--INJECT_STYLE-->',
+      `
   <style>
   ${cssList.join('\n')}
   </style>
-  `).replace('<!--INJECT_SCRIPT_LIB-->', `
+  `
+    )
+    .replace(
+      '<!--INJECT_SCRIPT_LIB-->',
+      `
   <script>
   ${defineLib}
   </script>
-  `).replace('<!--INJECT_SCRIPT-->', `
+  `
+    )
+    .replace(
+      '<!--INJECT_SCRIPT-->',
+      `
   <script type="module">
   ${jsList.join('\n')}
   </script> 
-  `)
+  `
+    );
   const iframe = document.createElement('iframe');
   iframe.srcdoc = html;
 
@@ -86,5 +112,4 @@ function main() {
   app?.appendChild(iframe);
 }
 
-
-main()
+main();

@@ -6,29 +6,14 @@ import type {
   CodeFolder
 } from '@iexample/types';
 import { compileReactFile } from './react-file';
-import { compileCodeToAMD } from './amd';
+import { compileAstToAMD, compileCodeToAMD } from './amd';
 // import { transform } from '../util/babel-standalone/babel';
 import { getFolderPath } from '../util/path';
 import { sortProjectCompiledFiles, sortProjectPathList } from './sort';
 import type { ModuleInfo } from './sort';
 // import { filterCssFiles } from './filter';
-
-function getAllFilePaths(dir: CodeDirectory) {
-  const paths: string[] = [];
-  const _read = (file: CodeFile | CodeFolder) => {
-    if (file.type === 'file') {
-      paths.push(file.path);
-    } else if (file.type === 'folder') {
-      file.children?.forEach((item) => {
-        _read(item);
-      });
-    }
-  };
-  dir.forEach((item: CodeFile | CodeFolder) => {
-    _read(item);
-  });
-  return paths;
-}
+import { flatDirectoryToMap } from '../util/project';
+import { parseJsToAst } from '../ast/js';
 
 export const compileReactProject = (
   dir: CodeDirectory,
@@ -38,7 +23,8 @@ export const compileReactProject = (
 ): CodeCompiledFiles => {
   const compiledList: CodeCompiledFiles = [];
   const modInfos: ModuleInfo[] = [];
-  const allFilePaths = getAllFilePaths(dir);
+  const allFileMap = flatDirectoryToMap(dir);
+  const allFilePaths: string[] = Object.keys(allFileMap);
 
   const _compileFile = (file: CodeFile | CodeFolder) => {
     if (file.type === 'file') {
@@ -48,7 +34,8 @@ export const compileReactProject = (
           const reactResult = compileReactFile(file.content, {
             filename: file.name
           });
-          const amdResult = compileCodeToAMD(reactResult.code, {
+          const jsAst = parseJsToAst(reactResult.code);
+          const amdResult = compileAstToAMD(jsAst.ast, {
             id: file.path,
             filename: file.name,
             baseFolderPath: getFolderPath(file.path),

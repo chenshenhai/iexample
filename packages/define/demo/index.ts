@@ -3,7 +3,7 @@ import define from '../src';
 // @ts-ignore
 window.define = define;
 
-const appId = "@/components/app"
+const appId = '@/components/app';
 
 // define('react', () => {
 //   // @ts-ignore
@@ -15,27 +15,27 @@ const appId = "@/components/app"
 //   return window.ReactDOM;
 // })
 
-define(appId, [
-  'react', 
-  // 'aaaa',
-  'a/b/hello.css'
-], (React) => {
-  const App = () => {
-    return React.createElement(
-      'div',
-      { className: 'box' },
-      React.createElement(
-        'h1',
+define(
+  appId,
+  [
+    'react',
+    // 'aaaa',
+    'a/b/hello.css'
+  ],
+  (React) => {
+    const App = () => {
+      return React.createElement(
+        'div',
         { className: 'box' },
-        "Hello World!"
-      )
-    )
+        React.createElement('h1', { className: 'box' }, 'Hello World!')
+      );
+    };
+    return App;
   }
-  return App
-})
+);
 
 define(['react', 'react-dom', appId], (React, ReactDOM, App) => {
   const root = ReactDOM.createRoot(document.querySelector('#app'));
-  root.render(React.createElement(App, {}))
+  root.render(React.createElement(App, {}));
   // console.log(React, ReactDOM, App)
-})
+});

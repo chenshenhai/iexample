@@ -88,7 +88,7 @@ async function emit(name: string) {
   let content: any = undefined;
 
   if (!module) {
-    console.warn(`Module ${name} is not defined!`);
+    console.warn(`Module "${name}" is not defined!`);
     return null;
   }
 
@@ -130,7 +130,11 @@ async function emit(name: string) {
             console.warn(err);
             defModule = null;
           }
-          modStorage[depName].isLoaded = true;
+          if (modStorage[depName]) {
+            modStorage[depName].isLoaded = true;
+          } else {
+            console.warn(`Module "${depName}" is not defined!`);
+          }
           ctx.contentList.push(defModule);
           await next();
         });

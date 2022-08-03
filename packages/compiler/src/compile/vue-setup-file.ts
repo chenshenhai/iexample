@@ -68,7 +68,6 @@ function compileTpl(
   opts: Required<CompileOptions>
 ): CompileResult {
   const mainTpl = extractCode(source, { type: 'template' }) || '';
-  console.log('opts ====', opts);
   const tplCode = compileTemplate({
     id: opts.id,
     source: mainTpl,

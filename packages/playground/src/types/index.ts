@@ -1,10 +1,15 @@
-import type CodeMirror from "codemirror";
+import type CodeMirror from 'codemirror';
 
-export type { CodeType, CodeFileType, CodeFile, CodeDirectory } from '@iexample/types';
+export type {
+  CodeType,
+  CodeFileType,
+  CodeFile,
+  CodeDirectory
+} from '@iexample/types';
 
 export type ICodeEditor = typeof CodeMirror & {};
 
-export type PlaygroundTheme = "light" | "dark";
+export type PlaygroundTheme = 'light' | 'dark';
 
 // export type CodeType =
 //   | "javascript"
@@ -29,7 +34,7 @@ export type PlaygroundTheme = "light" | "dark";
 
 // export type CodeDirectory = Array<CodeFile>;
 
-export type IResultStatus = "LOADING" | "LOADED" | "NOT_FOUND" | "NOT_FINISHED";
+export type IResultStatus = 'LOADING' | 'LOADED' | 'NOT_FOUND' | 'NOT_FINISHED';
 
 export interface DocFile {
   name: string;

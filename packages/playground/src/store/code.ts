@@ -1,5 +1,5 @@
-import { reactive } from "vue";
-import type { CodeDirectory, CodeFile } from "../types";
+import { reactive } from 'vue';
+import type { CodeDirectory, CodeFile } from '../types';
 
 export interface StoreCode {
   codeDirectory: CodeDirectory;
@@ -12,5 +12,5 @@ export const storeCode = reactive<StoreCode>({
   codeDirectory: [],
   currentCodeFilePath: null,
   currentCodeFile: null,
-  entryCodeFilePath: null,
+  entryCodeFilePath: null
 });

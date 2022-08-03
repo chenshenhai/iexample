@@ -6,63 +6,67 @@ export const getConst = (name: string, value: any) => {
         type: 'VariableDeclarator',
         id: {
           type: 'Identifier',
-          name: name,
+          name: name
         },
-        init: value,
-      },
+        init: value
+      }
     ],
-    kind: 'const',
+    kind: 'const'
   };
 };
 
-export const getConstProp = (name: string, objectName: string, propName: string) => {
+export const getConstProp = (
+  name: string,
+  objectName: string,
+  propName: string
+) => {
   return {
-    'type': 'VariableDeclaration',
-    'declarations': [
+    type: 'VariableDeclaration',
+    declarations: [
       {
-        'type': 'VariableDeclarator',
-        'id': {
-          'type': 'Identifier',
-          'name': name
+        type: 'VariableDeclarator',
+        id: {
+          type: 'Identifier',
+          name: name
         },
-        'init': {
-          'type': 'MemberExpression',
-          'object': {
-            'type': 'Identifier',
-            'name': objectName
+        init: {
+          type: 'MemberExpression',
+          object: {
+            type: 'Identifier',
+            name: objectName
           },
-          'computed': false,
-          'property': {
-            'type': 'Identifier',
-            'name': propName
+          computed: false,
+          property: {
+            type: 'Identifier',
+            name: propName
           }
         }
       }
     ],
-    'kind': 'const'
-  }
-}
+    kind: 'const'
+  };
+};
 
 export const getObjectFunc = (name: string, params: any[], body: any) => {
   return {
-    'type': 'ObjectMethod',
-    'method': true,
-    'key': {
-      'type': 'Identifier',
-      'name': name
+    type: 'ObjectMethod',
+    method: true,
+    key: {
+      type: 'Identifier',
+      name: name
     },
-    'computed': false,
-    'kind': 'method',
-    'id': null,
-    'generator': false,
-    'async': false,
-    'params': params,
-    'body': {
-      'type': 'BlockStatement',
-      'body': body,
-      'directives': []
+    computed: false,
+    kind: 'method',
+    id: null,
+    generator: false,
+    async: false,
+    params: params,
+    body: {
+      type: 'BlockStatement',
+      body: body,
+      directives: []
     }
-  }
+  };
 };
 
 export const getObjectPreporty = (name: string, valueName: string) => {
@@ -71,14 +75,14 @@ export const getObjectPreporty = (name: string, valueName: string) => {
     method: false,
     key: {
       type: 'Identifier',
-      name: name,
+      name: name
     },
     computed: false,
     shorthand: false,
     value: {
       type: 'Identifier',
-      name: valueName,
-    },
+      name: valueName
+    }
   };
 };
 
@@ -87,75 +91,78 @@ export const getReturn = (name: string) => {
     type: 'ReturnStatement',
     argument: {
       type: 'Identifier',
-      name: name,
-    },
+      name: name
+    }
   };
 };
 
-
 export const getDefaultExport = (name: string) => {
   return {
-    'type': 'ExportDefaultDeclaration',
-    'declaration': {
-      'type': 'Identifier',
-      'name': name
+    type: 'ExportDefaultDeclaration',
+    declaration: {
+      type: 'Identifier',
+      name: name
     }
-  }
-}
+  };
+};
 
 export const getString = (value: string) => {
   return {
     type: 'StringLiteral',
-    value,
-  }
-}
+    value
+  };
+};
 
 export const getEmptyObject = (name: string) => {
   return {
-    'type': 'VariableDeclaration',
-    'declarations': [
+    type: 'VariableDeclaration',
+    declarations: [
       {
-        'type': 'VariableDeclarator',
-        'id': {
-          'type': 'Identifier',
-          'name': name
+        type: 'VariableDeclarator',
+        id: {
+          type: 'Identifier',
+          name: name
         },
-        'init': {
-          'type': 'ObjectExpression',
-          'properties': []
+        init: {
+          type: 'ObjectExpression',
+          properties: []
         }
       }
     ],
-    'kind': 'const'
-  }
-}
+    kind: 'const'
+  };
+};
 
 export const getIdentifier = (name: string) => {
   return {
-    'type': 'Identifier',
-    'name': name
-  }
-}
+    type: 'Identifier',
+    name: name
+  };
+};
 
-export const getObjectPropertyExpression = (objName: string, propertyName: string, value: any) => {
+export const getObjectPropertyExpression = (
+  objName: string,
+  propertyName: string,
+  value: any
+) => {
   return {
-    'type': 'ExpressionStatement',
-    'expression': {
-      'type': 'AssignmentExpression',
-      'operator': '=',
-      'left': {
-        'type': 'MemberExpression',
-        'object': {
-          'type': 'Identifier',
-          'name': objName
+    type: 'ExpressionStatement',
+    expression: {
+      type: 'AssignmentExpression',
+      operator: '=',
+      left: {
+        type: 'MemberExpression',
+        object: {
+          type: 'Identifier',
+          name: objName
         },
-        'computed': false,
-        'property': {
-          'type': 'Identifier',
-          'name': propertyName
+        computed: false,
+        property: {
+          type: 'Identifier',
+          name: propertyName
         }
       },
-      'right': value,
+      right: value
     }
-  }
-}
+  };
+};

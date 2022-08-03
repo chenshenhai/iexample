@@ -3,17 +3,17 @@
   <div
     :class="{
       'preview-container': props.status === 'LOADED',
-      'preview-hide': props.status !== 'LOADED',
+      'preview-hide': props.status !== 'LOADED'
     }"
     ref="container"
   ></div>
 </template>
 
 <script setup lang="ts">
-import type { IResultStatus } from "../../types";
-import { ref, onMounted, onUnmounted, watch } from "vue";
-import { PreviewProxy } from "./proxy";
-import ResultStatus from "./result-status.vue";
+import type { IResultStatus } from '../../types';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { PreviewProxy } from './proxy';
+import ResultStatus from './result-status.vue';
 
 const props = defineProps<{
   status: IResultStatus;
@@ -30,7 +30,7 @@ let proxy: PreviewProxy;
 // create sandbox on mount
 onMounted(() => {
   watch(props, () => {
-    createSandbox(props.source || "");
+    createSandbox(props.source || '');
   });
 });
 
@@ -44,18 +44,18 @@ function createSandbox(source: string) {
     container.value.removeChild(sandbox);
   }
 
-  sandbox = document.createElement("iframe");
+  sandbox = document.createElement('iframe');
   sandbox.setAttribute(
-    "sandbox",
+    'sandbox',
     [
-      "allow-forms",
-      "allow-modals",
-      "allow-pointer-lock",
-      "allow-popups",
-      "allow-same-origin",
-      "allow-scripts",
-      "allow-top-navigation-by-user-activation",
-    ].join(" ")
+      'allow-forms',
+      'allow-modals',
+      'allow-pointer-lock',
+      'allow-popups',
+      'allow-same-origin',
+      'allow-scripts',
+      'allow-top-navigation-by-user-activation'
+    ].join(' ')
   );
 
   sandbox.srcdoc = source;
@@ -72,38 +72,38 @@ function createPreviewProxy(sandbox: HTMLIFrameElement): PreviewProxy {
       const msg =
         event.value instanceof Error ? event.value.message : event.value;
       if (
-        msg.includes("Failed to resolve module specifier") ||
-        msg.includes("Error resolving module specifier")
+        msg.includes('Failed to resolve module specifier') ||
+        msg.includes('Error resolving module specifier')
       ) {
         runtimeError.value =
-          msg.replace(/\. Relative references must.*$/, "") +
-          `.\nTip: add an "import-map.json" file to specify import paths for dependencies.`;
+          msg.replace(/\. Relative references must.*$/, '') +
+          '.\nTip: add an "import-map.json" file to specify import paths for dependencies.';
       } else {
         runtimeError.value = event.value;
       }
     },
     on_unhandled_rejection: (event: any) => {
       let error = event.value;
-      if (typeof error === "string") {
+      if (typeof error === 'string') {
         error = { message: error };
       }
-      runtimeError.value = "Uncaught (in promise): " + error.message;
+      runtimeError.value = 'Uncaught (in promise): ' + error.message;
     },
     on_console: (log: any) => {
       if (log.duplicate) {
         return;
       }
-      if (log.level === "error") {
+      if (log.level === 'error') {
         if (log.args[0] instanceof Error) {
           runtimeError.value = log.args[0].message;
         } else {
           runtimeError.value = log.args[0];
         }
-      } else if (log.level === "warn") {
-        if (log.args[0].toString().includes("[Vue warn]")) {
+      } else if (log.level === 'warn') {
+        if (log.args[0].toString().includes('[Vue warn]')) {
           runtimeWarning.value = log.args
-            .join("")
-            .replace(/\[Vue warn\]:/, "")
+            .join('')
+            .replace(/\[Vue warn\]:/, '')
             .trim();
         }
       }
@@ -116,7 +116,7 @@ function createPreviewProxy(sandbox: HTMLIFrameElement): PreviewProxy {
     },
     on_console_group_collapsed: (action: any) => {
       // group_logs(action.label, true);
-    },
+    }
   });
 }
 </script>

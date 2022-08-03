@@ -13,12 +13,12 @@
 </template>
 
 <script setup lang="ts">
-import { toRaw } from "vue";
-import type { TreeData, TreeDataItem } from "./types";
-import TreeItem from "./tree-item.vue";
+import { toRaw } from 'vue';
+import type { TreeData, TreeDataItem } from './types';
+import TreeItem from './tree-item.vue';
 
 const emit =
-  defineEmits<(e: "selectFile" | "expandTree", value: any) => void>();
+  defineEmits<(e: 'selectFile' | 'expandTree', value: any) => void>();
 
 const props = defineProps<{
   data: TreeData;
@@ -28,11 +28,11 @@ const props = defineProps<{
 
 const select = (node: TreeDataItem) => {
   if (!(node.children && node.children.length > 0)) {
-    emit("selectFile", toRaw(node));
+    emit('selectFile', toRaw(node));
   }
 };
 const expandTree = (node: TreeDataItem) => {
-  emit("expandTree", toRaw(node));
+  emit('expandTree', toRaw(node));
 };
 </script>
 

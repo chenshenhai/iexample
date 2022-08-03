@@ -4,7 +4,8 @@
       <div>Left</div>
       <div class="view-switch-tablist">
         <div
-          v-for="item in tabs"
+          v-for="(item, index) in tabs"
+          v-bind:key="index"
           class="view-switch-tab"
           :class="{ active: item.key === state.activeTabKey }"
           @click="onSwicth(item.key)"
@@ -22,29 +23,29 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from "vue";
-import CodeView from "./code-view.vue";
-import MarkdownView from "./markdown-view.vue";
+import { reactive } from 'vue';
+import CodeView from './code-view.vue';
+import MarkdownView from './markdown-view.vue';
 
 const tabs = [
   {
-    name: "Demo",
-    key: "demo",
+    name: 'Demo',
+    key: 'demo'
   },
   {
-    name: "Markdown",
-    key: "markdown",
-  },
+    name: 'Markdown',
+    key: 'markdown'
+  }
 ];
 
 const state = reactive<{
   activeTabKey: string;
 }>({
-  activeTabKey: tabs[0].key,
+  activeTabKey: tabs[0].key
 });
 
 const onSwicth = (key: string) => {
-  console.log("key ===", key);
+  console.log('key ===', key);
   state.activeTabKey = key;
 };
 </script>

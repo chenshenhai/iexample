@@ -11,7 +11,8 @@
     "@babel/preset-react": "^7.17.12",
     "@babel/preset-typescript": "^7.17.12",
     "@babel/standalone": "^7.18.5",
-    "@iexample/define": "0.0.0"
+    "@iexample/define": "0.0.0",
+    "@iexample/types": "0.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",

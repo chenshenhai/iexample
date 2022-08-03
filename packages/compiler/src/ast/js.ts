@@ -29,32 +29,33 @@ interface CompileResult {
 export function parseJsToAst(code: string): CompileResult {
   const result = transform(code, {
     ast: true,
-    presets: [
-      'react'
-    ]
-  })
+    presets: ['react']
+  });
   return {
     code,
     ast: result?.ast?.program?.body || []
   };
 }
 
-
 // @ts-ignore
 export function generateAstToJs(ast: any[]): string {
-  const result = transformFromAst({
-    type: "File",
-    program: {
-      type: "Program",
-      body: ast,
-      directives: [],
-      sourceType: "module",
-      sourceFile: '',
+  const result = transformFromAst(
+    {
+      type: 'File',
+      program: {
+        type: 'Program',
+        body: ast,
+        directives: [],
+        sourceType: 'module',
+        sourceFile: ''
+      }
+    },
+    '',
+    {
+      ast: true,
+      code: true
     }
-  },  '', {
-    ast: true,
-    code: true,
-  })
+  );
   // @ts-ignore
   const code = result?.code || '';
   return code;

@@ -9,13 +9,13 @@
 </template>
 
 <script lang="ts" setup>
-import { toRaw } from "vue";
-import FileTree from "../components/tree/file-tree.vue";
-import { storeCode } from "../store/code";
-import type { CodeFile } from "../types";
+import { toRaw } from 'vue';
+import FileTree from '../components/tree/file-tree.vue';
+import { storeCode } from '../store/code';
+import type { CodeFile } from '../types';
 
 const onSelect = (data: CodeFile) => {
-  if (data.type === "file") {
+  if (data.type === 'file') {
     storeCode.currentCodeFile = toRaw(data);
   }
 };

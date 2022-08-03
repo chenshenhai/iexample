@@ -1,12 +1,12 @@
-import { createApp } from "vue";
-import { Playground } from "@iexample/playground";
-import "@iexample/playground/dist/style.css";
-import "./index.less";
+import { createApp } from 'vue';
+import { Playground } from '@iexample/playground';
+import '@iexample/playground/dist/style.css';
+import './index.less';
 
 const directory = [
   {
-    name: "index.js",
-    path: "/index.js",
+    name: 'index.js',
+    path: '/index.js',
     content: `
 let a = 1;
 let b = 2;
@@ -15,12 +15,12 @@ function add(a, b) {
 }
 console.log(add(a, b))
 `,
-    type: "file",
-    fileType: "javascript",
+    type: 'file',
+    fileType: 'javascript'
   },
   {
-    name: "index.css",
-    path: "/index.css",
+    name: 'index.css',
+    path: '/index.css',
     content: `
 html, body {
   margin: 0;
@@ -32,8 +32,8 @@ html, body {
   color: #666666;
 }
 `,
-    type: "file",
-    fileType: "css",
+    type: 'file',
+    fileType: 'css'
   },
   //   {
   //     name: 'index.html',
@@ -46,8 +46,8 @@ html, body {
   //     fileType: 'html',
   //   }
   {
-    name: "index.html",
-    path: "/index.html",
+    name: 'index.html',
+    path: '/index.html',
     content: `
 <html>
   <head>
@@ -60,23 +60,23 @@ html, body {
   <script src="./index.js"></script>
 </html>
 `,
-    type: "file",
-    fileType: "html",
-  },
+    type: 'file',
+    fileType: 'html'
+  }
 ];
 
 function render() {
   const app = createApp(Playground, {
-    theme: "dark",
+    theme: 'dark',
     directory,
-    currentFilePath: "./index.html",
-    entryPath: "/index.html",
+    currentFilePath: './index.html',
+    entryPath: '/index.html'
   });
-  app.mount("#app");
+  app.mount('#app');
 }
 
 const iExample = {
-  render,
+  render
 };
 
-export default iExample
+export default iExample;

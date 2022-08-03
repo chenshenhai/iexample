@@ -1,11 +1,11 @@
-import type { CodeDirectory, DocDirectory } from "../types";
+import type { CodeDirectory, DocDirectory } from '../types';
 
 export function formatPath(path: string): string {
-  if (path.startsWith("./")) {
-    return path.replace(/^.\//, "");
+  if (path.startsWith('./')) {
+    return path.replace(/^.\//, '');
   }
-  if (path.startsWith("/")) {
-    return path.replace(/^\//, "");
+  if (path.startsWith('/')) {
+    return path.replace(/^\//, '');
   }
   return path;
 }

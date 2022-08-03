@@ -1,0 +1,93 @@
+<html>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "vue": "https://unpkg.com/vue@3.2.37/dist/vue.runtime.esm-browser.js",
+        "react": "https://jspm.dev/react",
+        "react-dom": "https://jspm.dev/react-dom"
+      }
+    }
+  </script>
+  <head>
+    <script src="./test.ts" type="module"></script>
+    <!-- <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script> -->
+    <style>
+      html,body {
+        margin: 0;
+        padding: 0;
+        background: #f0f0f0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <!--INJECT_STYLE-->
+    
+    
+  
+  </head>
+  <body>
+
+    <div id="app">Loading...</div>
+    
+    
+  
+  <script type="module">
+    define("@/util/add.ts", [], function () {
+  const __module__ = {};
+
+  __module__.add = num => {
+    return num + 1;
+  };
+
+  return __module__;
+});
+  </script>  
+    
+
+  <script type="module">
+    define("@/lib/conter.tsx", ["react", "@/util/add.ts"], function (React, __util_add_ts_4) {
+  const useState = React.useState;
+  const add = __util_add_ts_4.add;
+
+  const Counter = () => {
+    const [count, setCount] = useState(0);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "hello"
+    }, /*#__PURE__*/React.createElement("div", null, count), /*#__PURE__*/React.createElement("button", {
+      onClick: () => {
+        setCount(add(count));
+      }
+    }, "Add +"));
+  };
+
+  const __module__ = {};
+  __module__.default = Counter;
+  return __module__;
+});
+  </script>  
+    
+
+  <script type="module">
+    define(["react", "react-dom", "@/lib/counter.tsx"], function (__React_0, __react_dom_1, __Counter_2) {
+  const React = __React_0.default;
+  const createRoot = __react_dom_1.createRoot;
+  const Counter = __Counter_2.default;
+
+  const App = () => {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "main"
+    }, /*#__PURE__*/React.createElement("div", null, "Hello Counter"), /*#__PURE__*/React.createElement(Counter, null));
+  };
+
+  const root = createRoot(document.querySelector('#app'));
+  root.render( /*#__PURE__*/React.createElement(App, null));
+});
+  </script>  
+    
+  
+  </body>
+</html>
+
+

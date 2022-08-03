@@ -34,17 +34,16 @@ function needDefineId(ast: any) {
   return false;
 }
 
-export function compileCodeToAMD(
-  code: string,
+export function compileAstToAMD(
+  ast: any[],
   opts?: CompileOptions & {
     baseFolderPath?: string;
     resolveImportPath?: boolean;
     allFilePaths?: string[];
   }
 ): CompileResult {
-  const target = parseJsToAst(code);
-  const needId = needDefineId(target.ast);
-  let targetAst = target.ast;
+  const needId = needDefineId(ast);
+  let targetAst = ast;
   if (
     opts?.resolveImportPath === true &&
     typeof opts?.baseFolderPath === 'string'
@@ -69,4 +68,16 @@ export function compileCodeToAMD(
     code: resultCode,
     ast: amdAst
   };
+}
+
+export function compileCodeToAMD(
+  code: string,
+  opts?: CompileOptions & {
+    baseFolderPath?: string;
+    resolveImportPath?: boolean;
+    allFilePaths?: string[];
+  }
+): CompileResult {
+  const target = parseJsToAst(code);
+  return compileAstToAMD(target.ast, opts);
 }

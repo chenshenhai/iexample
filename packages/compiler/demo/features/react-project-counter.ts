@@ -4,6 +4,7 @@ import codeReactLibCounter from './codes/react/counter/lib/counter?raw';
 import codeReactUtilAdd from './codes/react/counter/util/add?raw';
 import codeReactUtilAdd2 from './codes/react/counter/util/add2?raw';
 import codeReactApp from './codes/react/counter/app?raw';
+import codeReactAppCss from './codes/react/counter/app.css?raw';
 import tpl from './tpl.html?raw';
 import {
   ReactProjectCompiler,
@@ -58,6 +59,14 @@ const dir: CodeDirectory = [
     content: codeReactApp,
     codeType: 'react',
     fileType: 'typescript'
+  },
+  {
+    path: '@/app.css',
+    name: 'app.css',
+    type: 'file',
+    content: codeReactAppCss,
+    codeType: 'css',
+    fileType: 'css'
   }
 ];
 

@@ -6,29 +6,15 @@ import type {
   CodeFolder
 } from '@iexample/types';
 import { compileReactFile } from './react-file';
-import { compileCodeToAMD } from './amd';
+import { compileAstToAMD, compileCodeToAMD } from './amd';
 // import { transform } from '../util/babel-standalone/babel';
-import { getFolderPath } from '../util/path';
+import { getFolderPath, joinPath } from '../util/path';
 import { sortProjectCompiledFiles, sortProjectPathList } from './sort';
 import type { ModuleInfo } from './sort';
 // import { filterCssFiles } from './filter';
-
-function getAllFilePaths(dir: CodeDirectory) {
-  const paths: string[] = [];
-  const _read = (file: CodeFile | CodeFolder) => {
-    if (file.type === 'file') {
-      paths.push(file.path);
-    } else if (file.type === 'folder') {
-      file.children?.forEach((item) => {
-        _read(item);
-      });
-    }
-  };
-  dir.forEach((item: CodeFile | CodeFolder) => {
-    _read(item);
-  });
-  return paths;
-}
+import { flatDirectoryToMap } from '../util/project';
+import { parseJsToAst } from '../ast/js';
+import { filterCssFiles } from './filter';
 
 export const compileReactProject = (
   dir: CodeDirectory,
@@ -38,20 +24,27 @@ export const compileReactProject = (
 ): CodeCompiledFiles => {
   const compiledList: CodeCompiledFiles = [];
   const modInfos: ModuleInfo[] = [];
-  const allFilePaths = getAllFilePaths(dir);
+  const allFileMap = flatDirectoryToMap(dir);
+  const allFilePaths: string[] = Object.keys(allFileMap);
 
   const _compileFile = (file: CodeFile | CodeFolder) => {
     if (file.type === 'file') {
+      let depCssPaths: string[] = [];
       let compiledContent: string | null = null;
       if (['react', 'javascript', 'typescript'].includes(file.codeType)) {
         try {
           const reactResult = compileReactFile(file.content, {
             filename: file.name
           });
-          const amdResult = compileCodeToAMD(reactResult.code, {
+          const jsAst = parseJsToAst(reactResult.code);
+          const baseFolderPath = getFolderPath(file.path);
+          const cssPaths = filterCssFiles(jsAst.ast);
+
+          depCssPaths = cssPaths.map((p) => joinPath(baseFolderPath, p));
+          const amdResult = compileAstToAMD(jsAst.ast, {
             id: file.path,
             filename: file.name,
-            baseFolderPath: getFolderPath(file.path),
+            baseFolderPath,
             resolveImportPath: true,
             allFilePaths
           });
@@ -104,6 +97,23 @@ export const compileReactProject = (
         fileType: file.fileType,
         compiledContent: compiledContent
       };
+      if (depCssPaths.length > 0) {
+        compiledFile.additionalFiles = [];
+        depCssPaths.forEach((cssPath: string) => {
+          const cssFile = allFileMap[cssPath];
+          if (cssFile) {
+            compiledFile.additionalFiles?.push({
+              path: cssFile.path,
+              name: cssFile.name,
+              type: 'file',
+              content: cssFile.content,
+              codeType: 'css',
+              fileType: cssFile.fileType,
+              compiledContent: cssFile.content
+            });
+          }
+        });
+      }
       compiledList.push(compiledFile);
     } else if (file.type === 'folder') {
       file.children?.forEach((item) => {

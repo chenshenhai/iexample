@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './lib/log';
 import ReactDOM, { createRoot } from 'react-dom';
 import Counter from './lib/counter';
-import './index.css';
+import './app.css';
 
 const App = () => {
   return (

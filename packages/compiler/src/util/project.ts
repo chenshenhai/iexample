@@ -26,3 +26,41 @@ export function updateFileContent(
   });
   return dir;
 }
+
+export function flatDirectory(dir: CodeDirectory): CodeFile[] {
+  const files: CodeFile[] = [];
+  const _read = (file: CodeFile | CodeFolder) => {
+    if (file.type === 'file') {
+      files.push({ ...file });
+    } else if (file.type === 'folder') {
+      file.children?.forEach((item) => {
+        _read(item);
+      });
+    }
+  };
+  dir.forEach((item: CodeFile | CodeFolder) => {
+    _read(item);
+  });
+  return files;
+}
+
+export function flatDirectoryToMap(dir: CodeDirectory): {
+  [path: string]: CodeFile;
+} {
+  const fileMap: {
+    [path: string]: CodeFile;
+  } = {};
+  const _read = (file: CodeFile | CodeFolder) => {
+    if (file.type === 'file') {
+      fileMap[file.path] = { ...file };
+    } else if (file.type === 'folder') {
+      file.children?.forEach((item) => {
+        _read(item);
+      });
+    }
+  };
+  dir.forEach((item: CodeFile | CodeFolder) => {
+    _read(item);
+  });
+  return fileMap;
+}

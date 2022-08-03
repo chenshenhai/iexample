@@ -1,15 +1,19 @@
-import type { CodeProjectType, CodeProjectCompiler, CodeDirectory, CodeCompiledFiles } from '@iexample/types';
+import type {
+  CodeProjectType,
+  CodeProjectCompiler,
+  CodeDirectory,
+  CodeCompiledFiles
+} from '@iexample/types';
 import { compileReactProject } from '../compile/react-project';
 import { updateFileContent } from '../util/project';
 
 export class ReactProjectCompiler implements CodeProjectCompiler<'react'> {
-
-  private _entryPath: string = '';
+  private _entryPath = '';
   private _dir: CodeDirectory = [];
   private _compiledFiles: CodeCompiledFiles = [];
 
   getType() {
-    const type: CodeProjectType = 'react'
+    const type: CodeProjectType = 'react';
     return type;
   }
 
@@ -32,5 +36,4 @@ export class ReactProjectCompiler implements CodeProjectCompiler<'react'> {
     updateFileContent(this._dir, path, content);
     return this.compile();
   }
-
 }

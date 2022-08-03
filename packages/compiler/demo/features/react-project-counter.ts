@@ -5,7 +5,7 @@ import codeReactUtilAdd from './codes/react/counter/util/add?raw';
 import codeReactUtilAdd2 from './codes/react/counter/util/add2?raw';
 import codeReactApp from './codes/react/counter/app?raw';
 import tpl from './tpl.html?raw';
-import { ReactProjectCompiler } from '../../src';
+import { ReactProjectCompiler, parseCompiledJsCodeList, parseCompiledCssCodeList } from '../../src';
 import type { CodeDirectory } from '@iexample/types'
 
 const dir: CodeDirectory = [
@@ -54,23 +54,30 @@ function main() {
   const compiler = new ReactProjectCompiler();
   compiler.setFiles(dir);
   compiler.setEntryPath('@/app.tsx');
-  let compiledDir = compiler.compile();
+  let compiledFiles = compiler.compile();
 
   // update file
-  compiledDir = compiler.updateFileContent('@/util/add.ts', codeReactUtilAdd2);
+  compiledFiles = compiler.updateFileContent('@/util/add.ts', codeReactUtilAdd2);
    
-  const html = tpl.replace('<!--INJECT_SCRIPT_LIB-->', `
-    <script>
-    ${defineLib}
-    </script>
+  console.log('compiledFiles ====', compiledFiles);
+
+  const jsList = parseCompiledJsCodeList(compiledFiles)
+  const cssList = parseCompiledCssCodeList(compiledFiles)
+
+  console.log('cssList ===', cssList)
+   
+  const html = tpl.replace('<!--INJECT_STYLE-->', `
+  <style>
+  ${cssList.join('\n')}
+  </style>
+  `).replace('<!--INJECT_SCRIPT_LIB-->', `
+  <script>
+  ${defineLib}
+  </script>
   `).replace('<!--INJECT_SCRIPT-->', `
-  ${compiledDir.map((item, i) => {
-    return `
   <script type="module">
-    ${item.compiledContent}
-  </script>  
-    `
-  }).join('\n')}
+  ${jsList.join('\n')}
+  </script> 
   `)
   const iframe = document.createElement('iframe');
   iframe.srcdoc = html;

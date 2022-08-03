@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM, { createRoot } from 'react-dom';
 import Counter from './lib/counter';
+import './index.css';
 
 const App = () => {
   return (

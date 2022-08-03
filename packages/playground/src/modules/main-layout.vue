@@ -28,12 +28,12 @@
 </template>
 
 <script setup lang="ts">
-import LayoutColumn from "../components/layout-column.vue";
-import LayoutRow from "../components/layout-row.vue";
+import LayoutColumn from '../components/layout-column.vue';
+import LayoutRow from '../components/layout-row.vue';
 // import CodeView from './code-view.vue';
-import CodeList from "./code-list.vue";
-import DocList from "./doc-list.vue";
-import ViewSwitch from "./view-switch.vue";
+import CodeList from './code-list.vue';
+import DocList from './doc-list.vue';
+import ViewSwitch from './view-switch.vue';
 </script>
 
 <style scoped>

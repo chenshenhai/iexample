@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import type { IResultStatus } from "../../types";
+import type { IResultStatus } from '../../types';
 const props = defineProps<{
   status: IResultStatus;
 }>();

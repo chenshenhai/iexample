@@ -1,7 +1,3 @@
-export {
-  
-}
+export {};
 
-export const all: { [k: string]: any } = {
-
-}
+export const all: { [k: string]: any } = {};

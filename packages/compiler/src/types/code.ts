@@ -3,7 +3,7 @@ export interface CompileOptions {
   filename?: string;
 }
 
-export interface CompileVueScriptOptions extends CompileOptions{
+export interface CompileVueScriptOptions extends CompileOptions {
   ts?: boolean;
 }
 

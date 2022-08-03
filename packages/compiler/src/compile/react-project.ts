@@ -1,24 +1,29 @@
 import type {
-  CodeCompiledFiles, CodeCompiledFile, CodeDirectory, CodeFile, CodeFolder,
+  CodeCompiledFiles,
+  CodeCompiledFile,
+  CodeDirectory,
+  CodeFile,
+  CodeFolder
 } from '@iexample/types';
-import { compileReactFile, } from './react-file';
+import { compileReactFile } from './react-file';
 import { compileCodeToAMD } from './amd';
 // import { transform } from '../util/babel-standalone/babel';
 import { getFolderPath } from '../util/path';
 import { sortProjectCompiledFiles, sortProjectPathList } from './sort';
 import type { ModuleInfo } from './sort';
+import { filterCssFiles } from './filter';
 
-function getAllFilePaths(dir: CodeDirectory,) {
+function getAllFilePaths(dir: CodeDirectory) {
   const paths: string[] = [];
   const _read = (file: CodeFile | CodeFolder) => {
     if (file.type === 'file') {
       paths.push(file.path);
     } else if (file.type === 'folder') {
-      file.children?.forEach((item) => {
-        _read(item)
-      })
+      file.children?.forEach(item => {
+        _read(item);
+      });
     }
-  }
+  };
   dir.forEach((item: CodeFile | CodeFolder) => {
     _read(item);
   });
@@ -28,7 +33,7 @@ function getAllFilePaths(dir: CodeDirectory,) {
 export const compileReactProject = (
   dir: CodeDirectory,
   opts: {
-    entryPath: string,
+    entryPath: string;
   }
 ): CodeCompiledFiles => {
   const compiledList: CodeCompiledFiles = [];
@@ -40,28 +45,42 @@ export const compileReactProject = (
       let compiledContent: string | null = null;
       if (['react', 'javascript', 'typescript'].includes(file.codeType)) {
         try {
-          const reactResult = compileReactFile(file.content, { filename: file.name });
+          const reactResult = compileReactFile(file.content, {
+            filename: file.name
+          });
           const amdResult = compileCodeToAMD(reactResult.code, {
             id: file.path,
             filename: file.name,
             baseFolderPath: getFolderPath(file.path),
             resolveImportPath: true,
-            allFilePaths,
+            allFilePaths
           });
-          if (amdResult?.ast?.type === 'ExpressionStatement' && Array.isArray(amdResult?.ast?.expression?.arguments)) {
+          if (
+            amdResult?.ast?.type === 'ExpressionStatement' &&
+            Array.isArray(amdResult?.ast?.expression?.arguments)
+          ) {
             const info: ModuleInfo = {
               path: file.path,
               name: null,
               deps: []
-            }
+            };
             const args = amdResult.ast.expression.arguments;
             args.forEach((item: any) => {
-              if (item?.type === 'StringLiteral' && typeof item.value === 'string') {
+              if (
+                item?.type === 'StringLiteral' &&
+                typeof item.value === 'string'
+              ) {
                 info.name = item.value;
-              } else if (item?.type === 'ArrayExpression' && Array.isArray(item?.elements)) {
+              } else if (
+                item?.type === 'ArrayExpression' &&
+                Array.isArray(item?.elements)
+              ) {
                 item.elements.forEach((ele: any) => {
-                  if (ele?.type === 'StringLiteral' &&  typeof ele?.value === 'string') {
-                    info.deps.push(ele.value as string)
+                  if (
+                    ele?.type === 'StringLiteral' &&
+                    typeof ele?.value === 'string'
+                  ) {
+                    info.deps.push(ele.value as string);
                   } else {
                     info.deps.push(null);
                   }
@@ -83,21 +102,21 @@ export const compileReactProject = (
         content: file.content,
         codeType: file.codeType,
         fileType: file.fileType,
-        compiledContent: compiledContent,
-      }
+        compiledContent: compiledContent
+      };
       compiledList.push(compiledFile);
     } else if (file.type === 'folder') {
-      file.children?.forEach((item) => {
-        _compileFile(item)
-      })
+      file.children?.forEach(item => {
+        _compileFile(item);
+      });
     }
-  }
+  };
   dir.forEach((item: CodeFile | CodeFolder) => {
     _compileFile(item);
   });
 
   // reset index for compiled files;
   const needPathList = sortProjectPathList(opts.entryPath, modInfos);
-  const result = sortProjectCompiledFiles(compiledList, needPathList)
+  const result = sortProjectCompiledFiles(compiledList, needPathList);
   return result;
-}
+};

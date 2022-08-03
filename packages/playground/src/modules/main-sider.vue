@@ -13,9 +13,9 @@
 </template>
 
 <script lang="ts" setup>
-import IconCode from "@ant-design/icons-vue/CodeSandboxOutlined";
-import IconFileMarkdown from "@ant-design/icons-vue/FileMarkdownOutlined";
-import IconMenu from "@ant-design/icons-vue/MenuOutlined";
+import IconCode from '@ant-design/icons-vue/CodeSandboxOutlined';
+import IconFileMarkdown from '@ant-design/icons-vue/FileMarkdownOutlined';
+import IconMenu from '@ant-design/icons-vue/MenuOutlined';
 </script>
 
 <style lang="less" scoped>

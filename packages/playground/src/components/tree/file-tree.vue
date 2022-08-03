@@ -4,7 +4,7 @@
       class="iexample-file-item"
       v-for="item in state.directory"
       :class="{
-        active: state.currentFilePath === item.path,
+        active: state.currentFilePath === item.path
       }"
       @click="onClick(item)"
     >
@@ -19,10 +19,10 @@
 </template>
 
 <script lang="ts" setup>
-import { watch, reactive } from "vue";
-import IconFile from "@ant-design/icons-vue/FileOutlined";
-import type { CodeDirectory, CodeFile } from "../../types";
-import type { CodeFolder } from "@iexample/types";
+import { watch, reactive } from 'vue';
+import IconFile from '@ant-design/icons-vue/FileOutlined';
+import type { CodeDirectory, CodeFile } from '../../types';
+import type { CodeFolder } from '@iexample/types';
 
 const props = defineProps<{
   directory: CodeDirectory;
@@ -37,7 +37,7 @@ const state = reactive<{
   directory: CodeDirectory;
 }>({
   currentFilePath,
-  directory,
+  directory
 });
 
 const onClick = (data: CodeFile | CodeFolder) => {

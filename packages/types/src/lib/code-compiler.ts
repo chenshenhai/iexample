@@ -1,8 +1,6 @@
-import type {
-  CodeDirectory, CodeCompiledFiles,
-} from './code-file';
+import type { CodeDirectory, CodeCompiledFiles } from "./code-file";
 
-export type CodeProjectType = 'vue' | 'react';
+export type CodeProjectType = "vue" | "react";
 
 export interface CodeProjectCompiler<T extends CodeProjectType> {
   getType(): T;
@@ -16,4 +14,3 @@ export interface CodeProjectCompiler<T extends CodeProjectType> {
   // addFile(file: CodeFile): void;
   // deleteFile(path: string): void;
 }
-

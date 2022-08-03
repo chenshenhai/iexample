@@ -10,8 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import MainLayout from "./main-layout.vue";
-import MainSider from "./main-sider.vue";
+import MainLayout from './main-layout.vue';
+import MainSider from './main-sider.vue';
 
 const leftWidth = 50;
 const rightWidth = window.innerWidth - leftWidth;

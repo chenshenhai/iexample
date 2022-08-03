@@ -1,7 +1,7 @@
 export type CodeType =
   | 'react'
   | 'vue'
-  | 'javascript' 
+  | 'javascript'
   | 'typescript'
   | 'json'
   | 'html'
@@ -16,13 +16,12 @@ export type CodeFileType =
   | 'css'
   | 'plaintext';
 
-
 export interface CodeFile {
   path: string;
   name: string;
-  type: 'file'
+  type: 'file';
   content: string;
-  codeType: CodeType,
+  codeType: CodeType;
   fileType: CodeFileType;
 }
 
@@ -36,19 +35,18 @@ export interface CodeFolder {
 export interface CodeCompiledAdditionalFile {
   path: string;
   name: string;
-  type: 'file'
+  type: 'file';
   content: string;
-  compiledContent: string
-  codeType: 'css', // TODO
+  compiledContent: string;
+  codeType: 'css'; // TODO
   fileType: CodeFileType;
 }
 
 export interface CodeCompiledFile extends CodeFile {
-  compiledContent: string | null,
-  additionalFiles?: CodeCompiledAdditionalFile[],
+  compiledContent: string | null;
+  additionalFiles?: CodeCompiledAdditionalFile[];
 }
 
 export type CodeDirectory = Array<CodeFile | CodeFolder>;
-
 
 export type CodeCompiledFiles = Array<CodeCompiledFile>;

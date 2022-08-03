@@ -9,7 +9,7 @@
     <div
       class="tree-item-text"
       :class="{
-        active: !isFolder && selectedFilePath === itemData.path,
+        active: !isFolder && selectedFilePath === itemData.path
       }"
       @click="toggle"
     >
@@ -45,59 +45,59 @@
 
 <script lang="ts">
 // @ts-nocheck
-import IconDown from "@ant-design/icons-vue/DownOutlined";
-import IconRight from "@ant-design/icons-vue/RightOutlined";
-import IconFile from "@ant-design/icons-vue/FileOutlined";
-import type { TreeData } from "./types";
+import IconDown from '@ant-design/icons-vue/DownOutlined';
+import IconRight from '@ant-design/icons-vue/RightOutlined';
+import IconFile from '@ant-design/icons-vue/FileOutlined';
+import type { TreeData } from './types';
 
 export default {
-  name: "tree-item",
+  name: 'tree-item',
   components: {
-    "icon-down": IconDown,
-    "icon-right": IconRight,
-    "icon-file": IconFile,
+    'icon-down': IconDown,
+    'icon-right': IconRight,
+    'icon-file': IconFile
   },
   props: {
     itemData: {
       type: Object as unknown as TreeData,
-      required: false,
+      required: false
     },
     expandAll: {
       type: Boolean,
-      required: false,
+      required: false
     },
     selectedFilePath: {
       type: String,
-      required: false,
-    },
+      required: false
+    }
   },
   data() {
     return {
       expand: false,
-      checked: null,
+      checked: null
     };
   },
   computed: {
     isFolder() {
       return this.itemData.children && this.itemData.children.length > 0;
-    },
+    }
   },
   methods: {
     select(node: any) {
       this.checked = null;
       this.checked = this.itemData.path;
-      this.$emit("select", node);
+      this.$emit('select', node);
     },
     expandTree(node) {
       this.expand = true;
-      this.$emit("expandTree", node);
+      this.$emit('expandTree', node);
     },
     toggle() {
       if (this.isFolder) {
         this.expand = !this.expand;
       }
       this.select(this.itemData);
-    },
+    }
   },
   created() {
     this.expand = this.expandAll;
@@ -105,8 +105,8 @@ export default {
   watch: {
     expandAll(expandAll) {
       this.expand = expandAll;
-    },
-  },
+    }
+  }
 };
 </script>
 

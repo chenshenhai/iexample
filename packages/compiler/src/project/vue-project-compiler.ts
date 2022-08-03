@@ -1,15 +1,19 @@
-import type { CodeProjectType, CodeProjectCompiler, CodeDirectory, CodeCompiledFiles } from '@iexample/types';
+import type {
+  CodeProjectType,
+  CodeProjectCompiler,
+  CodeDirectory,
+  CodeCompiledFiles
+} from '@iexample/types';
 import { compileVueSetupProject } from '../compile/vue-setup-project';
 import { updateFileContent } from '../util/project';
 
 export class VueSetupProjectCompiler implements CodeProjectCompiler<'vue'> {
-
-  private _entryPath: string = '';
+  private _entryPath = '';
   private _dir: CodeDirectory = [];
   private _compiledFiles: CodeCompiledFiles = [];
 
   getType() {
-    const type: CodeProjectType = 'vue'
+    const type: CodeProjectType = 'vue';
     return type;
   }
 
@@ -32,5 +36,4 @@ export class VueSetupProjectCompiler implements CodeProjectCompiler<'vue'> {
     updateFileContent(this._dir, path, content);
     return this.compile();
   }
-
 }

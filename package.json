@@ -17,7 +17,7 @@
     "version": "vite-node ./scripts/version.ts",
     "release": "vite-node ./scripts/release.ts",
     "clear": "rm -rf ./node_modules && rm -rf ./pnpm-lock.yaml && rm -rf ./packages/*/dist/ && rm -rf ./packages/*/node_modules/ && rm -rf ./packages/*/pnpm-lock.yaml",
-    "lint": "eslint ./packages/*/src/ --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint ./packages/*/src/ --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts  --fix  --ignore-path .gitignore"
   },
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
@@ -41,6 +41,8 @@
     "chalk": "^5.0.1",
     "enquirer": "^2.3.6",
     "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.2.0",
     "execa": "^6.1.0",
     "glob": "^8.0.3",

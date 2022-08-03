@@ -11,7 +11,7 @@
       class="left"
       :style="{
         width: state.splitLeft + unit,
-        overflow: 'auto',
+        overflow: 'auto'
       }"
     >
       <slot name="left" />
@@ -21,7 +21,7 @@
       class="right"
       :style="{
         width: state.splitRight + unit,
-        overflow: 'auto',
+        overflow: 'auto'
       }"
     >
       <slot name="right" />
@@ -30,20 +30,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive } from 'vue';
 const props = defineProps<{
   defaultLeftWidth: number;
   onSplitChange?: (data: { left: number; right: number }) => void;
-  unit?: "px" | "%";
+  unit?: 'px' | '%';
 }>();
 
-const { defaultLeftWidth = 50, onSplitChange, unit = "px" } = props;
+const { defaultLeftWidth = 50, onSplitChange, unit = 'px' } = props;
 const container = ref<HTMLDivElement>();
 
 const state = reactive({
   dragging: false,
   splitLeft: defaultLeftWidth,
-  splitRight: -1,
+  splitRight: -1
 });
 
 function dragStart(e: MouseEvent) {
@@ -59,7 +59,7 @@ function dragMove(e: MouseEvent) {
     if (!(offsetX > 0 && offsetX < rect.width)) {
       return;
     }
-    if (unit === "%") {
+    if (unit === '%') {
       state.splitLeft = Math.floor((100 * offsetX) / rect.width);
       state.splitRight = 100 - state.splitLeft;
     } else {
@@ -69,7 +69,7 @@ function dragMove(e: MouseEvent) {
     onSplitChange &&
       onSplitChange({
         left: state.splitLeft,
-        right: state.splitRight,
+        right: state.splitRight
       });
   }
 }
@@ -91,7 +91,7 @@ function dragEnd() {
       pointer-events: none;
       &::after {
         position: absolute;
-        content: "";
+        content: '';
         top: 0;
         bottom: 0;
         left: 0;

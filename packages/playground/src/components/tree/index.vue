@@ -7,9 +7,9 @@
   />
 </template>
 <script setup lang="ts">
-import { reactive, onMounted } from "vue";
-import TreeView from "./tree-view.vue";
-import type { DocFile } from "../../types";
+import { reactive, onMounted } from 'vue';
+import TreeView from './tree-view.vue';
+import type { DocFile } from '../../types';
 
 const props = defineProps<{
   defaultData?: DocFile[];

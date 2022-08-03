@@ -1,4 +1,4 @@
-import type { DocDirectory, DocFile } from "../types";
+import type { DocDirectory, DocFile } from '../types';
 
 export function searchFileFormDocDirectory(
   path: string,

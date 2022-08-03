@@ -1,4 +1,4 @@
-import type { DocFile } from "../../types";
+import type { DocFile } from '../../types';
 
 export type TreeDataItem = DocFile;
 

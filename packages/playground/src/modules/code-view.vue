@@ -21,18 +21,18 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted, watch, toRaw } from "vue";
-import LayoutColumn from "../components/layout-column.vue";
-import LayoutRow from "../components/layout-row.vue";
-import CodeEditor from "./code-editor.vue";
-import HtmlPreview from "../components/html-preview/index.vue";
-import { storeCode } from "../store/code";
-import { runtime } from "../runtime/common";
+import { reactive, onMounted, watch, toRaw } from 'vue';
+import LayoutColumn from '../components/layout-column.vue';
+import LayoutRow from '../components/layout-row.vue';
+import CodeEditor from './code-editor.vue';
+import HtmlPreview from '../components/html-preview/index.vue';
+import { storeCode } from '../store/code';
+import { runtime } from '../runtime/common';
 
 const state = reactive<{
   source: string | null;
 }>({
-  source: null,
+  source: null
 });
 
 onMounted(() => {
@@ -49,7 +49,7 @@ watch(
     storeCode.codeDirectory,
     storeCode.entryCodeFilePath,
     storeCode.currentCodeFile,
-    storeCode.currentCodeFilePath,
+    storeCode.currentCodeFilePath
   ],
   () => {
     if (storeCode.entryCodeFilePath) {

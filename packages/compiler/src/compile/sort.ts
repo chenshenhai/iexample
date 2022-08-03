@@ -1,19 +1,17 @@
-import type {
-  CodeCompiledFiles, CodeCompiledFile,
-} from '@iexample/types';
+import type { CodeCompiledFiles, CodeCompiledFile } from '@iexample/types';
 
-export function sortProjectCompiledFiles (
-  compiledList: CodeCompiledFiles, 
+export function sortProjectCompiledFiles(
+  compiledList: CodeCompiledFiles,
   needPathList: string[]
 ): CodeCompiledFiles {
   const compiledfileMapByPath: {
-    [path: string]: CodeCompiledFile
+    [path: string]: CodeCompiledFile;
   } = {};
 
   const result: CodeCompiledFiles = [];
-  compiledList.forEach((file) => {
+  compiledList.forEach(file => {
     compiledfileMapByPath[file.path] = file;
-  })
+  });
 
   needPathList.forEach((path: string) => {
     if (compiledfileMapByPath[path]) {
@@ -24,20 +22,23 @@ export function sortProjectCompiledFiles (
 }
 
 export interface ModuleInfo {
-  path: string,
-  name: string | null,
-  deps: Array<string | null>
+  path: string;
+  name: string | null;
+  deps: Array<string | null>;
 }
 
-export function sortProjectPathList(entryPath: string, modInfos: ModuleInfo[]): string[] {
+export function sortProjectPathList(
+  entryPath: string,
+  modInfos: ModuleInfo[]
+): string[] {
   // reset index for compiled files;
   const needPathList: string[] = [];
-  const depsMapByPath : {
-    [path: string]: (string | null)[]
+  const depsMapByPath: {
+    [path: string]: (string | null)[];
   } = {};
   modInfos.forEach((mod: ModuleInfo) => {
-    depsMapByPath[mod.path] = mod.deps
-  })
+    depsMapByPath[mod.path] = mod.deps;
+  });
   const _readDeps = (path: string) => {
     if (!needPathList.includes(path) && depsMapByPath?.[path]) {
       needPathList.unshift(path);
@@ -48,9 +49,9 @@ export function sortProjectPathList(entryPath: string, modInfos: ModuleInfo[]): 
         if (typeof i === 'string') {
           _readDeps(i);
         }
-      })
+      });
     }
-  }
+  };
   _readDeps(entryPath);
   return needPathList;
 }

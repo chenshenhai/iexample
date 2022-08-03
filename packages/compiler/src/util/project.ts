@@ -1,9 +1,11 @@
 import type { CodeDirectory, CodeFile, CodeFolder } from '@iexample/types';
 
 export function updateFileContent(
-  dir: CodeDirectory, path: string, content: string
+  dir: CodeDirectory,
+  path: string,
+  content: string
 ): CodeDirectory {
-  let hasUpdated: boolean = false;
+  let hasUpdated = false;
   const _update = (file: CodeFile | CodeFolder) => {
     if (hasUpdated === true) {
       return;
@@ -14,11 +16,11 @@ export function updateFileContent(
         hasUpdated = true;
       }
     } else if (file.type === 'folder') {
-      file.children?.forEach((item) => {
-        _update(item)
-      })
+      file.children?.forEach(item => {
+        _update(item);
+      });
     }
-  }
+  };
   dir.forEach((item: CodeFile | CodeFolder) => {
     _update(item);
   });

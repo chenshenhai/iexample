@@ -1,7 +1,7 @@
-import { compose } from "./compose";
-import type { Middleware } from './compose'
-import type { DefineModule } from "./type";
-import { isNPM } from "./util";
+import { compose } from './compose';
+import type { Middleware } from './compose';
+import type { DefineModule } from './type';
+import { isNPM } from './util';
 
 const modStorage: { [key: string]: DefineModule } = {};
 
@@ -10,14 +10,14 @@ async function define(
   dependencies?: any[] | Function,
   callback?: Function
 ) {
-  let modName = "";
+  let modName = '';
   let modDeps: any[] = [];
   let modFn: Function = () => {};
   let canEmit = false;
   let canExec = false;
 
   if (name && dependencies && callback) {
-    if (typeof name === "string") {
+    if (typeof name === 'string') {
       modName = name;
     }
     if (Array.isArray(dependencies)) {
@@ -26,20 +26,20 @@ async function define(
     modFn = callback;
   } else {
     if (dependencies) {
-      if (typeof name === "string" && typeof dependencies === "function") {
+      if (typeof name === 'string' && typeof dependencies === 'function') {
         modName = name;
         modDeps = [];
         modFn = dependencies;
         canExec = true;
-      } else if (Array.isArray(name) && typeof dependencies === "function") {
+      } else if (Array.isArray(name) && typeof dependencies === 'function') {
         modDeps = name;
         modFn = dependencies;
-        modName = "temp-uuid-" + new Date().getTime();
+        modName = 'temp-uuid-' + new Date().getTime();
         canEmit = true;
       }
     } else {
-      if (typeof name === "function") {
-        modName = "temp-uuid-" + new Date().getTime();
+      if (typeof name === 'function') {
+        modName = 'temp-uuid-' + new Date().getTime();
         modDeps = [];
         modFn = name;
         canEmit = true;
@@ -54,7 +54,7 @@ async function define(
       dependencies: modDeps,
       callback: modFn,
       content: modFn(),
-      isLoaded: true,
+      isLoaded: true
     };
     modStorage[modName] = modObj;
     return modStorage[modName];
@@ -66,7 +66,7 @@ async function define(
       dependencies: modDeps,
       callback: modFn,
       content: null,
-      isLoaded: false,
+      isLoaded: false
     };
     modStorage[modName] = modObj;
   }
@@ -82,14 +82,20 @@ type TaskContext = {
 };
 
 async function emit(name: string) {
-  const module: DefineModule = modStorage[name];
+  const module: DefineModule | undefined = modStorage[name];
   const tasks: Middleware[] = [];
   const taskContext: TaskContext = { contentList: [] };
   let content: any = undefined;
+
+  if (!module) {
+    console.warn(`Module ${name} is not defined!`);
+    return null;
+  }
+
   if (module?.isLoaded === true) {
     return module.content;
   } else {
-    for (let i = 0, len = module.dependencies.length; i < len; i++) {
+    for (let i = 0, len = module?.dependencies?.length; i < len; i++) {
       const depName = module.dependencies[i];
       if (modStorage.hasOwnProperty(depName) && modStorage[depName].isLoaded) {
         tasks.push(async (ctx: TaskContext, next) => {
@@ -110,7 +116,7 @@ async function emit(name: string) {
             dependencies: [],
             content: esModule,
             callback: null,
-            isLoaded: true,
+            isLoaded: true
           };
           ctx.contentList.push(esModule);
           await next();
@@ -139,7 +145,7 @@ async function emit(name: string) {
     dependencies: [...module.dependencies],
     content,
     callback: module.callback,
-    isLoaded: true,
+    isLoaded: true
   };
   return modStorage[name]?.content;
 }

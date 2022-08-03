@@ -15,7 +15,11 @@ const appId = "@/components/app"
 //   return window.ReactDOM;
 // })
 
-define(appId, ['react'], (React) => {
+define(appId, [
+  'react', 
+  // 'aaaa',
+  'a/b/hello.css'
+], (React) => {
   const App = () => {
     return React.createElement(
       'div',
@@ -33,4 +37,5 @@ define(appId, ['react'], (React) => {
 define(['react', 'react-dom', appId], (React, ReactDOM, App) => {
   const root = ReactDOM.createRoot(document.querySelector('#app'));
   root.render(React.createElement(App, {}))
+  // console.log(React, ReactDOM, App)
 })

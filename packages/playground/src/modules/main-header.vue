@@ -17,16 +17,16 @@
 
 <script lang="ts" setup>
 // import { ref, watch } from 'vue';
-import IconBulbOutlined from "@ant-design/icons-vue/BulbOutlined";
-import IconBulbFilled from "@ant-design/icons-vue/BulbFilled";
-import { storeGlobal } from "../store/global";
-import { storeDoc } from "../store/doc";
+import IconBulbOutlined from '@ant-design/icons-vue/BulbOutlined';
+import IconBulbFilled from '@ant-design/icons-vue/BulbFilled';
+import { storeGlobal } from '../store/global';
+import { storeDoc } from '../store/doc';
 
 const onClickSwitchTheme = () => {
-  if (storeGlobal.theme === "dark") {
-    storeGlobal.theme = "light";
+  if (storeGlobal.theme === 'dark') {
+    storeGlobal.theme = 'light';
   } else {
-    storeGlobal.theme = "dark";
+    storeGlobal.theme = 'dark';
   }
 };
 </script>

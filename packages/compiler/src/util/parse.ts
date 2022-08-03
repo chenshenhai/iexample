@@ -1,4 +1,8 @@
-import type { CodeCompiledFiles, CodeCompiledFile, CodeCompiledAdditionalFile } from '@iexample/types';
+import type {
+  CodeCompiledFiles,
+  CodeCompiledFile,
+  CodeCompiledAdditionalFile
+} from '@iexample/types';
 
 export function parseCompiledJsCodeList(files: CodeCompiledFiles): string[] {
   const jsList: string[] = [];
@@ -8,10 +12,9 @@ export function parseCompiledJsCodeList(files: CodeCompiledFiles): string[] {
         jsList.push(file.compiledContent);
       }
     }
-  })
+  });
   return jsList;
 }
-
 
 export function parseCompiledCssCodeList(files: CodeCompiledFiles): string[] {
   const cssList: string[] = [];
@@ -23,8 +26,8 @@ export function parseCompiledCssCodeList(files: CodeCompiledFiles): string[] {
             cssList.push(aFile.compiledContent);
           }
         }
-      })
+      });
     }
-  })
+  });
   return cssList;
 }

@@ -1,5 +1,5 @@
-import { reactive } from "vue";
-import type { DocDirectory, DocFile } from "../types";
+import { reactive } from 'vue';
+import type { DocDirectory, DocFile } from '../types';
 
 export interface StoreDoc {
   docDirectory: DocDirectory;
@@ -14,5 +14,5 @@ export const storeDoc = reactive<StoreDoc>({
   selectedDocFilePath: null,
   selectedDocFile: null,
   expandAllDocFiles: false,
-  onSelectDocFile: () => {},
+  onSelectDocFile: () => {}
 });

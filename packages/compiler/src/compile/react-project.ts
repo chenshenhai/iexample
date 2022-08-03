@@ -8,12 +8,13 @@ import type {
 import { compileReactFile } from './react-file';
 import { compileAstToAMD, compileCodeToAMD } from './amd';
 // import { transform } from '../util/babel-standalone/babel';
-import { getFolderPath } from '../util/path';
+import { getFolderPath, joinPath } from '../util/path';
 import { sortProjectCompiledFiles, sortProjectPathList } from './sort';
 import type { ModuleInfo } from './sort';
 // import { filterCssFiles } from './filter';
 import { flatDirectoryToMap } from '../util/project';
 import { parseJsToAst } from '../ast/js';
+import { filterCssFiles } from './filter';
 
 export const compileReactProject = (
   dir: CodeDirectory,
@@ -28,6 +29,7 @@ export const compileReactProject = (
 
   const _compileFile = (file: CodeFile | CodeFolder) => {
     if (file.type === 'file') {
+      let depCssPaths: string[] = [];
       let compiledContent: string | null = null;
       if (['react', 'javascript', 'typescript'].includes(file.codeType)) {
         try {
@@ -35,10 +37,14 @@ export const compileReactProject = (
             filename: file.name
           });
           const jsAst = parseJsToAst(reactResult.code);
+          const baseFolderPath = getFolderPath(file.path);
+          const cssPaths = filterCssFiles(jsAst.ast);
+
+          depCssPaths = cssPaths.map((p) => joinPath(baseFolderPath, p));
           const amdResult = compileAstToAMD(jsAst.ast, {
             id: file.path,
             filename: file.name,
-            baseFolderPath: getFolderPath(file.path),
+            baseFolderPath,
             resolveImportPath: true,
             allFilePaths
           });
@@ -91,6 +97,23 @@ export const compileReactProject = (
         fileType: file.fileType,
         compiledContent: compiledContent
       };
+      if (depCssPaths.length > 0) {
+        compiledFile.additionalFiles = [];
+        depCssPaths.forEach((cssPath: string) => {
+          const cssFile = allFileMap[cssPath];
+          if (cssFile) {
+            compiledFile.additionalFiles?.push({
+              path: cssFile.path,
+              name: cssFile.name,
+              type: 'file',
+              content: cssFile.content,
+              codeType: 'css',
+              fileType: cssFile.fileType,
+              compiledContent: cssFile.content
+            });
+          }
+        });
+      }
       compiledList.push(compiledFile);
     } else if (file.type === 'folder') {
       file.children?.forEach((item) => {

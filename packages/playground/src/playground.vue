@@ -25,6 +25,7 @@ import { storeCode } from './store/code';
 import { storeDoc } from './store/doc';
 import { formatDirectory, formatPath } from './util/format';
 import { searchFileFormDocDirectory } from './util/file';
+import { parseMarkdownProject } from './runtime/markdown/parse';
 import type {
   PlaygroundTheme,
   CodeDirectory,
@@ -35,6 +36,7 @@ import type {
 
 const props = defineProps<{
   theme?: PlaygroundTheme;
+  currentMarkdown: string;
 
   // code
   codeDirectory?: CodeDirectory;
@@ -47,6 +49,8 @@ const props = defineProps<{
   expandAllDocFiles?: boolean;
   onSelectDocFile?: (node: DocFile) => void;
 }>();
+
+const dir = parseMarkdownProject(props.currentMarkdown);
 
 storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
 

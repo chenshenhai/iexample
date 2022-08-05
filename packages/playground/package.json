@@ -9,12 +9,16 @@
   ],
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
+    "@iexample/compiler": "0.0.0",
     "@iexample/types": "0.0.0",
     "@iexample/util": "0.0.0",
-    "codemirror": "^5.65.3"
+    "codemirror": "^5.65.3",
+    "marked": "^4.0.16",
+    "yaml": "^2.1.1"
   },
   "devDependencies": {
     "@types/codemirror": "^5.60.5",
+    "@types/marked": "^4.0.3",
     "vue": "^3.2.36"
   },
   "peerDependencies": {

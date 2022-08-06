@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { toRaw, watchEffect } from 'vue';
+import { toRaw, watchEffect, reactive } from 'vue';
 import MainHeader from './modules/main-header.vue';
 import MainFooter from './modules/main-footer.vue';
 import MainView from './modules/main-view.vue';
@@ -25,6 +25,7 @@ import { storeCode } from './store/code';
 import { storeDoc } from './store/doc';
 import { formatDirectory, formatPath } from './util/format';
 import { searchFileFormDocDirectory } from './util/file';
+import { parseMarkdownProject } from './runtime/markdown/parse';
 import type {
   PlaygroundTheme,
   CodeDirectory,
@@ -35,9 +36,8 @@ import type {
 
 const props = defineProps<{
   theme?: PlaygroundTheme;
+  currentMarkdown: string;
 
-  // code
-  codeDirectory?: CodeDirectory;
   currentCodeFilePath?: string | null;
   entryCodeFilePath?: string;
 
@@ -51,13 +51,17 @@ const props = defineProps<{
 storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
 
 const refreshStoreCode = () => {
+  const projectStore = reactive(parseMarkdownProject(props.currentMarkdown));
+  // TODO
+  console.log('toRaw(projectStore.dir) =', toRaw(projectStore.dir));
+
   if (props.currentCodeFilePath) {
     storeCode.currentCodeFilePath = formatPath(
       toRaw(props.currentCodeFilePath)
     );
   }
-  if (props.codeDirectory) {
-    storeCode.codeDirectory = formatDirectory(toRaw(props.codeDirectory));
+  if (projectStore.dir) {
+    storeCode.codeDirectory = formatDirectory(toRaw(projectStore.dir));
   } else {
     storeCode.codeDirectory = [];
   }
@@ -78,31 +82,31 @@ const refreshStoreCode = () => {
   }
 };
 
-const refreshStoreDoc = () => {
-  if (props.selectedDocFilePath) {
-    storeDoc.selectedDocFilePath = formatPath(toRaw(props.selectedDocFilePath));
-  }
-  if (props.docDirectory) {
-    storeDoc.docDirectory = formatDirectory(toRaw(props.docDirectory));
-  } else {
-    storeDoc.docDirectory = [];
-  }
-  if (typeof props.expandAllDocFiles === 'boolean') {
-    storeDoc.expandAllDocFiles = props.expandAllDocFiles;
-  }
-  if (typeof props.onSelectDocFile === 'function') {
-    storeDoc.onSelectDocFile = props.onSelectDocFile;
-  }
+// const refreshStoreDoc = () => {
+//   if (props.selectedDocFilePath) {
+//     storeDoc.selectedDocFilePath = formatPath(toRaw(props.selectedDocFilePath));
+//   }
+//   if (props.docDirectory) {
+//     storeDoc.docDirectory = formatDirectory(toRaw(props.docDirectory));
+//   } else {
+//     storeDoc.docDirectory = [];
+//   }
+//   if (typeof props.expandAllDocFiles === 'boolean') {
+//     storeDoc.expandAllDocFiles = props.expandAllDocFiles;
+//   }
+//   if (typeof props.onSelectDocFile === 'function') {
+//     storeDoc.onSelectDocFile = props.onSelectDocFile;
+//   }
 
-  storeDoc.selectedDocFile = searchFileFormDocDirectory(
-    toRaw(storeDoc.selectedDocFilePath || ''),
-    toRaw(storeDoc.docDirectory || [])
-  );
-};
+//   storeDoc.selectedDocFile = searchFileFormDocDirectory(
+//     toRaw(storeDoc.selectedDocFilePath || ''),
+//     toRaw(storeDoc.docDirectory || [])
+//   );
+// };
 
 watchEffect(() => {
   refreshStoreCode();
-  refreshStoreDoc();
+  // refreshStoreDoc();
 });
 </script>
 

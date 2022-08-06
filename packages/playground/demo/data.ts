@@ -13,7 +13,7 @@ function add(a, b) {
 console.log(add(a, b))
 `,
     type: 'file',
-    fileType: 'javascript',
+    fileType: 'javascript'
   },
   {
     name: 'index.css',
@@ -30,18 +30,18 @@ html, body {
 }
 `,
     type: 'file',
-    fileType: 'css',
+    fileType: 'css'
   },
-//   {
-//     name: 'index.html',
-//     path: '/index.html',
-//     content: `
-// <div class="title">Hello World</div>
-// <div id="root"></div>
-// `,
-//     type: 'file',
-//     fileType: 'html',
-//   }
+  //   {
+  //     name: 'index.html',
+  //     path: '/index.html',
+  //     content: `
+  // <div class="title">Hello World</div>
+  // <div id="root"></div>
+  // `,
+  //     type: 'file',
+  //     fileType: 'html',
+  //   }
   {
     name: 'index.html',
     path: '/index.html',
@@ -58,10 +58,9 @@ html, body {
 </html>
 `,
     type: 'file',
-    fileType: 'html',
+    fileType: 'html'
   }
-]
-
+];
 
 export const codeDirectory2: CodeDirectory = [
   {
@@ -80,7 +79,7 @@ export const codeDirectory2: CodeDirectory = [
 </html>
 `,
     type: 'file',
-    fileType: 'html',
+    fileType: 'html'
   },
   {
     name: 'index.js',
@@ -94,7 +93,7 @@ function add(a, b) {
 console.log(add(a, b))
 `,
     type: 'file',
-    fileType: 'javascript',
+    fileType: 'javascript'
   },
   {
     name: 'index.css',
@@ -111,38 +110,38 @@ html, body {
 }
 `,
     type: 'file',
-    fileType: 'css',
-  },
-//   {
-//     name: 'index.html',
-//     path: '/index.html',
-//     content: `
-// <div class="title">Hello World</div>
-// <div id="root"></div>
-// `,
-//     type: 'file',
-//     fileType: 'html',
-//   }
+    fileType: 'css'
+  }
+  //   {
+  //     name: 'index.html',
+  //     path: '/index.html',
+  //     content: `
+  // <div class="title">Hello World</div>
+  // <div id="root"></div>
+  // `,
+  //     type: 'file',
+  //     fileType: 'html',
+  //   }
+];
 
-]
-
-
-export const docDirectory: DocDirectory = [0,1,2].map((i) => {
+export const docDirectory: DocDirectory = [0, 1, 2].map((i) => {
   return {
     path: [`item-${i}`].join('/'),
     name: `item-${i}`,
-    children: [0,1,2,3].map((j) => {
+    children: [0, 1, 2, 3].map((j) => {
       return {
         path: [`item-${i}`, `item-${i}-${j}`].join('/'),
         name: `item-${i}-${j}`,
-        children:  [0,1,2,3,4].map((k) => {
+        children: [0, 1, 2, 3, 4].map((k) => {
           return {
-            path: [`item-${i}`, `item-${i}-${j}`, `item-${i}-${j}-${k}`].join('/'),
+            path: [`item-${i}`, `item-${i}-${j}`, `item-${i}-${j}-${k}`].join(
+              '/'
+            ),
             name: `item-${i}-${j}-${k}`,
             children: []
-          }
+          };
         })
-      }
+      };
     })
   };
-})
+});

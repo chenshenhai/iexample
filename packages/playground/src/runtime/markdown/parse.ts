@@ -1,8 +1,30 @@
 import { Lexer, marked } from 'marked';
 import { parse } from 'yaml';
 import type {} from 'marked';
-import type { CodeDirectory, CodeFile, CodeType } from '@iexample/types';
+import type {
+  CodeDirectory,
+  CodeFile,
+  CodeFolder,
+  CodeType,
+  CodeFileType
+} from '@iexample/types';
 import { KEY_TYPE, KEY_FILE } from './config';
+
+type ProjectType = 'react' | 'vue';
+const PROJECT_TYPES: ProjectType[] = ['react', 'vue'];
+
+type TempFile = {
+  __path__: string;
+  __isFile__: boolean;
+  __fileContent__: string;
+};
+type TempFolder = {
+  [name: string]: TempFolder | TempFile;
+} & {
+  __path__: string;
+  __isFolder__: boolean;
+};
+type TempFileMap = TempFolder & {};
 
 const lexer = new Lexer();
 
@@ -27,21 +49,96 @@ function isValidFilePath(path: string): boolean {
   return false;
 }
 
-type ProjectType = 'react' | 'vue';
-const PROJECT_TYPES: ProjectType[] = ['react', 'vue'];
+function getFileExtName(str: string): string {
+  const reg = /\.([0-9a-zA-Z\-_]{1,})$/;
+  const extname = reg.exec(str)?.[1] || '';
+  return extname;
+}
 
-function appendFile(
-  projectType: ProjectType,
-  dir: CodeDirectory,
+function getCodeTypeFromPath(
+  path: string,
+  projectType?: ProjectType
+): CodeType {
+  const extname = getFileExtName(path);
+  if (['jsx', 'tsx'].includes(extname)) {
+    if (projectType === 'vue') {
+      return 'vue';
+    }
+    return 'react';
+  }
+  const codeTypeMap: {
+    [name: string]: CodeType;
+  } = {
+    js: 'javascript',
+    ts: 'typescript',
+    css: 'css',
+    json: 'json',
+    html: 'html',
+    txt: 'text'
+  };
+  if (codeTypeMap[extname]) {
+    return codeTypeMap[extname];
+  }
+  return 'text';
+}
+
+function getFileTypeFromPath(
+  path: string,
+  projectType?: ProjectType
+): CodeFileType {
+  const extname = getFileExtName(path);
+  if (['js', 'jsx', 'ts', 'tsx'].includes(extname)) {
+    return 'typescript';
+  }
+  const fileTypeMap: {
+    [name: string]: CodeFileType;
+  } = {
+    js: 'javascript',
+    ts: 'typescript',
+    css: 'css',
+    json: 'json',
+    html: 'html',
+    txt: 'plaintext'
+  };
+  if (fileTypeMap[extname]) {
+    return fileTypeMap[extname];
+  }
+  return 'plaintext';
+}
+
+function appendFileToMap(
   filePath: string,
-  content: string
+  content: string,
+  tempMap: TempFileMap
 ) {
   if (!isValidFilePath(filePath)) {
     return;
   }
   const pathList = filePath.split('/');
+  let targetMap: TempFileMap | any = tempMap;
+  let currentPathList: string[] = [];
   while (pathList.length > 0) {
-    // TODO
+    const pathName: string = pathList.shift() as string;
+    currentPathList.push(pathName);
+    if (typeof pathName === 'string' && pathName) {
+      if (pathList.length > 0) {
+        if (!targetMap[pathName]) {
+          targetMap[pathName] = {
+            __isFolder__: true,
+            __path__: currentPathList.join('/')
+          };
+        }
+        targetMap = targetMap[pathName];
+      } else if (targetMap[pathName]?.__isFolder__ !== true) {
+        targetMap[pathName] = {
+          __isFile__: true,
+          __fileContent__: content,
+          __path__: currentPathList.join('/')
+        };
+      }
+    } else {
+      break;
+    }
   }
 }
 
@@ -75,19 +172,68 @@ export function parseMarkdownProject(md: string): {
     }
   }
 
-  console.log('projectType ====== ', projectType);
-  console.log('tokens ====== ', tokens);
-
+  const tempFileMap: TempFileMap = {
+    __path__: '@/',
+    __isFolder__: true
+  } as TempFileMap;
   for (let i = 0; i < tokens.length; i++) {
-    const tk = tokens[i];
-    if (i <= tokens.length - 1) {
+    // const tk = tokens[i];
+    if (tokens.length - 1 === 0) {
       break;
     }
     const nextTk = tokens[i + 1];
     if (fileConfigMap.has(i) && nextTk.type === 'code') {
+      const filePath: string | undefined = fileConfigMap.get(i);
+      const content: string = nextTk.text;
+      if (typeof filePath === 'string') {
+        appendFileToMap(filePath, content, tempFileMap);
+        i++;
+      }
     }
   }
 
-  // console.log('tokens ====', tokens);
+  const _readTempFileMap = (
+    targetCodeFolders: (CodeFolder | CodeFile)[],
+    targeFileMap: TempFileMap
+  ) => {
+    if (targeFileMap.__isFolder__ === true) {
+      Object.keys(targeFileMap).forEach((name: string) => {
+        if (
+          name &&
+          ['__isFolder__', '__isFile__', '__path__'].includes(name) !== true
+        ) {
+          const tempFile = targeFileMap[name] as TempFile;
+          const tempFolder = targeFileMap[name] as TempFolder;
+          if (tempFile?.__isFile__ === true) {
+            const filePath = tempFile.__path__ || '';
+            const codeFile: CodeFile = {
+              path: filePath,
+              name: filePath?.split('/')?.pop() || '',
+              type: 'file',
+              content: tempFile.__fileContent__,
+              codeType: getCodeTypeFromPath(filePath),
+              fileType: getFileTypeFromPath(filePath)
+            };
+            targetCodeFolders.push(codeFile);
+          } else if (tempFolder?.__isFolder__ == true) {
+            const filePath = tempFolder.__path__ || '';
+            const codeFolder: CodeFolder = {
+              path: filePath,
+              name: filePath?.replace(/\/$/, '')?.split('/')?.pop() || '',
+              type: 'folder',
+              children: []
+            };
+            targetCodeFolders.push(codeFolder);
+            _readTempFileMap(
+              codeFolder.children as (CodeFolder | CodeFile)[],
+              tempFolder
+            );
+          }
+        }
+      });
+    }
+  };
+
+  _readTempFileMap(project.dir, tempFileMap['@'] as TempFileMap);
   return project;
 }

@@ -1,5 +1,5 @@
 <template>
-  <Playground
+  <!-- <Playground
     :theme="'dark'"
     :currentMarkdown="mdReactNote01"
     :codeDirectory="state.codeDirectory"
@@ -9,7 +9,8 @@
     :selectedDocFilePath="state.selectedDocFilePath"
     :expandAllDocFiles="true"
     :onSelectDocFile="onSelectDocFile"
-  />
+  /> -->
+  <Playground :theme="'dark'" />
 </template>
 
 <script lang="ts" setup>

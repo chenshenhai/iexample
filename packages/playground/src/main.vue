@@ -1,0 +1,120 @@
+<template>
+  <div
+    class="iexample iexample-container"
+    :class="{
+      'iexample-theme-dark': storeGlobal.theme === 'dark'
+    }"
+  >
+    <header class="iexample-header">Header</header>
+    <main class="iexample-content">
+      <LayoutColumn :defaultLeftWidth="defaultSiderWidth" :unit="'px'">
+        <template #left>
+          <div class="iexample-sider">
+            <nav class="iexample-sider-nav">Nav</nav>
+            <aside class="iexample-sider-menu">Aside</aside>
+          </div>
+        </template>
+        <template #right>
+          <div class="iexample-content-main">Main</div>
+        </template>
+      </LayoutColumn>
+    </main>
+    <footer class="iexample-footer">Footer</footer>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { watchEffect } from 'vue';
+import { storeGlobal } from './store/global';
+import type { PlaygroundTheme } from './types';
+import LayoutColumn from './components/layout-column.vue';
+
+const defaultSiderWidth: number = 260;
+
+const props = defineProps<{
+  theme?: PlaygroundTheme;
+}>();
+
+storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
+
+watchEffect(() => {
+  // refreshStoreCode();
+  // refreshStoreDoc();
+});
+</script>
+
+<style scoped lang="less">
+@container-height: 100vh;
+@header-height: 48px;
+@footer-height: 30px;
+
+@sider-nav-width: 40px;
+
+.iexample {
+  --iexample-bg: #ffffff;
+  --iexample-bg-active: #2196f34f;
+  --iexample-bg-hover: #e6e6e6;
+  --iexample-border-color-active: #2f9df491;
+
+  --iexample-tool-bg: #fcfcfc;
+
+  --iexample-font-color: #555555;
+  --iexample-font-color-hover: #222222;
+  --iexample-font-color-active: #1277f2;
+
+  --iexample-font-family: Monaco, Consolas, monospace, 'Courier New';
+  --iexample-border-color: #dddddd;
+
+  &.iexample-theme-dark {
+    --iexample-bg: #1a1a1a;
+    // --iexample-bg-active: #3e3e3e;
+    // --iexample-bg-active: #2196f34f;
+    --iexample-bg-hover: #3e3e3e;
+
+    --iexample-tool-bg: #303238;
+
+    --iexample-font-color: #aaaaaa;
+    --iexample-font-color-hover: #fafafa;
+    --iexample-border-color: #383838;
+  }
+
+  color: var(--iexample-font-color);
+  height: @container-height;
+  display: flex;
+  flex-direction: column;
+
+  .iexample-header {
+    display: flex;
+    flex-shrink: 0;
+    height: @header-height;
+    background: var(--iexample-tool-bg);
+  }
+
+  .iexample-content {
+    display: flex;
+    flex: 1;
+  }
+
+  .iexample-footer {
+    display: flex;
+    height: @footer-height;
+    background: var(--iexample-tool-bg);
+  }
+
+  .iexample-sider {
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+    .iexample-sider-nav {
+      display: flex;
+      background: var(--iexample-tool-bg);
+      width: @sider-nav-width;
+    }
+
+    .iexample-sider-menu {
+      flex: 1;
+    }
+  }
+}
+</style>

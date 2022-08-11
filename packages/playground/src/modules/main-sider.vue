@@ -28,8 +28,8 @@ import IconMenu from '@ant-design/icons-vue/MenuOutlined';
   .main-view-sider-btn {
     margin: 10px 0;
     display: flex;
-    font-size: 32px;
-    height: 40px;
+    font-size: 24px;
+    height: 32px;
     width: 100%;
     text-align: center;
     justify-content: center;

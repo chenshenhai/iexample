@@ -11,11 +11,24 @@
         <template #left>
           <div class="iexample-sider">
             <nav class="iexample-sider-nav">Nav</nav>
-            <aside class="iexample-sider-menu">Aside</aside>
+            <aside class="iexample-sider-menu">
+              <LayoutRow :defaultTopHeight="50" :unit="'%'">
+                <template #top> Doc List </template>
+                <template #bottom> Code Lide </template>
+              </LayoutRow>
+            </aside>
           </div>
         </template>
         <template #right>
-          <div class="iexample-content-main">Main</div>
+          <LayoutColumn :defaultLeftWidth="50" :unit="'%'">
+            <template #left> Code </template>
+            <template #right>
+              <LayoutRow :defaultTopHeight="50" :unit="'%'">
+                <template #top> Code </template>
+                <template #bottom> Preview </template>
+              </LayoutRow>
+            </template>
+          </LayoutColumn>
         </template>
       </LayoutColumn>
     </main>
@@ -28,6 +41,7 @@ import { watchEffect } from 'vue';
 import { storeGlobal } from './store/global';
 import type { PlaygroundTheme } from './types';
 import LayoutColumn from './components/layout-column.vue';
+import LayoutRow from './components/layout-row.vue';
 
 const defaultSiderWidth: number = 260;
 

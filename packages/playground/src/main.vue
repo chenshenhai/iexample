@@ -7,7 +7,11 @@
   >
     <header class="iexample-header">Header</header>
     <main class="iexample-content">
-      <LayoutColumn :defaultLeftWidth="defaultSiderWidth" :unit="'px'">
+      <LayoutColumn
+        :defaultLeftWidth="defaultSiderWidth"
+        :unit="'px'"
+        :hideBlock="isMiniMode === true ? 'left' : null"
+      >
         <template #left>
           <div class="iexample-sider">
             <nav class="iexample-sider-nav">Nav</nav>
@@ -20,12 +24,16 @@
           </div>
         </template>
         <template #right>
-          <LayoutColumn :defaultLeftWidth="50" :unit="'%'">
+          <LayoutColumn
+            :defaultLeftWidth="50"
+            :unit="'%'"
+            :hideBlock="isMiniMode === true ? 'right' : null"
+          >
             <template #left> Code </template>
             <template #right>
               <LayoutRow :defaultTopHeight="50" :unit="'%'">
-                <template #top> Code </template>
-                <template #bottom> Preview </template>
+                <template #top> Preview </template>
+                <template #bottom> Console </template>
               </LayoutRow>
             </template>
           </LayoutColumn>
@@ -37,13 +45,16 @@
 </template>
 
 <script lang="ts" setup>
-import { watchEffect } from 'vue';
+import { watchEffect, onMounted, ref } from 'vue';
 import { storeGlobal } from './store/global';
 import type { PlaygroundTheme } from './types';
 import LayoutColumn from './components/layout-column.vue';
 import LayoutRow from './components/layout-row.vue';
+import { throttle } from './util/time';
 
 const defaultSiderWidth: number = 260;
+const isMiniMode = ref<boolean>(false);
+const miniModeMaxScreenWidth = 750;
 
 const props = defineProps<{
   theme?: PlaygroundTheme;
@@ -51,9 +62,28 @@ const props = defineProps<{
 
 storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
 
+function resetMode() {
+  if (window.innerWidth <= miniModeMaxScreenWidth) {
+    isMiniMode.value = true;
+  } else {
+    isMiniMode.value = false;
+  }
+}
+
 watchEffect(() => {
   // refreshStoreCode();
   // refreshStoreDoc();
+});
+
+onMounted(() => {
+  resetMode();
+  window.addEventListener(
+    'resize',
+    throttle(() => {
+      resetMode();
+      console.log('isMiniMode.value ====', isMiniMode.value);
+    }, 16)
+  );
 });
 </script>
 

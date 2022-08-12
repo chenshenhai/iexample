@@ -8,19 +8,27 @@
     @mouseleave="dragEnd"
   >
     <div
-      class="left"
+      class="layout-column-left"
       :style="{
-        width: state.splitLeft + unit,
+        ...(hideBlock === null ? { width: state.splitLeft + unit } : {}),
+        ...(props.hideBlock === 'left' ? { width: 0, height: 0 } : {}),
+        ...(props.hideBlock === 'right' ? { width: '100%' } : {}),
         overflow: 'auto'
       }"
     >
       <slot name="left" />
-      <div class="dragger" @mousedown.prevent="dragStart" />
+      <div
+        v-if="props.hideBlock === null"
+        class="layout-column-dragger"
+        @mousedown.prevent="dragStart"
+      />
     </div>
     <div
-      class="right"
+      class="layout-column-right"
       :style="{
-        width: state.splitRight + unit,
+        ...(hideBlock === null ? { width: state.splitRight + unit } : {}),
+        ...(props.hideBlock === 'right' ? { width: 0, height: 0 } : {}),
+        ...(props.hideBlock === 'left' ? { width: '100%' } : {}),
         overflow: 'auto'
       }"
     >
@@ -35,6 +43,7 @@ const props = defineProps<{
   defaultLeftWidth: number;
   onSplitChange?: (data: { left: number; right: number }) => void;
   unit?: 'px' | '%';
+  hideBlock: null | 'left' | 'right';
 }>();
 
 const { defaultLeftWidth = 50, onSplitChange, unit = 'px' } = props;
@@ -85,9 +94,9 @@ function dragEnd() {
   width: 100%;
   height: 100%;
 
-  &.dragging {
-    .left,
-    .right {
+  &.layout-column-dragging {
+    .layout-column-left,
+    .layout-column-right {
       pointer-events: none;
       &::after {
         position: absolute;
@@ -101,21 +110,21 @@ function dragEnd() {
     }
   }
 
-  .left {
+  .layout-column-left {
     display: flex;
     position: relative;
     height: 100%;
     // flex: 1;
     border-right: 1px solid var(--iexample-border-color);
   }
-  .right {
+  .layout-column-right {
     display: flex;
     position: relative;
     height: 100%;
     width: 100%;
     flex: 1;
   }
-  .dragger {
+  .layout-column-dragger {
     position: absolute;
     z-index: 99;
     top: 0;
@@ -125,7 +134,7 @@ function dragEnd() {
     cursor: ew-resize;
   }
 }
-.layout-column-box.dragging {
+.layout-column-box.layout-column-dragging {
   cursor: ew-resize;
 }
 </style>

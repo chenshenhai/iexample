@@ -1,59 +1,51 @@
 <template>
   <div
-    class="iexample iexample-container"
+    class="iexample-theme iexample-container"
     :class="{
-      'iexample-theme-dark': storeGlobal.theme === 'dark'
+      'iexample-theme-dark': props.theme === 'dark'
     }"
   >
-    <header class="iexample-header">Header</header>
-    <main class="iexample-content">
-      <LayoutColumn
-        :defaultLeftWidth="defaultSiderWidth"
-        :unit="'px'"
-        :hideBlock="isMiniMode === true ? 'left' : null"
-      >
-        <template #left>
-          <div class="iexample-sider">
-            <nav class="iexample-sider-nav">Nav</nav>
-            <aside class="iexample-sider-menu">
-              <LayoutRow :defaultTopHeight="50" :unit="'%'">
-                <template #top> Doc List </template>
-                <template #bottom> Code Lide </template>
-              </LayoutRow>
-            </aside>
-          </div>
-        </template>
-        <template #right>
-          <LayoutColumn
-            :defaultLeftWidth="50"
-            :unit="'%'"
-            :hideBlock="isMiniMode === true ? 'right' : null"
-          >
-            <template #left> Code </template>
-            <template #right>
-              <LayoutRow :defaultTopHeight="50" :unit="'%'">
-                <template #top> Preview </template>
-                <template #bottom> Console </template>
-              </LayoutRow>
-            </template>
-          </LayoutColumn>
-        </template>
-      </LayoutColumn>
-    </main>
-    <footer class="iexample-footer">Footer</footer>
+    <ResponsiveLayout :isMobileMode="isMobileMode" :theme="storeGlobal.theme">
+      <template #layout-sider>
+        <div v-if="isMobileMode" class="iexample-sider-mobile-mask"></div>
+        <div
+          class="iexample-sider"
+          :class="{
+            'iexample-sider-for-mobile-mode': isMobileMode
+          }"
+        >
+          <nav class="iexample-sider-nav">Nav</nav>
+          <aside class="iexample-sider-menu">
+            <LayoutRow :defaultTopHeight="50" :unit="'%'">
+              <template #top> Doc List </template>
+              <template #bottom> Code Lide </template>
+            </LayoutRow>
+          </aside>
+        </div>
+      </template>
+      <template #layout-left>
+        <div>Code Edit</div>
+      </template>
+      <template #layout-right>
+        <LayoutRow :defaultTopHeight="50" :unit="'%'">
+          <template #top> Preview </template>
+          <template #bottom> Console </template>
+        </LayoutRow>
+      </template>
+    </ResponsiveLayout>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { watchEffect, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import ResponsiveLayout from './modules/responsive-layout.vue';
+import LayoutRow from './components/layout-row.vue';
+
 import { storeGlobal } from './store/global';
 import type { PlaygroundTheme } from './types';
-import LayoutColumn from './components/layout-column.vue';
-import LayoutRow from './components/layout-row.vue';
 import { throttle } from './util/time';
 
-const defaultSiderWidth: number = 260;
-const isMiniMode = ref<boolean>(false);
+const isMobileMode = ref<boolean>(false);
 const miniModeMaxScreenWidth = 750;
 
 const props = defineProps<{
@@ -64,16 +56,11 @@ storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
 
 function resetMode() {
   if (window.innerWidth <= miniModeMaxScreenWidth) {
-    isMiniMode.value = true;
+    isMobileMode.value = true;
   } else {
-    isMiniMode.value = false;
+    isMobileMode.value = false;
   }
 }
-
-watchEffect(() => {
-  // refreshStoreCode();
-  // refreshStoreDoc();
-});
 
 onMounted(() => {
   resetMode();
@@ -81,26 +68,23 @@ onMounted(() => {
     'resize',
     throttle(() => {
       resetMode();
-      console.log('isMiniMode.value ====', isMiniMode.value);
     }, 16)
   );
 });
 </script>
 
 <style scoped lang="less">
-@container-height: 100vh;
-@header-height: 48px;
-@footer-height: 30px;
+@mobile-sider-zindex: 100;
+@sider-nav-width: 50px;
 
-@sider-nav-width: 40px;
-
-.iexample {
+.iexample-theme {
   --iexample-bg: #ffffff;
   --iexample-bg-active: #2196f34f;
   --iexample-bg-hover: #e6e6e6;
   --iexample-border-color-active: #2f9df491;
 
-  --iexample-tool-bg: #fcfcfc;
+  --iexample-tool-primary-bg: #fcfcfc;
+  --iexample-tool-secondary-bg: #232528;
 
   --iexample-font-color: #555555;
   --iexample-font-color-hover: #222222;
@@ -115,44 +99,47 @@ onMounted(() => {
     // --iexample-bg-active: #2196f34f;
     --iexample-bg-hover: #3e3e3e;
 
-    --iexample-tool-bg: #303238;
+    --iexample-tool-primary-bg: #303238;
 
     --iexample-font-color: #aaaaaa;
     --iexample-font-color-hover: #fafafa;
     --iexample-border-color: #383838;
   }
+}
 
+.iexample-container {
+  font-family: var(--iexample-font-family);
   color: var(--iexample-font-color);
-  height: @container-height;
-  display: flex;
-  flex-direction: column;
+  background: var(--iexample-bg);
 
-  .iexample-header {
-    display: flex;
-    flex-shrink: 0;
-    height: @header-height;
-    background: var(--iexample-tool-bg);
-  }
-
-  .iexample-content {
-    display: flex;
-    flex: 1;
-  }
-
-  .iexample-footer {
-    display: flex;
-    height: @footer-height;
-    background: var(--iexample-tool-bg);
+  .iexample-sider-mobile-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    right: 100%;
+    z-index: @mobile-sider-zindex;
   }
 
   .iexample-sider {
     width: 100%;
     height: 100%;
     display: flex;
+    background: var(--iexample-tool-secondary-bg);
+
+    &.iexample-sider-for-mobile-mode {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 50%;
+      max-width: 400px;
+      min-width: 240px;
+      z-index: @mobile-sider-zindex + 1;
+    }
 
     .iexample-sider-nav {
       display: flex;
-      background: var(--iexample-tool-bg);
+      background: var(--iexample-tool-primary-bg);
       width: @sider-nav-width;
     }
 

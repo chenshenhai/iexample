@@ -7,13 +7,7 @@
   >
     <ResponsiveLayout :isMobileMode="isMobileMode" :theme="storeGlobal.theme">
       <template #layout-sider>
-        <div v-if="isMobileMode" class="iexample-sider-mobile-mask"></div>
-        <div
-          class="iexample-sider"
-          :class="{
-            'iexample-sider-for-mobile-mode': isMobileMode
-          }"
-        >
+        <div class="iexample-sider">
           <nav class="iexample-sider-nav">Nav</nav>
           <aside class="iexample-sider-menu">
             <LayoutRow :defaultTopHeight="50" :unit="'%'">
@@ -74,7 +68,6 @@ onMounted(() => {
 </script>
 
 <style scoped lang="less">
-@mobile-sider-zindex: 100;
 @sider-nav-width: 50px;
 
 .iexample-theme {
@@ -112,30 +105,11 @@ onMounted(() => {
   color: var(--iexample-font-color);
   background: var(--iexample-bg);
 
-  .iexample-sider-mobile-mask {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    right: 100%;
-    z-index: @mobile-sider-zindex;
-  }
-
   .iexample-sider {
     width: 100%;
     height: 100%;
     display: flex;
     background: var(--iexample-tool-secondary-bg);
-
-    &.iexample-sider-for-mobile-mode {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 50%;
-      max-width: 400px;
-      min-width: 240px;
-      z-index: @mobile-sider-zindex + 1;
-    }
 
     .iexample-sider-nav {
       display: flex;

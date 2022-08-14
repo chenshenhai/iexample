@@ -31,54 +31,27 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
 import ResponsiveLayout from './modules/responsive-layout.vue';
 import LayoutRow from './components/layout-row.vue';
-
 import { storeGlobal } from './store/global';
-import type { PlaygroundTheme } from './types';
-import { throttle } from './util/time';
+import type { PlaygroundTheme, DocDirectory } from './types';
 
 const props = defineProps<{
   theme?: PlaygroundTheme;
+
+  // TODO
+  docDir?: DocDirectory;
+  currentDocPath?: string;
+  currentDocContent?: string;
 }>();
 
 storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
+
+console.log('props.docDir =====', props.docDir);
 </script>
 
 <style scoped lang="less">
 @sider-nav-width: 50px;
-
-.iexample-theme {
-  --iexample-bg: #ffffff;
-  --iexample-bg-active: #2196f34f;
-  --iexample-bg-hover: #e6e6e6;
-  --iexample-border-color-active: #2f9df491;
-
-  --iexample-tool-primary-bg: #fcfcfc;
-  --iexample-tool-secondary-bg: #232528;
-
-  --iexample-font-color: #555555;
-  --iexample-font-color-hover: #222222;
-  --iexample-font-color-active: #1277f2;
-
-  --iexample-font-family: Monaco, Consolas, monospace, 'Courier New';
-  --iexample-border-color: #dddddd;
-
-  &.iexample-theme-dark {
-    --iexample-bg: #1a1a1a;
-    // --iexample-bg-active: #3e3e3e;
-    // --iexample-bg-active: #2196f34f;
-    --iexample-bg-hover: #3e3e3e;
-
-    --iexample-tool-primary-bg: #303238;
-
-    --iexample-font-color: #aaaaaa;
-    --iexample-font-color-hover: #fafafa;
-    --iexample-border-color: #383838;
-  }
-}
-
 .iexample-container {
   font-family: var(--iexample-font-family);
   color: var(--iexample-font-color);

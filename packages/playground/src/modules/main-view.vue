@@ -13,7 +13,7 @@
 import MainLayout from './main-layout.vue';
 import MainSider from './main-sider.vue';
 
-const leftWidth = 50;
+const leftWidth = 40;
 const rightWidth = window.innerWidth - leftWidth;
 </script>
 

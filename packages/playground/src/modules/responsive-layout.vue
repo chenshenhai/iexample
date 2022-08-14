@@ -2,8 +2,14 @@
   <div class="iexample-responsive-container">
     <header class="iexample-responsive-header">
       <IconMenu
+        v-if="props.isMobileMode"
         class="iexample-responsive-header-icon"
         @click="onClickOpenSider"
+      />
+      <IconDesktop
+        v-if="props.isMobileMode"
+        class="iexample-responsive-header-icon"
+        @click="onClickOpenPreview"
       />
     </header>
     <main class="iexample-responsive-content">
@@ -35,10 +41,23 @@
             :hideBlock="props.isMobileMode === true ? 'right' : null"
           >
             <template #left>
-              <slot name="layout-left"></slot>
+              <slot name="layout-center"></slot>
             </template>
             <template #right>
-              <slot name="layout-right"></slot>
+              <div
+                v-if="isMobileMode && mobileState.openPreview"
+                @click="onClickClosePreview"
+                class="iexample-responsive-preview-mobile-mask"
+              ></div>
+              <div
+                class="iexample-responsive-preview"
+                :class="{
+                  'iexample-responsive-preview-for-mobile-mode': isMobileMode,
+                  'iexample-responsive-open-status': mobileState.openPreview
+                }"
+              >
+                <slot name="layout-preview"></slot>
+              </div>
             </template>
           </LayoutColumn>
         </template>
@@ -51,6 +70,7 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
 import IconMenu from '@ant-design/icons-vue/MenuOutlined';
+import IconDesktop from '@ant-design/icons-vue/DesktopOutlined';
 import type { PlaygroundTheme } from '../types';
 import LayoutColumn from '../components/layout-column.vue';
 
@@ -62,7 +82,8 @@ const props = defineProps<{
 }>();
 
 const mobileState = reactive({
-  openSider: false
+  openSider: false,
+  openPreview: false
 });
 
 const onClickOpenSider = () => {
@@ -72,6 +93,14 @@ const onClickOpenSider = () => {
 const onClickCloseSider = () => {
   mobileState.openSider = false;
 };
+
+const onClickOpenPreview = () => {
+  mobileState.openPreview = true;
+};
+
+const onClickClosePreview = () => {
+  mobileState.openPreview = false;
+};
 </script>
 
 <style scoped lang="less">
@@ -80,6 +109,7 @@ const onClickCloseSider = () => {
 @footer-height: 30px;
 
 @mobile-sider-zindex: 100;
+@mobile-preview-zindex: 100;
 
 .iexample-responsive-container {
   height: 100%;
@@ -93,6 +123,7 @@ const onClickCloseSider = () => {
     background: var(--iexample-tool-primary-bg);
     align-items: center;
     padding: 0 10px;
+    justify-content: space-between;
 
     .iexample-responsive-header-icon {
       color: var(--iexample-font-color);
@@ -112,6 +143,7 @@ const onClickCloseSider = () => {
     background: var(--iexample-tool-primary-bg);
   }
 
+  // sider
   .iexample-responsive-sider {
     width: 100%;
     height: 100%;
@@ -134,7 +166,6 @@ const onClickCloseSider = () => {
       }
     }
   }
-
   .iexample-responsive-sider-mobile-mask {
     position: fixed;
     top: 0;
@@ -142,6 +173,38 @@ const onClickCloseSider = () => {
     height: 100%;
     width: 100%;
     z-index: @mobile-sider-zindex;
+  }
+
+  // preview
+  .iexample-responsive-preview {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background: var(--iexample-tool-secondary-bg);
+
+    &.iexample-responsive-preview-for-mobile-mode {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 90%;
+      max-width: 90%;
+      min-width: 300px;
+      z-index: @mobile-preview-zindex + 1;
+      transition: 800ms;
+
+      &.iexample-responsive-open-status {
+        right: 0;
+        transition: 400ms;
+      }
+    }
+  }
+  .iexample-responsive-preview-mobile-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: @mobile-preview-zindex;
   }
 }
 </style>

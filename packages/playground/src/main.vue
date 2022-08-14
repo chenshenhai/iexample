@@ -17,10 +17,10 @@
           </aside>
         </div>
       </template>
-      <template #layout-left>
+      <template #layout-center>
         <div>Code Edit</div>
       </template>
-      <template #layout-right>
+      <template #layout-preview>
         <LayoutRow :defaultTopHeight="50" :unit="'%'">
           <template #top> Preview </template>
           <template #bottom> Console </template>

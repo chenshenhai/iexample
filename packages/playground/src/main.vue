@@ -5,7 +5,7 @@
       'iexample-theme-dark': props.theme === 'dark'
     }"
   >
-    <ResponsiveLayout :isMobileMode="isMobileMode" :theme="storeGlobal.theme">
+    <ResponsiveLayout :theme="storeGlobal.theme">
       <template #layout-sider>
         <div class="iexample-sider">
           <nav class="iexample-sider-nav">Nav</nav>
@@ -39,32 +39,11 @@ import { storeGlobal } from './store/global';
 import type { PlaygroundTheme } from './types';
 import { throttle } from './util/time';
 
-const isMobileMode = ref<boolean>(false);
-const miniModeMaxScreenWidth = 750;
-
 const props = defineProps<{
   theme?: PlaygroundTheme;
 }>();
 
 storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
-
-function resetMode() {
-  if (window.innerWidth <= miniModeMaxScreenWidth) {
-    isMobileMode.value = true;
-  } else {
-    isMobileMode.value = false;
-  }
-}
-
-onMounted(() => {
-  resetMode();
-  window.addEventListener(
-    'resize',
-    throttle(() => {
-      resetMode();
-    }, 16)
-  );
-});
 </script>
 
 <style scoped lang="less">

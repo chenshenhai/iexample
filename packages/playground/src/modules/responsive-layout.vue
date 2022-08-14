@@ -2,12 +2,12 @@
   <div class="iexample-responsive-container">
     <header class="iexample-responsive-header">
       <IconMenu
-        v-if="props.isMobileMode"
+        v-if="isMobileMode"
         class="iexample-responsive-header-icon"
         @click="onClickOpenSider"
       />
       <IconDesktop
-        v-if="props.isMobileMode"
+        v-if="isMobileMode"
         class="iexample-responsive-header-icon"
         @click="onClickOpenPreview"
       />
@@ -16,7 +16,7 @@
       <LayoutColumn
         :defaultLeftWidth="defaultSiderWidth"
         :unit="'px'"
-        :hideBlock="props.isMobileMode === true ? 'left' : null"
+        :hideBlock="isMobileMode === true ? 'left' : null"
       >
         <template #left>
           <div
@@ -38,7 +38,7 @@
           <LayoutColumn
             :defaultLeftWidth="50"
             :unit="'%'"
-            :hideBlock="props.isMobileMode === true ? 'right' : null"
+            :hideBlock="isMobileMode === true ? 'right' : null"
           >
             <template #left>
               <slot name="layout-center"></slot>
@@ -68,17 +68,17 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import IconMenu from '@ant-design/icons-vue/MenuOutlined';
 import IconDesktop from '@ant-design/icons-vue/DesktopOutlined';
 import type { PlaygroundTheme } from '../types';
 import LayoutColumn from '../components/layout-column.vue';
+import { throttle } from '../util/time';
 
 const defaultSiderWidth: number = 260;
 
 const props = defineProps<{
   theme: PlaygroundTheme;
-  isMobileMode: boolean;
 }>();
 
 const mobileState = reactive({
@@ -101,6 +101,26 @@ const onClickOpenPreview = () => {
 const onClickClosePreview = () => {
   mobileState.openPreview = false;
 };
+
+const isMobileMode = ref<boolean>(false);
+const miniModeMaxScreenWidth = 750;
+function resetMode() {
+  if (window.innerWidth <= miniModeMaxScreenWidth) {
+    isMobileMode.value = true;
+  } else {
+    isMobileMode.value = false;
+  }
+}
+
+onMounted(() => {
+  resetMode();
+  window.addEventListener(
+    'resize',
+    throttle(() => {
+      resetMode();
+    }, 16)
+  );
+});
 </script>
 
 <style scoped lang="less">

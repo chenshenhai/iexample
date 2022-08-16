@@ -8,7 +8,9 @@
     <ResponsiveLayout :theme="storeGlobal.theme">
       <template #layout-sider>
         <div class="iexample-sider">
-          <nav class="iexample-sider-nav">Nav</nav>
+          <nav class="iexample-sider-nav">
+            <SiderNav />
+          </nav>
           <aside class="iexample-sider-menu">
             <LayoutRow :defaultTopHeight="50" :unit="'%'">
               <template #top> Doc List </template>
@@ -31,7 +33,9 @@
 </template>
 
 <script lang="ts" setup>
+import { toRaw } from 'vue';
 import ResponsiveLayout from './modules/responsive-layout.vue';
+import SiderNav from './modules/sider-nav.vue';
 import LayoutRow from './components/layout-row.vue';
 import { storeGlobal } from './store/global';
 import type { PlaygroundTheme, DocDirectory } from './types';
@@ -40,14 +44,15 @@ const props = defineProps<{
   theme?: PlaygroundTheme;
 
   // TODO
-  docDir?: DocDirectory;
+  docDirectory?: DocDirectory;
   currentDocPath?: string;
   currentDocContent?: string;
 }>();
 
 storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
 
-console.log('props.docDir =====', props.docDir);
+console.log('props.codeDirectory =====', props.docDirectory);
+console.log('props.codeDirectory =====', toRaw(props.docDirectory));
 </script>
 
 <style scoped lang="less">
@@ -62,13 +67,11 @@ console.log('props.docDir =====', props.docDir);
     height: 100%;
     display: flex;
     background: var(--iexample-tool-secondary-bg);
-
     .iexample-sider-nav {
       display: flex;
       background: var(--iexample-tool-primary-bg);
       width: @sider-nav-width;
     }
-
     .iexample-sider-menu {
       flex: 1;
     }

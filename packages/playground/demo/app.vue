@@ -10,7 +10,7 @@
     :expandAllDocFiles="true"
     :onSelectDocFile="onSelectDocFile"
   /> -->
-  <Playground :theme="'dark'" />
+  <Playground :theme="'dark'" :docDirectory="state.codeDirectory" />
 </template>
 
 <script lang="ts" setup>
@@ -21,6 +21,7 @@ import { codeDirectory, codeDirectory2, docDirectory } from './data';
 import mdReactNote01 from './md/react-note-01.md?raw';
 
 const state = reactive<{
+  // TODO
   selectedDocFilePath: string;
   codeDirectory: CodeDirectory;
   currentCodeFilePath: string;

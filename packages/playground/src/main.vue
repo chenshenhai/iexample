@@ -13,7 +13,14 @@
           </nav>
           <aside class="iexample-sider-menu">
             <LayoutRow :defaultTopHeight="50" :unit="'%'">
-              <template #top> Doc List </template>
+              <template #top>
+                <tree-view
+                  :data="props.docDirectory || []"
+                  :expandAll="true"
+                  :selectedFilePath="''"
+                  @selectFile="() => {}"
+                />
+              </template>
               <template #bottom> Code Lide </template>
             </LayoutRow>
           </aside>
@@ -34,11 +41,12 @@
 
 <script lang="ts" setup>
 import { toRaw } from 'vue';
+import type { PlaygroundTheme, DocDirectory } from './types';
 import ResponsiveLayout from './modules/responsive-layout.vue';
 import SiderNav from './modules/sider-nav.vue';
 import LayoutRow from './components/layout-row.vue';
 import { storeGlobal } from './store/global';
-import type { PlaygroundTheme, DocDirectory } from './types';
+import TreeView from './components/tree/tree-view.vue';
 
 const props = defineProps<{
   theme?: PlaygroundTheme;
@@ -61,6 +69,9 @@ console.log('props.codeDirectory =====', toRaw(props.docDirectory));
   font-family: var(--iexample-font-family);
   color: var(--iexample-font-color);
   background: var(--iexample-bg);
+
+  height: 100vh;
+  overflow: auto;
 
   .iexample-sider {
     width: 100%;

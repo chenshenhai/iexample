@@ -10,13 +10,13 @@
     :expandAllDocFiles="true"
     :onSelectDocFile="onSelectDocFile"
   /> -->
-  <Playground :theme="'dark'" :docDirectory="state.codeDirectory" />
+  <Playground :theme="'dark'" :docDirectory="state.docDirectory" />
 </template>
 
 <script lang="ts" setup>
 import { reactive } from 'vue';
 import { Playground } from '../src';
-import type { CodeDirectory } from '@iexample/types';
+import type { CodeDirectory, DocDirectory } from '@iexample/types';
 import { codeDirectory, codeDirectory2, docDirectory } from './data';
 import mdReactNote01 from './md/react-note-01.md?raw';
 
@@ -24,11 +24,13 @@ const state = reactive<{
   // TODO
   selectedDocFilePath: string;
   codeDirectory: CodeDirectory;
+  docDirectory: DocDirectory;
   currentCodeFilePath: string;
   entryCodeFilePath: string;
 }>({
   selectedDocFilePath: 'item-0/item-0-0/item-0-0-1',
   codeDirectory: codeDirectory,
+  docDirectory: docDirectory,
   currentCodeFilePath: './index.html',
   entryCodeFilePath: '/index.html'
 });

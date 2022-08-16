@@ -25,7 +25,9 @@
       />
       <icon-file v-else class="tree-item-icon" />
       <span>
-        {{ itemData.name }}
+        <span class="tree-item-name">
+          {{ itemData.name }}
+        </span>
       </span>
     </div>
     <ul class="tree-item-view" v-show="expand" v-if="isFolder">
@@ -111,11 +113,18 @@ export default {
 </script>
 
 <style scoped lang="less">
+@tree-item-height: 30px;
 .tree-item-text {
   cursor: pointer;
   user-select: none;
-  height: 26px;
-  line-height: 26px;
+  height: @tree-item-height;
+  line-height: @tree-item-height;
+  word-break: break-all;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
   &:hover {
     background: var(--iexample-bg-hover);
   }
@@ -143,5 +152,10 @@ export default {
     display: block;
     padding-left: 16px;
   }
+}
+.tree-item-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>

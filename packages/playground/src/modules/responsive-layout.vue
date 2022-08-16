@@ -75,7 +75,7 @@ import type { PlaygroundTheme } from '../types';
 import LayoutColumn from '../components/layout-column.vue';
 import { throttle } from '../util/time';
 
-const defaultSiderWidth: number = 260;
+const defaultSiderWidth: number = 280;
 
 const props = defineProps<{
   theme: PlaygroundTheme;
@@ -124,7 +124,7 @@ onMounted(() => {
 </script>
 
 <style scoped lang="less">
-@header-height: 48px;
+@header-height: 40px;
 @header-icon-size: 24px;
 @footer-height: 30px;
 

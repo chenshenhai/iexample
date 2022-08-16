@@ -17,9 +17,9 @@
 
 <script lang="ts" setup>
 import { toRaw, watchEffect, reactive } from 'vue';
-import MainHeader from './modules/main-header.vue';
-import MainFooter from './modules/main-footer.vue';
-import MainView from './modules/main-view.vue';
+import MainHeader from './mods/main-header.vue';
+import MainFooter from './mods/main-footer.vue';
+import MainView from './mods/main-view.vue';
 import { storeGlobal } from './store/global';
 import { storeCode } from './store/code';
 import { storeDoc } from './store/doc';

@@ -126,18 +126,23 @@ html, body {
 
 export const docDirectory: DocDirectory = [0, 1, 2].map((i) => {
   return {
-    path: [`item-${i}`].join('/'),
-    name: `item-${i}`,
+    path: [`item-xxxxxxxxxxxxxxxxxx-${i}`].join('/'),
+    name: `item-xxxxxxxxxxxxxxxxxx-${i}`,
     children: [0, 1, 2, 3].map((j) => {
       return {
-        path: [`item-${i}`, `item-${i}-${j}`].join('/'),
-        name: `item-${i}-${j}`,
+        path: [
+          `item-xxxxxxxxxxxxxxxxxx-${i}`,
+          `item-xxxxxxxxxxxxxxxxxx-${i}-${j}`
+        ].join('/'),
+        name: `item-xxxxxxxxxxxxxxxxxx-${i}-${j}`,
         children: [0, 1, 2, 3, 4].map((k) => {
           return {
-            path: [`item-${i}`, `item-${i}-${j}`, `item-${i}-${j}-${k}`].join(
-              '/'
-            ),
-            name: `item-${i}-${j}-${k}`,
+            path: [
+              `item-xxxxxxxxxxxxxxxxxx-${i}`,
+              `item-xxxxxxxxxxxxxxxxxx-${i}-${j}`,
+              `item-xxxxxxxxxxxxxxxxxx-${i}-${j}-${k}`
+            ].join('/'),
+            name: `item-xxxxxxxxxxxxxxxxxx-${i}-${j}-${k}`,
             children: []
           };
         })

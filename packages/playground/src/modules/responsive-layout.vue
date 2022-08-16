@@ -75,7 +75,7 @@ import type { PlaygroundTheme } from '../types';
 import LayoutColumn from '../components/layout-column.vue';
 import { throttle } from '../util/time';
 
-const defaultSiderWidth: number = 260;
+const defaultSiderWidth: number = 280;
 
 const props = defineProps<{
   theme: PlaygroundTheme;
@@ -124,7 +124,7 @@ onMounted(() => {
 </script>
 
 <style scoped lang="less">
-@header-height: 48px;
+@header-height: 40px;
 @header-icon-size: 24px;
 @footer-height: 30px;
 
@@ -135,8 +135,13 @@ onMounted(() => {
   height: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
 
   .iexample-responsive-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     display: flex;
     flex-shrink: 0;
     height: @header-height;
@@ -153,6 +158,11 @@ onMounted(() => {
   }
 
   .iexample-responsive-content {
+    position: absolute;
+    top: @header-height;
+    bottom: @footer-height;
+    left: 0;
+    right: 0;
     display: flex;
     flex: 1;
   }
@@ -161,6 +171,10 @@ onMounted(() => {
     display: flex;
     height: @footer-height;
     background: var(--iexample-tool-primary-bg);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 
   // sider

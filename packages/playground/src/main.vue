@@ -7,7 +7,11 @@
   >
     <ResponsiveLayout :theme="storeGlobal.theme">
       <template #layout-sider>
-        <SiderMenu :docDirectory="props.docDirectory" />
+        <SiderMenu
+          :docDirectory="props.docDirectory"
+          :currentDocFilePath="props.currentDocFilePath"
+          @onSelectDocFile="onSelectDocFile"
+        />
       </template>
       <template #layout-center>
         <div>Code Edit</div>
@@ -23,8 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { toRaw } from 'vue';
-import type { PlaygroundTheme, DocDirectory } from './types';
+import type { PlaygroundTheme, DocDirectory, DocFile } from './types';
 import ResponsiveLayout from './modules/responsive-layout.vue';
 import LayoutRow from './components/layout-row.vue';
 import { storeGlobal } from './store/global';
@@ -32,17 +35,19 @@ import SiderMenu from './modules/sider-menu.vue';
 
 const props = defineProps<{
   theme?: PlaygroundTheme;
-
-  // TODO
   docDirectory?: DocDirectory;
-  currentDocPath?: string;
-  currentDocContent?: string;
+  currentDocFilePath?: string;
 }>();
 
-storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
+const emits = defineEmits<{
+  (event: 'onSelectDocFile', docFile: DocFile): void;
+}>();
 
-console.log('props.codeDirectory =====', props.docDirectory);
-console.log('props.codeDirectory =====', toRaw(props.docDirectory));
+const onSelectDocFile = (docFile: DocFile) => {
+  emits('onSelectDocFile', docFile);
+};
+
+storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
 </script>
 
 <style scoped lang="less">

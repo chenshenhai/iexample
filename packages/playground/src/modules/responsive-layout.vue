@@ -189,8 +189,8 @@ onMounted(() => {
       top: 0;
       left: -100%;
       width: 50%;
-      max-width: 400px;
-      min-width: 240px;
+      max-width: 90%;
+      min-width: 320px;
       z-index: @mobile-sider-zindex + 1;
       transition: 800ms;
 

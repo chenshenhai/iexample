@@ -14,7 +14,7 @@
         />
       </template>
       <template #layout-center>
-        <div>Code Edit</div>
+        <ViewSwitch />
       </template>
       <template #layout-preview>
         <LayoutRow :defaultTopHeight="50" :unit="'%'">
@@ -32,6 +32,7 @@ import ResponsiveLayout from './modules/responsive-layout.vue';
 import LayoutRow from './components/layout-row.vue';
 import { storeGlobal } from './store/global';
 import SiderMenu from './modules/sider-menu.vue';
+import ViewSwitch from './modules/view-switch.vue';
 
 const props = defineProps<{
   theme?: PlaygroundTheme;

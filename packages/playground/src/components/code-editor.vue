@@ -33,6 +33,7 @@ onMounted(() => {
   }
   const editor: CodeMirror.Editor = CodeMirror(refMount.value, {
     value: props.value || '',
+    // @ts-ignore
     mode: modeMap[props.type] || modeMap['plaintext'],
     readOnly: false,
     tabSize: 2,
@@ -53,6 +54,7 @@ onMounted(() => {
     editor.setValue(props.value);
   });
   watchEffect(() => {
+    // @ts-ignore
     const mode = modeMap[props.type] || modeMap['plaintext'];
     editor.setOption('mode', mode);
   });

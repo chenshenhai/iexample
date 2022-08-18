@@ -2,6 +2,7 @@
   <Playground
     :theme="'dark'"
     :docDirectory="state.docDirectory"
+    :docContent="state.docContent"
     :currentDocFilePath="state.currentDocFilePath"
     @onSelectDocFile="onSelectDocFile"
   />
@@ -18,12 +19,14 @@ const state = reactive<{
   // TODO
   docDirectory: DocDirectory;
   currentDocFilePath: string;
+  docContent: string;
 
   // codeDirectory: CodeDirectory;
   // entryCodeFilePath: string;
 }>({
   docDirectory: docDirectory,
-  currentDocFilePath: ''
+  currentDocFilePath: '',
+  docContent: mdReactNote01
 
   // codeDirectory: codeDirectory,
   // currentCodeFilePath: './index.html',
@@ -32,5 +35,9 @@ const state = reactive<{
 
 const onSelectDocFile = (file: DocFile) => {
   state.currentDocFilePath = file?.path || '';
+
+  state.docContent = `# ${file.name}
+${mdReactNote01}
+`;
 };
 </script>

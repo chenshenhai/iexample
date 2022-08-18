@@ -1,7 +1,8 @@
 <template>
   <div class="iexample-main-view-switch">
     <div class="view-switch-header">
-      <div>Left</div>
+      <div></div>
+      <!-- <div>Left</div> -->
       <div class="view-switch-tablist">
         <div
           v-for="(item, index) in tabs"
@@ -13,13 +14,12 @@
           {{ item.name }}
         </div>
       </div>
-      <div>Right</div>
+      <div></div>
+      <!-- <div>Right</div> -->
     </div>
     <div class="view-switch-content">
-      <div v-if="state.activeTabKey === 'demo'">
-        <ViewCode />
-      </div>
-      <div v-else>Markdown</div>
+      <ViewCode v-if="state.activeTabKey === 'code'" />
+      <ViewDoc v-else :content="props.docContent || ''" />
     </div>
   </div>
 </template>
@@ -27,14 +27,20 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
 import ViewCode from './view-code.vue';
+import ViewDoc from './view-doc.vue';
+
+const props = defineProps<{
+  docContent?: string;
+}>();
+
 const tabs = [
   {
-    name: 'Demo',
-    key: 'demo'
+    name: 'Code',
+    key: 'code'
   },
   {
-    name: 'Markdown',
-    key: 'markdown'
+    name: 'Document',
+    key: 'document'
   }
 ];
 
@@ -45,7 +51,6 @@ const state = reactive<{
 });
 
 const onSwicth = (key: string) => {
-  console.log('key ===', key);
   state.activeTabKey = key;
 };
 </script>

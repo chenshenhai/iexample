@@ -14,7 +14,7 @@
         />
       </template>
       <template #layout-center>
-        <ViewSwitch />
+        <ViewSwitch :docContent="props.docContent" />
       </template>
       <template #layout-preview>
         <LayoutRow :defaultTopHeight="50" :unit="'%'">
@@ -38,6 +38,7 @@ const props = defineProps<{
   theme?: PlaygroundTheme;
   docDirectory?: DocDirectory;
   currentDocFilePath?: string;
+  docContent?: string;
 }>();
 
 const emits = defineEmits<{

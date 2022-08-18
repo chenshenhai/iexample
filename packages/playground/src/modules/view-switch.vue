@@ -16,7 +16,9 @@
       <div>Right</div>
     </div>
     <div class="view-switch-content">
-      <div v-if="state.activeTabKey === 'demo'">Demo</div>
+      <div v-if="state.activeTabKey === 'demo'">
+        <ViewCode />
+      </div>
       <div v-else>Markdown</div>
     </div>
   </div>
@@ -24,6 +26,7 @@
 
 <script lang="ts" setup>
 import { reactive } from 'vue';
+import ViewCode from './view-code.vue';
 const tabs = [
   {
     name: 'Demo',

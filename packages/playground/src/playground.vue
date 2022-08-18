@@ -116,7 +116,7 @@ watchEffect(() => {
 
 .iexample {
   --iexample-bg: #ffffff;
-  --iexample-bg-active: #2196f34f;
+  --iexample-bg-active: #3a4251;
   --iexample-bg-hover: #e6e6e6;
   --iexample-border-color-active: #2f9df491;
 

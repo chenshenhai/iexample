@@ -131,7 +131,6 @@ export default {
 
   &.active {
     background: var(--iexample-bg-active);
-    border: 1px solid var(--iexample-border-color-active);
   }
 
   .tree-item-icon {

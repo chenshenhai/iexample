@@ -47,7 +47,7 @@ const tabs = [
 const state = reactive<{
   activeTabKey: string;
 }>({
-  activeTabKey: tabs[0].key
+  activeTabKey: tabs[1].key
 });
 
 const onSwicth = (key: string) => {
@@ -56,14 +56,21 @@ const onSwicth = (key: string) => {
 </script>
 
 <style lang="less" scoped>
+@switch-header-height: 36px;
+
 .iexample-main-view-switch {
+  position: relative;
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
 
   .view-switch-header {
-    height: 36px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: @switch-header-height;
     box-sizing: border-box;
     padding: 0 20px;
     border-bottom: 1px solid var(--iexample-border-color);
@@ -75,7 +82,11 @@ const onSwicth = (key: string) => {
 
   .view-switch-content {
     display: flex;
-    flex: 1;
+    position: absolute;
+    top: @switch-header-height;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 
   .view-switch-tablist {

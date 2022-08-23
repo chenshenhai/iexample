@@ -2,8 +2,7 @@ import { createApp } from 'vue';
 // import { add } from '@iexample/util';
 import App from './app.vue';
 
-
-const app = createApp(App, {})
+const app = createApp(App, {});
 app.mount('#app');
 
 // fetch('/example/public/data.json')

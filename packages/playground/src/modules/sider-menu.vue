@@ -9,8 +9,8 @@
           <TreeView
             :data="props.docDirectory || []"
             :expandAll="true"
-            :selectedFilePath="''"
-            @selectFile="() => {}"
+            :selectedFilePath="props.currentDocFilePath || ''"
+            @selectFile="onSelectDocFile"
           />
         </template>
         <template #bottom> Code Lide </template>
@@ -20,15 +20,21 @@
 </template>
 
 <script setup lang="ts">
-import type { DocDirectory } from '../types';
+import type { DocDirectory, DocFile } from '../types';
 import SiderNav from './sider-nav.vue';
 import LayoutRow from '../components/layout-row.vue';
 import TreeView from '../components/tree/tree-view.vue';
 const props = defineProps<{
   docDirectory?: DocDirectory;
-  currentDocPath?: string;
-  currentDocContent?: string;
+  currentDocFilePath?: string;
 }>();
+
+const emit = defineEmits<{
+  (event: 'onSelectDocFile', value: DocFile): void;
+}>();
+const onSelectDocFile = (docFile: DocFile) => {
+  emit('onSelectDocFile', docFile);
+};
 </script>
 
 <style lang="less">

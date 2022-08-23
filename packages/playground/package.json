@@ -13,6 +13,7 @@
     "@iexample/types": "0.0.0",
     "@iexample/util": "0.0.0",
     "codemirror": "^5.65.3",
+    "highlight.js": "^11.6.0",
     "marked": "^4.0.16",
     "yaml": "^2.1.1"
   },

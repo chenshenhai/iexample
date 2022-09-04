@@ -18,7 +18,11 @@
       <!-- <div>Right</div> -->
     </div>
     <div class="view-switch-content">
-      <ViewCode v-if="state.activeTabKey === 'code'" />
+      <ViewCode
+        v-if="state.activeTabKey === 'code'"
+        :codeContent="props.codeContent"
+        :codeType="props.codeType"
+      />
       <ViewDoc v-else :content="props.docContent || ''" />
     </div>
   </div>
@@ -28,9 +32,12 @@
 import { reactive } from 'vue';
 import ViewCode from './view-code.vue';
 import ViewDoc from './view-doc.vue';
+import type { CodeType } from '../types';
 
 const props = defineProps<{
   docContent?: string;
+  codeContent?: string;
+  codeType?: CodeType;
 }>();
 
 const tabs = [
@@ -47,7 +54,7 @@ const tabs = [
 const state = reactive<{
   activeTabKey: string;
 }>({
-  activeTabKey: tabs[1].key
+  activeTabKey: tabs[0].key
 });
 
 const onSwicth = (key: string) => {

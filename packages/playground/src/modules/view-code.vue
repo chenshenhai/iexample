@@ -1,29 +1,24 @@
 <template>
-  <code-editor :value="codeValue" :type="codeType" @change="onChange" />
+  <code-editor
+    :value="props.codeContent || ''"
+    :type="props.codeType || 'text'"
+    @change="onChange"
+  />
 </template>
 
 <script setup lang="ts">
 import CodeEditor from '../components/code-editor.vue';
 import { debounce } from '../util/time';
-import type { CodeFileType } from '../types';
+import type { CodeType } from '../types';
 
-const codeValue = `
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-const App = () => {
-  return (
-    <div>Hello World</div>
-  )
-}
-
-ReactDOM.render(<App />, document.querySelector('#app'))
-`;
-
-const codeType: CodeFileType = 'typescript';
+const props = defineProps<{
+  codeContent?: string;
+  codeType?: CodeType;
+}>();
 
 const onChange = debounce((code: string) => {
-  console.log('change =====', code);
+  // TODO
+  // console.log('change =====', code);
 }, 300);
 </script>
 

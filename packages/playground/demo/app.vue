@@ -20,17 +20,10 @@ const state = reactive<{
   docDirectory: DocDirectory;
   currentDocFilePath: string;
   docContent: string;
-
-  // codeDirectory: CodeDirectory;
-  // entryCodeFilePath: string;
 }>({
   docDirectory: docDirectory,
   currentDocFilePath: '',
   docContent: mdReactNote01
-
-  // codeDirectory: codeDirectory,
-  // currentCodeFilePath: './index.html',
-  // entryCodeFilePath: '/index.html'
 });
 
 const onSelectDocFile = (file: DocFile) => {

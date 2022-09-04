@@ -8,12 +8,16 @@
 </template>
 
 <script setup lang="ts">
+import { watch, watchEffect } from 'vue';
 import { parseMarkdownToHtml } from '../runtime/markdown/render';
 
 const props = defineProps<{
   content: string;
 }>();
-console.log('props ===', props);
+
+// watch([props], () => {
+//   console.log('change ======');
+// });
 </script>
 
 <style lang="less">

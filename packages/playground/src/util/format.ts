@@ -1,4 +1,4 @@
-import type { CodeDirectory, DocDirectory } from '../types';
+import type { CodeDirectory, CodeFolder } from '../types';
 
 export function formatPath(path: string): string {
   if (path.startsWith('./')) {
@@ -10,13 +10,12 @@ export function formatPath(path: string): string {
   return path;
 }
 
-export function formatDirectory<T extends CodeDirectory | DocDirectory>(
-  directory: T
-): T {
+export function formatDirectory<T extends CodeDirectory>(directory: T): T {
   directory.forEach((file) => {
     file.path = formatPath(file.path);
-    if (Array.isArray(file?.children)) {
-      formatDirectory(file.children);
+    const folder = file as CodeFolder;
+    if (Array.isArray(folder?.children)) {
+      formatDirectory(folder.children);
     }
   });
   return directory;

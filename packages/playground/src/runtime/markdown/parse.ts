@@ -234,6 +234,17 @@ export function parseMarkdownProject(md: string): {
     }
   };
 
-  _readTempFileMap(project.dir, tempFileMap['@'] as TempFileMap);
+  const dir: CodeDirectory = [];
+  _readTempFileMap(dir, tempFileMap['@'] as TempFileMap);
+  const folderList: CodeFolder[] = [];
+  const fileList: CodeFile[] = [];
+  dir.forEach((item) => {
+    if (item.type === 'folder') {
+      folderList.push(item);
+    } else {
+      fileList.push(item);
+    }
+  });
+  project.dir = [...folderList, ...fileList];
   return project;
 }

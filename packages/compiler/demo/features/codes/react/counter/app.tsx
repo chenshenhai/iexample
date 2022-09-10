@@ -7,7 +7,6 @@ import './app.css';
 const App = () => {
   return (
     <div className='main'>
-      <div>Hello Counter</div>
       <Counter />
     </div>
   )

@@ -7,7 +7,6 @@ const Counter = () => {
   const [count, setCount] = useState<number>(0);
   return (
     <div className='hello'>
-      <div>Counter 2</div>
       <div>{count}</div>
       <button onClick={() => {
         setCount(add(count));

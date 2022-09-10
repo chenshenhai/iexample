@@ -4,6 +4,7 @@ import codeReactLibCounter from './codes/react/counter/lib/counter?raw';
 import codeReactUtilAdd from './codes/react/counter/util/add?raw';
 import codeReactUtilAdd2 from './codes/react/counter/util/add2?raw';
 import codeReactApp from './codes/react/counter/app?raw';
+import codeReactApp2 from './codes/react/counter/app2?raw';
 import codeReactAppCss from './codes/react/counter/app.css?raw';
 import tpl from './tpl.html?raw';
 import {
@@ -24,6 +25,14 @@ const dir: CodeDirectory = [
         name: 'add.ts',
         type: 'file',
         content: codeReactUtilAdd,
+        codeType: 'react',
+        fileType: 'typescript'
+      },
+      {
+        path: '@/util/add2.ts',
+        name: 'add2.ts',
+        type: 'file',
+        content: codeReactUtilAdd2,
         codeType: 'react',
         fileType: 'typescript'
       }
@@ -61,6 +70,14 @@ const dir: CodeDirectory = [
     fileType: 'typescript'
   },
   {
+    path: '@/app2.tsx',
+    name: 'app2.tsx',
+    type: 'file',
+    content: codeReactApp2,
+    codeType: 'react',
+    fileType: 'typescript'
+  },
+  {
     path: '@/app.css',
     name: 'app.css',
     type: 'file',
@@ -73,7 +90,9 @@ const dir: CodeDirectory = [
 function main() {
   const compiler = new ReactProjectCompiler();
   compiler.setFiles(dir);
-  compiler.setEntryPath('@/app.tsx');
+  compiler.setEntryList(['@/app.tsx', '@/app2.tsx']);
+
+  // compiler.setEntryList(['@/app.tsx']);
   let compiledFiles = compiler.compile();
 
   // update file

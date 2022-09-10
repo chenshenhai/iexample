@@ -28,7 +28,7 @@ export interface ModuleInfo {
 }
 
 export function sortProjectPathList(
-  entryPath: string,
+  entryList: string[],
   modInfos: ModuleInfo[]
 ): string[] {
   // reset index for compiled files;
@@ -52,6 +52,8 @@ export function sortProjectPathList(
       });
     }
   };
-  _readDeps(entryPath);
+  [...entryList].reverse().forEach((entry: string) => {
+    _readDeps(entry);
+  });
   return needPathList;
 }

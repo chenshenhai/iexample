@@ -19,7 +19,7 @@ import { filterCssFiles } from './filter';
 export const compileReactProject = (
   dir: CodeDirectory,
   opts: {
-    entryPath: string;
+    entryList: string[];
   }
 ): CodeCompiledFiles => {
   const compiledList: CodeCompiledFiles = [];
@@ -126,7 +126,7 @@ export const compileReactProject = (
   });
 
   // reset index for compiled files;
-  const needPathList = sortProjectPathList(opts.entryPath, modInfos);
+  const needPathList = sortProjectPathList(opts.entryList, modInfos);
   const result = sortProjectCompiledFiles(compiledList, needPathList);
   return result;
 };

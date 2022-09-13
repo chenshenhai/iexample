@@ -31,6 +31,9 @@ export function sortProjectPathList(
   entryList: string[],
   modInfos: ModuleInfo[]
 ): string[] {
+  console.log('entryList ====', entryList);
+  console.log('modInfos ====', modInfos);
+
   // reset index for compiled files;
   const needPathList: string[] = [];
   const depsMapByPath: {
@@ -40,9 +43,6 @@ export function sortProjectPathList(
     depsMapByPath[mod.path] = mod.deps;
   });
   const _readDeps = (path: string) => {
-    if (!needPathList.includes(path) && depsMapByPath?.[path]) {
-      needPathList.unshift(path);
-    }
     const deps = depsMapByPath?.[path];
     if (Array.isArray(deps)) {
       deps.forEach((i: string | null) => {
@@ -51,8 +51,11 @@ export function sortProjectPathList(
         }
       });
     }
+    if (!needPathList.includes(path) && depsMapByPath?.[path]) {
+      needPathList.push(path);
+    }
   };
-  [...entryList].reverse().forEach((entry: string) => {
+  entryList.forEach((entry: string) => {
     _readDeps(entry);
   });
   return needPathList;

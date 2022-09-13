@@ -1,4 +1,10 @@
-import type { CodeDirectory, CodeFile, CodeFolder } from '@iexample/types';
+import type {
+  CodeDirectory,
+  CodeFile,
+  CodeFolder,
+  CodeCompiledFiles
+} from '@iexample/types';
+import { joinPath, getFolderPath } from './path';
 
 export function updateFileContent(
   dir: CodeDirectory,
@@ -25,6 +31,31 @@ export function updateFileContent(
     _update(item);
   });
   return dir;
+}
+
+export function findFileContent(
+  dir: CodeDirectory,
+  path: string
+): null | string {
+  let content: null | string = null;
+  const _find = (file: CodeFile | CodeFolder) => {
+    if (content) {
+      return;
+    }
+    if (file.type === 'file') {
+      if (file.path === path) {
+        content = file.content;
+      }
+    } else if (file.type === 'folder') {
+      file.children?.forEach((item) => {
+        _find(item);
+      });
+    }
+  };
+  dir.forEach((item: CodeFile | CodeFolder) => {
+    _find(item);
+  });
+  return content;
 }
 
 export function flatDirectory(dir: CodeDirectory): CodeFile[] {
@@ -63,4 +94,55 @@ export function flatDirectoryToMap(dir: CodeDirectory): {
     _read(item);
   });
   return fileMap;
+}
+
+export function parseEntryListFromPage(
+  html: string,
+  pagePath: string
+): string[] {
+  const entryList: string[] = [];
+  const folderPath = getFolderPath(pagePath);
+  const domParser = new DOMParser();
+  const doc = domParser.parseFromString(html, 'text/html');
+  const scripts: NodeListOf<HTMLScriptElement> = doc.querySelectorAll(
+    'script[type="module"]'
+  );
+  scripts.forEach((script: HTMLScriptElement) => {
+    const src = script.getAttribute('src');
+    if (
+      typeof src === 'string' &&
+      !src.startsWith('//') &&
+      (src.startsWith('./') || src.startsWith('../') || src.startsWith('/'))
+    ) {
+      const entry = joinPath(folderPath, src);
+      entryList.push(entry);
+    }
+  });
+  return entryList;
+}
+
+export function convertPreviewPage(
+  html: string,
+  pagePath: string,
+  codeCompiledFiles: CodeCompiledFiles
+): string[] {
+  const entryList: string[] = [];
+  const foderPath = getFolderPath(pagePath);
+  const domParser = new DOMParser();
+  const doc = domParser.parseFromString(html, 'text/html');
+  const scripts: NodeListOf<HTMLScriptElement> = doc.querySelectorAll(
+    'script[type="module"]'
+  );
+  scripts.forEach((script: HTMLScriptElement) => {
+    const src = script.getAttribute('src');
+    if (
+      typeof src === 'string' &&
+      !src.startsWith('//') &&
+      (src.startsWith('./') || src.startsWith('../') || src.startsWith('/'))
+    ) {
+      const entry = joinPath(foderPath, src);
+      entryList.push(entry);
+    }
+  });
+  return entryList;
 }

@@ -7,6 +7,7 @@ export interface CodeProjectCompiler<T extends CodeProjectType> {
   setFiles(dir: CodeDirectory): void;
   setEntryList(entryList: string[]): void;
   compile(): CodeCompiledFiles;
+  compileFormPage(pagePath: string): string | null;
   updateFileContent(path: string, content: string): CodeCompiledFiles;
 
   // TODO

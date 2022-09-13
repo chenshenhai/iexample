@@ -15,4 +15,6 @@ const Counter = () => {
   )
 } 
 
-ReactDOM.render(<Counter />, document.querySelector('#app2'))
+const root = ReactDOM.createRoot(document.querySelector('#app2'));
+
+root.render(<Counter />, )

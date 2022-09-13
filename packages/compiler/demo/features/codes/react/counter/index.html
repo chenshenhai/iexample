@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <script type="importmap">
+      {
+        "imports": {
+          "vue": "https://unpkg.com/vue@3.2.37/dist/vue.runtime.esm-browser.js",
+          "react": "https://jspm.dev/react",
+          "react-dom": "https://jspm.dev/react-dom"
+        }
+      }
+    </script>
+    <style>
+      html,body {
+        margin: 0;
+        padding: 0;
+        background: #f0f0f0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div id="app">Loading...</div>
+    <div id="app2">Loading2...</div>
+
+    <script type="module" src="./src/app.tsx"></script>
+    <script type="module" src="./src/app2.tsx"></script>
+  </body>
+</html>
+
+

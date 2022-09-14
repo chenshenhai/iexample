@@ -31,9 +31,6 @@ export function sortProjectPathList(
   entryList: string[],
   modInfos: ModuleInfo[]
 ): string[] {
-  console.log('entryList ====', entryList);
-  console.log('modInfos ====', modInfos);
-
   // reset index for compiled files;
   const needPathList: string[] = [];
   const depsMapByPath: {

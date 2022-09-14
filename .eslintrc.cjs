@@ -18,6 +18,7 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/ban-ts-comment': 'warn',
+    '@typescript-eslint/no-unused-vars': 'error',
     'vue/multi-word-component-names': 'off',
     'vue/no-setup-props-destructure': 'warn',
     'no-prototype-builtins': 'off',

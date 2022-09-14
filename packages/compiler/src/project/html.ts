@@ -4,13 +4,15 @@ import type {
   CodeCompiledAdditionalFile
 } from '@iexample/types';
 import { compileReactProject } from '../compile/react-project';
+import { compileVueSetupProject } from '../compile/vue-setup-project';
 import { findFileContent } from '../util/project';
 import { joinPath, getFolderPath } from '../util/path';
 import defineScriptText from '@iexample/define/dist/index.umd.js?raw';
 
 export function compileRuntimeHTML(
   dir: CodeDirectory,
-  pagePath: string
+  pagePath: string,
+  mode: 'REACT_PROJECT' | 'VUE_SETUP_PROJECT'
 ): string | null {
   const content = findFileContent(dir, pagePath);
   if (typeof content !== 'string') return content;
@@ -49,9 +51,18 @@ export function compileRuntimeHTML(
     }
   });
 
-  const compiledFiles = compileReactProject(dir, {
-    entryList
-  });
+  let compiledFiles: CodeCompiledFile[] = [];
+
+  if (mode === 'VUE_SETUP_PROJECT') {
+    compiledFiles = compileVueSetupProject(dir, {
+      entryList
+    });
+  } else {
+    compiledFiles = compileReactProject(dir, {
+      entryList
+    });
+  }
+
   const compiledFilePathList = compiledFiles.map((file) => file.path);
 
   compiledFiles.forEach((compiledFile: CodeCompiledFile) => {
@@ -72,7 +83,7 @@ export function compileRuntimeHTML(
     }
   });
 
-  let prevAmdIndex = -1;
+  const prevAmdIndex = -1;
   if (scripts[0]) {
     const defineScript = document.createElement('script');
     defineScript.innerHTML = defineScriptText || '';
@@ -85,7 +96,10 @@ export function compileRuntimeHTML(
     if (scriptAmdIndex >= 0) {
       for (let i = prevAmdIndex + 1; i <= scriptAmdIndex; i++) {
         const amdModuleScript = document.createElement('script');
-        amdModuleScript.setAttribute('data-amd-module-path', amdPath);
+        amdModuleScript.setAttribute(
+          'data-amd-module-path',
+          compiledFiles[i]?.path
+        );
         amdModuleScript.innerHTML = compiledFiles[i]?.compiledContent || '';
         script.after(amdModuleScript);
       }

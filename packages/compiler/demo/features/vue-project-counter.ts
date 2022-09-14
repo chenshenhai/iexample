@@ -7,6 +7,8 @@ import codeVueUtilAdd2 from './codes/vue/counter/util/add2.ts?raw';
 import codeVueLibNum from './codes/vue/counter/lib/num.vue?raw';
 import codeVueLibApp from './codes/vue/counter/lib/app.vue?raw';
 import codeVueLibApp2 from './codes/vue/counter/lib/app2.vue?raw';
+import codeVueIndexPage from './codes/vue/counter/index.html?raw';
+
 import tpl from './tpl.html?raw';
 import {
   VueSetupProjectCompiler,
@@ -85,49 +87,71 @@ const dir: CodeDirectory = [
     content: codeVueIndex2,
     codeType: 'typescript',
     fileType: 'typescript'
+  },
+  {
+    path: '@/index.html',
+    name: 'index.html',
+    type: 'file',
+    content: codeVueIndexPage,
+    codeType: 'html',
+    fileType: 'html'
   }
 ];
 
+// function main() {
+//   console.log('dir ====', dir);
+//   const compiler = new VueSetupProjectCompiler();
+//   compiler.setFiles(dir);
+//   compiler.setEntryList(['@/index.ts', '@/index2.ts']);
+//   const compiledFiles = compiler.compile();
+
+//   console.log('compiledFiles ====', compiledFiles);
+//   // const source = simpleReactCode;
+//   // compiledDir.reverse();
+//   const jsList = parseCompiledJsCodeList(compiledFiles);
+//   const cssList = parseCompiledCssCodeList(compiledFiles);
+
+//   console.log('cssList ===', cssList);
+
+//   const html = tpl
+//     .replace(
+//       '<!--INJECT_STYLE-->',
+//       `
+//   <style>
+//   ${cssList.join('\n')}
+//   </style>
+//   `
+//     )
+//     .replace(
+//       '<!--INJECT_SCRIPT_LIB-->',
+//       `
+//   <script>
+//   ${defineLib}
+//   </script>
+//   `
+//     )
+//     .replace(
+//       '<!--INJECT_SCRIPT-->',
+//       `
+//   <script type="module">
+//   ${jsList.join('\n')}
+//   </script>
+//   `
+//     );
+//   const iframe = document.createElement('iframe');
+//   iframe.srcdoc = html;
+
+//   const app = document.querySelector('#app');
+//   app?.appendChild(iframe);
+// }
+
 function main() {
-  console.log('dir ====', dir);
   const compiler = new VueSetupProjectCompiler();
   compiler.setFiles(dir);
-  compiler.setEntryList(['@/index.ts', '@/index2.ts']);
-  const compiledFiles = compiler.compile();
+  // compiler.setEntryList(['@/src/app.tsx', '@/src/app2.tsx']);
 
-  console.log('compiledFiles ====', compiledFiles);
-  // const source = simpleReactCode;
-  // compiledDir.reverse();
-  const jsList = parseCompiledJsCodeList(compiledFiles);
-  const cssList = parseCompiledCssCodeList(compiledFiles);
-
-  console.log('cssList ===', cssList);
-
-  const html = tpl
-    .replace(
-      '<!--INJECT_STYLE-->',
-      `
-  <style>
-  ${cssList.join('\n')}
-  </style>
-  `
-    )
-    .replace(
-      '<!--INJECT_SCRIPT_LIB-->',
-      `
-  <script>
-  ${defineLib}
-  </script>
-  `
-    )
-    .replace(
-      '<!--INJECT_SCRIPT-->',
-      `
-  <script type="module">
-  ${jsList.join('\n')}
-  </script> 
-  `
-    );
+  // compiler.setEntryList(['@/src/app.tsx']);
+  let html = compiler.compileFormPage('@/index.html') || '';
   const iframe = document.createElement('iframe');
   iframe.srcdoc = html;
 

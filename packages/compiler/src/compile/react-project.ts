@@ -6,7 +6,7 @@ import type {
   CodeFolder
 } from '@iexample/types';
 import { compileReactFile } from './react-file';
-import { compileAstToAMD, compileCodeToAMD } from './amd';
+import { compileAstToAMD } from './amd';
 // import { transform } from '../util/babel-standalone/babel';
 import { getFolderPath, joinPath } from '../util/path';
 import { sortProjectCompiledFiles, sortProjectPathList } from './sort';

@@ -5,8 +5,7 @@ import type {
   CodeCompiledFiles
 } from '@iexample/types';
 import { compileReactProject } from '../compile/react-project';
-import { updateFileContent, findFileContent } from '../util/project';
-import { joinPath, getFolderPath } from '../util/path';
+import { updateFileContent } from '../util/project';
 import { compileRuntimeHTML } from './html';
 
 export class ReactProjectCompiler implements CodeProjectCompiler<'react'> {
@@ -35,7 +34,7 @@ export class ReactProjectCompiler implements CodeProjectCompiler<'react'> {
   }
 
   compileFormPage(pagePath: string): string | null {
-    const html = compileRuntimeHTML(this._dir, pagePath);
+    const html = compileRuntimeHTML(this._dir, pagePath, 'REACT_PROJECT');
     return html;
   }
 

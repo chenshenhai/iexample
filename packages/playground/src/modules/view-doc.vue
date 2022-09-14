@@ -8,7 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { watch, watchEffect } from 'vue';
 import { parseMarkdownToHtml } from '../runtime/markdown/render';
 
 const props = defineProps<{

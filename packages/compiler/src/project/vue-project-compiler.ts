@@ -6,6 +6,7 @@ import type {
 } from '@iexample/types';
 import { compileVueSetupProject } from '../compile/vue-setup-project';
 import { updateFileContent } from '../util/project';
+import { compileRuntimeHTML } from './html';
 
 export class VueSetupProjectCompiler implements CodeProjectCompiler<'vue'> {
   private _entryList: string[] = [];
@@ -30,6 +31,11 @@ export class VueSetupProjectCompiler implements CodeProjectCompiler<'vue'> {
       entryList: this._entryList
     });
     return this._compiledFiles;
+  }
+
+  compileFormPage(pagePath: string): string | null {
+    const html = compileRuntimeHTML(this._dir, pagePath, 'VUE_SETUP_PROJECT');
+    return html;
   }
 
   updateFileContent(path: string, content: string): CodeCompiledFiles {

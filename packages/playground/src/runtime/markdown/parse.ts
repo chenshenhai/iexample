@@ -116,7 +116,7 @@ function appendFileToMap(
   }
   const pathList = filePath.split('/');
   let targetMap: TempFileMap | any = tempMap;
-  let currentPathList: string[] = [];
+  const currentPathList: string[] = [];
   while (pathList.length > 0) {
     const pathName: string = pathList.shift() as string;
     currentPathList.push(pathName);

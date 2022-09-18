@@ -28,7 +28,7 @@ export interface ModuleInfo {
 }
 
 export function sortProjectPathList(
-  entryPath: string,
+  entryList: string[],
   modInfos: ModuleInfo[]
 ): string[] {
   // reset index for compiled files;
@@ -40,9 +40,6 @@ export function sortProjectPathList(
     depsMapByPath[mod.path] = mod.deps;
   });
   const _readDeps = (path: string) => {
-    if (!needPathList.includes(path) && depsMapByPath?.[path]) {
-      needPathList.unshift(path);
-    }
     const deps = depsMapByPath?.[path];
     if (Array.isArray(deps)) {
       deps.forEach((i: string | null) => {
@@ -51,7 +48,12 @@ export function sortProjectPathList(
         }
       });
     }
+    if (!needPathList.includes(path) && depsMapByPath?.[path]) {
+      needPathList.push(path);
+    }
   };
-  _readDeps(entryPath);
+  entryList.forEach((entry: string) => {
+    _readDeps(entry);
+  });
   return needPathList;
 }

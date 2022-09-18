@@ -25,6 +25,7 @@
   ],
   "exclude": [
     "packages/iexample/",
-    "packages/**/*.html"
+    "packages/**/*.html",
+    "packages/**/demo"
   ]
 }

@@ -5,8 +5,9 @@ export type CodeProjectType = 'vue' | 'react';
 export interface CodeProjectCompiler<T extends CodeProjectType> {
   getType(): T;
   setFiles(dir: CodeDirectory): void;
-  setEntryPath(path: string): void;
+  setEntryList(entryList: string[]): void;
   compile(): CodeCompiledFiles;
+  compileFormPage(pagePath: string): string | null;
   updateFileContent(path: string, content: string): CodeCompiledFiles;
 
   // TODO

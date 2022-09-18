@@ -1,14 +1,14 @@
 <template>
   <div class="app">
     <NumComponent :num="num" />
-    <button class="btn" @click="click">Add</button>
+    <button class="btn" @click="click">Add 2</button>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import NumComponent from './num.vue';
-import { add } from '../util/add';
+import { add } from '../util/add2';
 const num = ref(0);
 const click = () => {
   num.value = add(num.value);

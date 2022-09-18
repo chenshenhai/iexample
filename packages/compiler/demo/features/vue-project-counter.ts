@@ -1,12 +1,21 @@
 /// <reference types="vite/client" />
 import defineLib from '@iexample/define/dist/index.umd.js?raw';
 import codeVueIndex from './codes/vue/counter/index.ts?raw';
+import codeVueIndex2 from './codes/vue/counter/index2.ts?raw';
 import codeVueUtilAdd from './codes/vue/counter/util/add.ts?raw';
+import codeVueUtilAdd2 from './codes/vue/counter/util/add2.ts?raw';
 import codeVueLibNum from './codes/vue/counter/lib/num.vue?raw';
 import codeVueLibApp from './codes/vue/counter/lib/app.vue?raw';
+import codeVueLibApp2 from './codes/vue/counter/lib/app2.vue?raw';
+import codeVueIndexPage from './codes/vue/counter/index.html?raw';
+
 import tpl from './tpl.html?raw';
-import { VueSetupProjectCompiler, parseCompiledJsCodeList, parseCompiledCssCodeList  } from '../../src';
-import type { CodeDirectory } from '@iexample/types'
+import {
+  VueSetupProjectCompiler,
+  parseCompiledJsCodeList,
+  parseCompiledCssCodeList
+} from '../../src';
+import type { CodeDirectory } from '@iexample/types';
 
 const dir: CodeDirectory = [
   {
@@ -20,8 +29,16 @@ const dir: CodeDirectory = [
         type: 'file',
         content: codeVueUtilAdd,
         codeType: 'typescript',
-        fileType: 'typescript',
+        fileType: 'typescript'
       },
+      {
+        path: '@/util/add2.ts',
+        name: 'add2.ts',
+        type: 'file',
+        content: codeVueUtilAdd2,
+        codeType: 'typescript',
+        fileType: 'typescript'
+      }
     ]
   },
   {
@@ -35,16 +52,24 @@ const dir: CodeDirectory = [
         type: 'file',
         content: codeVueLibNum,
         codeType: 'vue',
-        fileType: 'html',
-      }, 
+        fileType: 'html'
+      },
       {
         path: '@/lib/app.vue',
         name: 'app.vue',
         type: 'file',
         content: codeVueLibApp,
         codeType: 'vue',
-        fileType: 'html',
+        fileType: 'html'
       },
+      {
+        path: '@/lib/app2.vue',
+        name: 'app2.vue',
+        type: 'file',
+        content: codeVueLibApp2,
+        codeType: 'vue',
+        fileType: 'html'
+      }
     ]
   },
   {
@@ -53,39 +78,80 @@ const dir: CodeDirectory = [
     type: 'file',
     content: codeVueIndex,
     codeType: 'typescript',
-    fileType: 'typescript',
+    fileType: 'typescript'
   },
-]
+  {
+    path: '@/index2.ts',
+    name: 'index2.ts',
+    type: 'file',
+    content: codeVueIndex2,
+    codeType: 'typescript',
+    fileType: 'typescript'
+  },
+  {
+    path: '@/index.html',
+    name: 'index.html',
+    type: 'file',
+    content: codeVueIndexPage,
+    codeType: 'html',
+    fileType: 'html'
+  }
+];
+
+// function main() {
+//   console.log('dir ====', dir);
+//   const compiler = new VueSetupProjectCompiler();
+//   compiler.setFiles(dir);
+//   compiler.setEntryList(['@/index.ts', '@/index2.ts']);
+//   const compiledFiles = compiler.compile();
+
+//   console.log('compiledFiles ====', compiledFiles);
+//   // const source = simpleReactCode;
+//   // compiledDir.reverse();
+//   const jsList = parseCompiledJsCodeList(compiledFiles);
+//   const cssList = parseCompiledCssCodeList(compiledFiles);
+
+//   console.log('cssList ===', cssList);
+
+//   const html = tpl
+//     .replace(
+//       '<!--INJECT_STYLE-->',
+//       `
+//   <style>
+//   ${cssList.join('\n')}
+//   </style>
+//   `
+//     )
+//     .replace(
+//       '<!--INJECT_SCRIPT_LIB-->',
+//       `
+//   <script>
+//   ${defineLib}
+//   </script>
+//   `
+//     )
+//     .replace(
+//       '<!--INJECT_SCRIPT-->',
+//       `
+//   <script type="module">
+//   ${jsList.join('\n')}
+//   </script>
+//   `
+//     );
+//   const iframe = document.createElement('iframe');
+//   iframe.srcdoc = html;
+
+//   const app = document.querySelector('#app');
+//   app?.appendChild(iframe);
+// }
 
 function main() {
-
-  console.log('dir ====', dir);
   const compiler = new VueSetupProjectCompiler();
   compiler.setFiles(dir);
-  compiler.setEntryPath('@/index.ts');
-  const compiledFiles = compiler.compile();
-  
-  console.log('compiledFiles ====', );
-  // const source = simpleReactCode;
-  // compiledDir.reverse();
-  const jsList = parseCompiledJsCodeList(compiledFiles)
-  const cssList = parseCompiledCssCodeList(compiledFiles)
+  // compiler.setEntryList(['@/src/app.tsx', '@/src/app2.tsx']);
 
-  console.log('cssList ===', cssList)
-   
-  const html = tpl.replace('<!--INJECT_STYLE-->', `
-  <style>
-  ${cssList.join('\n')}
-  </style>
-  `).replace('<!--INJECT_SCRIPT_LIB-->', `
-  <script>
-  ${defineLib}
-  </script>
-  `).replace('<!--INJECT_SCRIPT-->', `
-  <script type="module">
-  ${jsList.join('\n')}
-  </script> 
-  `)
+  // compiler.setEntryList(['@/src/app.tsx']);
+  let html = compiler.compileFormPage('@/index.html') || '';
   const iframe = document.createElement('iframe');
   iframe.srcdoc = html;
 
@@ -93,5 +159,4 @@ function main() {
   app?.appendChild(iframe);
 }
 
-
-main()
+main();

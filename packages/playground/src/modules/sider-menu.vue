@@ -13,27 +13,40 @@
             @selectFile="onSelectDocFile"
           />
         </template>
-        <template #bottom> Code Lide </template>
+        <template #bottom>
+          <TreeView
+            :data="props.codeDirectory || []"
+            :expandAll="false"
+            :selectedFilePath="props.currentCodeFilePath || ''"
+            @selectFile="onSelectCodeFile"
+          />
+        </template>
       </LayoutRow>
     </aside>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { DocDirectory, DocFile } from '../types';
+import type { DocDirectory, DocFile, CodeDirectory, CodeFile } from '../types';
 import SiderNav from './sider-nav.vue';
 import LayoutRow from '../components/layout-row.vue';
 import TreeView from '../components/tree/tree-view.vue';
 const props = defineProps<{
   docDirectory?: DocDirectory;
   currentDocFilePath?: string;
+  codeDirectory?: CodeDirectory;
+  currentCodeFilePath?: string;
 }>();
 
 const emit = defineEmits<{
   (event: 'onSelectDocFile', value: DocFile): void;
+  (event: 'onSelectCodeFile', value: CodeFile): void;
 }>();
 const onSelectDocFile = (docFile: DocFile) => {
   emit('onSelectDocFile', docFile);
+};
+const onSelectCodeFile = (codeFile: CodeFile) => {
+  emit('onSelectCodeFile', codeFile);
 };
 </script>
 

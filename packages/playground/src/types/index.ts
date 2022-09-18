@@ -4,6 +4,7 @@ export type {
   CodeType,
   CodeFileType,
   CodeFile,
+  CodeFolder,
   CodeDirectory,
   DocFile,
   DocDirectory

@@ -71,15 +71,10 @@
 import { ref, reactive, onMounted } from 'vue';
 import IconMenu from '@ant-design/icons-vue/MenuOutlined';
 import IconDesktop from '@ant-design/icons-vue/DesktopOutlined';
-import type { PlaygroundTheme } from '../types';
 import LayoutColumn from '../components/layout-column.vue';
 import { throttle } from '../util/time';
 
-const defaultSiderWidth: number = 280;
-
-const props = defineProps<{
-  theme: PlaygroundTheme;
-}>();
+const defaultSiderWidth = 280;
 
 const mobileState = reactive({
   openSider: false,

@@ -6,7 +6,7 @@ import type {
   CodeFolder
 } from '@iexample/types';
 import { compileReactFile } from './react-file';
-import { compileAstToAMD, compileCodeToAMD } from './amd';
+import { compileAstToAMD } from './amd';
 // import { transform } from '../util/babel-standalone/babel';
 import { getFolderPath, joinPath } from '../util/path';
 import { sortProjectCompiledFiles, sortProjectPathList } from './sort';
@@ -19,7 +19,7 @@ import { filterCssFiles } from './filter';
 export const compileReactProject = (
   dir: CodeDirectory,
   opts: {
-    entryPath: string;
+    entryList: string[];
   }
 ): CodeCompiledFiles => {
   const compiledList: CodeCompiledFiles = [];
@@ -126,7 +126,7 @@ export const compileReactProject = (
   });
 
   // reset index for compiled files;
-  const needPathList = sortProjectPathList(opts.entryPath, modInfos);
+  const needPathList = sortProjectPathList(opts.entryList, modInfos);
   const result = sortProjectCompiledFiles(compiledList, needPathList);
   return result;
 };

@@ -116,7 +116,7 @@ function appendFileToMap(
   }
   const pathList = filePath.split('/');
   let targetMap: TempFileMap | any = tempMap;
-  let currentPathList: string[] = [];
+  const currentPathList: string[] = [];
   while (pathList.length > 0) {
     const pathName: string = pathList.shift() as string;
     currentPathList.push(pathName);
@@ -234,6 +234,17 @@ export function parseMarkdownProject(md: string): {
     }
   };
 
-  _readTempFileMap(project.dir, tempFileMap['@'] as TempFileMap);
+  const dir: CodeDirectory = [];
+  _readTempFileMap(dir, tempFileMap['@'] as TempFileMap);
+  const folderList: CodeFolder[] = [];
+  const fileList: CodeFile[] = [];
+  dir.forEach((item) => {
+    if (item.type === 'folder') {
+      folderList.push(item);
+    } else {
+      fileList.push(item);
+    }
+  });
+  project.dir = [...folderList, ...fileList];
   return project;
 }

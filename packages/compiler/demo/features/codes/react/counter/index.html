@@ -9,8 +9,6 @@
         }
       }
     </script>
-    <!-- <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script> -->
     <style>
       html,body {
         margin: 0;
@@ -20,15 +18,14 @@
         width: 100%;
       }
     </style>
-    <!--INJECT_STYLE-->
-    <!--INJECT_SCRIPT_LIB-->
   </head>
   <body>
 
     <div id="app">Loading...</div>
     <div id="app2">Loading2...</div>
-    
-    <!--INJECT_SCRIPT-->
+
+    <script type="module" src="./src/app.tsx"></script>
+    <script type="module" src="./src/app2.tsx"></script>
   </body>
 </html>
 

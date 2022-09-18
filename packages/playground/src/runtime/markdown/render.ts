@@ -1,8 +1,8 @@
-import { marked, Slugger } from 'marked';
+import { marked } from 'marked';
 import hljs from 'highlight.js';
 
 const renderer = {
-  heading(text: string, level: number, raw: string, slugger: Slugger) {
+  heading(text: string, level: number) {
     return `<h${level} style="color:#666666;">${text}</h${level}>`;
   }
 };

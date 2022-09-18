@@ -13,7 +13,10 @@ import { parseMarkdownToHtml } from '../runtime/markdown/render';
 const props = defineProps<{
   content: string;
 }>();
-console.log('props ===', props);
+
+// watch([props], () => {
+//   console.log('change ======');
+// });
 </script>
 
 <style lang="less">

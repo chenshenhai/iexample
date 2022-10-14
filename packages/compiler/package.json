@@ -23,12 +23,12 @@
     "@types/babel__generator": "^7.6.4",
     "@types/babel__standalone": "^7.1.4",
     "@vue/compiler-sfc": "^3.2.37",
-    "vue": "^3.2.36"
+    "vue": "^3.2.41"
   },
   "peerDependencies": {
     "@babel/parser": "^7.18.4",
     "@vue/compiler-sfc": "^3.2.37",
-    "vue": "^3.2.36"
+    "vue": "^3.2.41"
   },
   "publishConfig": {
     "access": "public"

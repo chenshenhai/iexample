@@ -21,8 +21,8 @@
         <template #left>
           <div
             v-if="isMobileMode && mobileState.openSider"
-            @click="onClickCloseSider"
             class="iexample-responsive-sider-mobile-mask"
+            @click="onClickCloseSider"
           ></div>
           <div
             class="iexample-responsive-sider"

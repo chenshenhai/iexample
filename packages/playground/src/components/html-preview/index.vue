@@ -65,7 +65,7 @@ function createSandbox(source: string) {
 
 function createPreviewProxy(sandbox: HTMLIFrameElement): PreviewProxy {
   return new PreviewProxy(sandbox, {
-    on_fetch_progress: (progress: any) => {
+    on_fetch_progress: () => {
       // pending_imports = progress;
     },
     on_error: (event: any) => {
@@ -108,13 +108,13 @@ function createPreviewProxy(sandbox: HTMLIFrameElement): PreviewProxy {
         }
       }
     },
-    on_console_group: (action: any) => {
+    on_console_group: () => {
       // group_logs(action.label, false);
     },
     on_console_group_end: () => {
       // ungroup_logs();
     },
-    on_console_group_collapsed: (action: any) => {
+    on_console_group_collapsed: () => {
       // group_logs(action.label, true);
     }
   });

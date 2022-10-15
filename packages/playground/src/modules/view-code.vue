@@ -16,7 +16,7 @@ const props = defineProps<{
   codeType?: CodeType;
 }>();
 
-const onChange = debounce((code: string) => {
+const onChange = debounce(() => {
   // TODO
   // console.log('change =====', code);
 }, 300);

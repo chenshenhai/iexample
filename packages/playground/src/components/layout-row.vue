@@ -46,7 +46,7 @@ const state = reactive({
   splitBottom: -1
 });
 
-function dragStart(e: MouseEvent) {
+function dragStart() {
   state.dragging = true;
 }
 function dragMove(e: MouseEvent) {

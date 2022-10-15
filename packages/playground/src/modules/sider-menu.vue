@@ -27,16 +27,31 @@
 </template>
 
 <script setup lang="ts">
-import type { DocDirectory, DocFile, CodeDirectory, CodeFile } from '../types';
+import { inject, watch } from 'vue';
+import type {
+  DocDirectory,
+  DocFile,
+  CodeDirectory,
+  CodeFile,
+  SharedStore
+} from '../types';
 import SiderNav from './sider-nav.vue';
 import LayoutRow from '../components/layout-row.vue';
 import TreeView from '../components/tree/tree-view.vue';
+import { SHARED_STORE_CONTEXT_KEY } from '../util/constant';
 const props = defineProps<{
   docDirectory?: DocDirectory;
   currentDocFilePath?: string;
   codeDirectory?: CodeDirectory;
   currentCodeFilePath?: string;
 }>();
+
+const sharedStore = inject<SharedStore>(SHARED_STORE_CONTEXT_KEY);
+
+watch([() => sharedStore?.docMode], () => {
+  // TODO
+  // console.log('state ===', state);
+});
 
 const emit = defineEmits<{
   (event: 'onSelectDocFile', value: DocFile): void;

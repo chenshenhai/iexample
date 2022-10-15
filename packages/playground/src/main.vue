@@ -34,8 +34,14 @@
 </template>
 
 <script lang="ts" setup>
-import { watch } from 'vue';
-import type { PlaygroundTheme, DocDirectory, DocFile, CodeFile } from './types';
+import { watch, reactive, provide } from 'vue';
+import type {
+  PlaygroundTheme,
+  DocDirectory,
+  DocFile,
+  CodeFile,
+  SharedStore
+} from './types';
 import ResponsiveLayout from './modules/responsive-layout.vue';
 import LayoutRow from './components/layout-row.vue';
 import { storeGlobal } from './store/global';
@@ -43,6 +49,8 @@ import SiderMenu from './modules/sider-menu.vue';
 import ViewSwitch from './modules/view-switch.vue';
 import { parseMarkdownProject } from './runtime/markdown/parse';
 import { storeCode } from './store/code';
+import { createSharedStore } from './store/shared';
+import { SHARED_STORE_CONTEXT_KEY } from './util/constant';
 
 const props = defineProps<{
   theme?: PlaygroundTheme;
@@ -50,6 +58,10 @@ const props = defineProps<{
   currentDocFilePath?: string;
   docContent?: string;
 }>();
+
+const sharedStore = reactive<SharedStore>(createSharedStore());
+
+provide<SharedStore>(SHARED_STORE_CONTEXT_KEY, sharedStore);
 
 const emits = defineEmits<{
   (event: 'onSelectDocFile', docFile: DocFile): void;

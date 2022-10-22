@@ -10,7 +10,7 @@
     <div
       class="top"
       :style="{
-        height: state.splitTop + unit,
+        height: state.splitTop + state.unit,
         overflow: 'auto'
       }"
     >
@@ -20,7 +20,7 @@
     <div
       class="bottom"
       :style="{
-        height: state.splitBottom + unit,
+        height: state.splitBottom + state.unit,
         overflow: 'auto'
       }"
     >
@@ -30,21 +30,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
-const props = defineProps<{
-  defaultTopHeight: number;
-  onSplitChange?: (data: { top: number; bottom: number }) => void;
-  unit?: 'px' | '%';
-}>();
-
-const { defaultTopHeight = 50, onSplitChange, unit = 'px' } = props;
+import { ref, reactive, toRaw } from 'vue';
+const props = withDefaults(
+  defineProps<{
+    defaultTopHeight: number;
+    onSplitChange?: (data: { top: number; bottom: number }) => void;
+    unit?: 'px' | '%';
+  }>(),
+  {
+    defaultTopHeight: 50,
+    unit: 'px'
+  }
+);
 const container = ref<HTMLDivElement>();
 
 const state = reactive({
   dragging: false,
-  splitTop: defaultTopHeight,
-  splitBottom: -1
+  splitTop: toRaw(props.defaultTopHeight),
+  splitBottom: -1,
+  unit: toRaw(props.unit)
 });
+let previousState = toRaw(state);
 
 function dragStart() {
   state.dragging = true;
@@ -59,15 +65,15 @@ function dragMove(e: MouseEvent) {
     if (!(offsetY > 0 && offsetY < rect.height)) {
       return;
     }
-    if (unit === '%') {
+    if (props.unit === '%') {
       state.splitTop = Math.floor((100 * offsetY) / rect.height);
       state.splitBottom = 100 - state.splitTop;
     } else {
       state.splitTop = offsetY;
       state.splitBottom = rect.height - offsetY;
     }
-    onSplitChange &&
-      onSplitChange({
+    props.onSplitChange &&
+      props.onSplitChange({
         top: state.splitTop,
         bottom: state.splitBottom
       });
@@ -76,6 +82,34 @@ function dragMove(e: MouseEvent) {
 function dragEnd() {
   state.dragging = false;
 }
+
+const forceOnlyTop = () => {
+  previousState = toRaw(state);
+  state.unit = '%';
+  state.splitTop = 100;
+};
+
+const restore = () => {
+  if (previousState.unit === '%' && previousState.splitTop >= 100) {
+    state.unit = previousState.unit;
+    state.splitTop = 50;
+    return;
+  } else if (previousState.unit === 'px') {
+    const rect = container?.value?.getBoundingClientRect();
+    if (rect && rect.height >= state.splitTop) {
+      state.unit = previousState.unit;
+      state.splitTop = rect.height / 2;
+      return;
+    }
+  }
+  state.unit = previousState.unit;
+  state.splitTop = previousState.splitTop;
+};
+
+defineExpose({
+  forceOnlyTop,
+  restore
+});
 </script>
 
 <style scoped lang="less">

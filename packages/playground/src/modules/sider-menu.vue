@@ -4,7 +4,7 @@
       <SiderNav />
     </nav>
     <aside class="iexample-sider-menu">
-      <LayoutRow :defaultTopHeight="50" :unit="'%'">
+      <LayoutRow ref="refLayoutRow" :defaultTopHeight="50" :unit="'%'">
         <template #top>
           <TreeView
             :data="props.docDirectory || []"
@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, watch } from 'vue';
+import { inject, watch, ref, onMounted } from 'vue';
 import type {
   DocDirectory,
   DocFile,
@@ -47,10 +47,22 @@ const props = defineProps<{
 }>();
 
 const sharedStore = inject<SharedStore>(SHARED_STORE_CONTEXT_KEY);
+const refLayoutRow = ref<{ forceOnlyTop?: Function; restore?: Function }>({});
 
-watch([() => sharedStore?.docMode], () => {
-  // TODO
-  // console.log('state ===', state);
+onMounted(() => {
+  if (sharedStore?.docMode === 'markdown') {
+    refLayoutRow?.value?.forceOnlyTop?.();
+  } else {
+    refLayoutRow?.value?.restore?.();
+  }
+});
+
+watch([() => sharedStore?.docMode], ([stateDocMode]) => {
+  if (stateDocMode === 'markdown') {
+    refLayoutRow?.value?.forceOnlyTop?.();
+  } else {
+    refLayoutRow?.value?.restore?.();
+  }
 });
 
 const emit = defineEmits<{

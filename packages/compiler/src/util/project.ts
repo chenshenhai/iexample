@@ -1,8 +1,8 @@
 import type {
   CodeDirectory,
   CodeFile,
-  CodeFolder,
-  CodeCompiledFiles
+  CodeFolder
+  // CodeCompiledFiles
 } from '@iexample/types';
 import { joinPath, getFolderPath } from './path';
 
@@ -123,8 +123,8 @@ export function parseEntryListFromPage(
 
 export function convertPreviewPage(
   html: string,
-  pagePath: string,
-  codeCompiledFiles: CodeCompiledFiles
+  pagePath: string
+  // codeCompiledFiles: CodeCompiledFiles
 ): string[] {
   const entryList: string[] = [];
   const foderPath = getFolderPath(pagePath);

@@ -57,7 +57,7 @@ onMounted(() => {
   watchEffect(() => {
     // @ts-ignore
     const mode = modeMap[props.type] || modeMap['plaintext'];
-    console.log('mode ====', mode, props.type);
+    // console.log('mode ====', mode, props.type);
     editor.setOption('mode', mode);
   });
 });

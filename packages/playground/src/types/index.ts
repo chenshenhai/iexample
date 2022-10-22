@@ -15,3 +15,9 @@ export type ICodeEditor = typeof CodeMirror & {};
 export type PlaygroundTheme = 'light' | 'dark';
 
 export type IResultStatus = 'LOADING' | 'LOADED' | 'NOT_FOUND' | 'NOT_FINISHED';
+
+export type DocMode = 'code' | 'markdown';
+
+export interface SharedStore {
+  docMode: DocMode;
+}

@@ -83,8 +83,8 @@ function getCodeTypeFromPath(
 }
 
 function getFileTypeFromPath(
-  path: string,
-  projectType?: ProjectType
+  path: string
+  // projectType?: ProjectType
 ): CodeFileType {
   const extname = getFileExtName(path);
   if (['js', 'jsx', 'ts', 'tsx'].includes(extname)) {

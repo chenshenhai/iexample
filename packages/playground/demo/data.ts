@@ -1,4 +1,4 @@
-import type { CodeDirectory, DocDirectory } from '../src';
+import type { CodeDirectory, DocDirectory } from '@iexample/types';
 
 export const codeDirectory: CodeDirectory = [
   {
@@ -13,7 +13,8 @@ function add(a, b) {
 console.log(add(a, b))
 `,
     type: 'file',
-    fileType: 'javascript'
+    fileType: 'javascript',
+    codeType: 'javascript'
   },
   {
     name: 'index.css',
@@ -30,7 +31,8 @@ html, body {
 }
 `,
     type: 'file',
-    fileType: 'css'
+    fileType: 'css',
+    codeType: 'css'
   },
   //   {
   //     name: 'index.html',
@@ -58,7 +60,8 @@ html, body {
 </html>
 `,
     type: 'file',
-    fileType: 'html'
+    fileType: 'html',
+    codeType: 'html'
   }
 ];
 
@@ -79,7 +82,8 @@ export const codeDirectory2: CodeDirectory = [
 </html>
 `,
     type: 'file',
-    fileType: 'html'
+    fileType: 'html',
+    codeType: 'html'
   },
   {
     name: 'index.js',
@@ -93,7 +97,8 @@ function add(a, b) {
 console.log(add(a, b))
 `,
     type: 'file',
-    fileType: 'javascript'
+    fileType: 'javascript',
+    codeType: 'javascript'
   },
   {
     name: 'index.css',
@@ -110,7 +115,8 @@ html, body {
 }
 `,
     type: 'file',
-    fileType: 'css'
+    fileType: 'css',
+    codeType: 'css'
   }
   //   {
   //     name: 'index.html',
@@ -126,23 +132,20 @@ html, body {
 
 export const docDirectory: DocDirectory = [0, 1, 2].map((i) => {
   return {
-    path: [`item-xxxxxxxxxxxxxxxxxx-${i}`].join('/'),
-    name: `item-xxxxxxxxxxxxxxxxxx-${i}`,
+    path: [`item-xxxxxx-${i}`].join('/'),
+    name: `item-xxxxxx-${i}`,
     children: [0, 1, 2, 3].map((j) => {
       return {
-        path: [
-          `item-xxxxxxxxxxxxxxxxxx-${i}`,
-          `item-xxxxxxxxxxxxxxxxxx-${i}-${j}`
-        ].join('/'),
-        name: `item-xxxxxxxxxxxxxxxxxx-${i}-${j}`,
+        path: [`item-xxxxxx-${i}`, `item-xxxxxx-${i}-${j}`].join('/'),
+        name: `item-xxxxxx-${i}-${j}`,
         children: [0, 1, 2, 3, 4].map((k) => {
           return {
             path: [
-              `item-xxxxxxxxxxxxxxxxxx-${i}`,
-              `item-xxxxxxxxxxxxxxxxxx-${i}-${j}`,
-              `item-xxxxxxxxxxxxxxxxxx-${i}-${j}-${k}`
+              `item-xxxxxx-${i}`,
+              `item-xxxxxx-${i}-${j}`,
+              `item-xxxxxx-${i}-${j}-${k}`
             ].join('/'),
-            name: `item-xxxxxxxxxxxxxxxxxx-${i}-${j}-${k}`,
+            name: `item-xxxxxx-${i}-${j}-${k}`,
             children: []
           };
         })

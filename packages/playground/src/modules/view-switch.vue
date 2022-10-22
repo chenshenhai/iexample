@@ -8,7 +8,7 @@
           v-for="(item, index) in tabs"
           v-bind:key="index"
           class="view-switch-tab"
-          :class="{ active: item.key === state.activeTabKey }"
+          :class="{ active: item.key === sharedStore?.docMode }"
           @click="onSwicth(item.key)"
         >
           {{ item.name }}
@@ -19,7 +19,7 @@
     </div>
     <div class="view-switch-content">
       <ViewCode
-        v-if="state.activeTabKey === 'code'"
+        v-if="sharedStore?.docMode === 'code'"
         :codeContent="props.codeContent"
         :codeType="props.codeType"
       />
@@ -29,10 +29,11 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue';
+import { inject } from 'vue';
 import ViewCode from './view-code.vue';
 import ViewDoc from './view-doc.vue';
-import type { CodeType } from '../types';
+import { SHARED_STORE_CONTEXT_KEY } from '../util/constant';
+import type { CodeType, SharedStore, DocMode } from '../types';
 
 const props = defineProps<{
   docContent?: string;
@@ -40,25 +41,26 @@ const props = defineProps<{
   codeType?: CodeType;
 }>();
 
-const tabs = [
+const sharedStore: SharedStore | undefined = inject<SharedStore>(
+  SHARED_STORE_CONTEXT_KEY
+);
+
+const tabs: { name: string; key: DocMode }[] = [
   {
     name: 'Code',
     key: 'code'
   },
   {
     name: 'Document',
-    key: 'document'
+    key: 'markdown'
   }
 ];
 
-const state = reactive<{
-  activeTabKey: string;
-}>({
-  activeTabKey: tabs[0].key
-});
-
-const onSwicth = (key: string) => {
-  state.activeTabKey = key;
+const onSwicth = (key: DocMode) => {
+  // state.activeTabKey = key;
+  if (sharedStore) {
+    sharedStore.docMode = key;
+  }
 };
 </script>
 

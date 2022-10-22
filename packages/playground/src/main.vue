@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-import { watch, reactive, provide } from 'vue';
+import { watch, reactive, provide, onMounted } from 'vue';
 import type {
   PlaygroundTheme,
   DocDirectory,
@@ -78,6 +78,11 @@ const onSelectCodeFile = (codeFile: CodeFile) => {
 };
 
 storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
+
+onMounted(() => {
+  const codeProject = parseMarkdownProject(props.docContent || '');
+  storeCode.codeDirectory = codeProject.dir;
+});
 
 watch([() => props.docContent], ([docContent]) => {
   const codeProject = parseMarkdownProject(docContent || '');

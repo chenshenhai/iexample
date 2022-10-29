@@ -87,16 +87,21 @@ const onSelectCodeFile = (codeFile: CodeFile) => {
 
 storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
 
-onMounted(() => {
-  const codeProject = parseMarkdownProject(props.docContent || '');
+function resetCode(docContent?: string) {
+  const codeProject = parseMarkdownProject(docContent || '');
+  console.log('codeProject ========', codeProject);
+
   sharedCodeStore.codeDirectory = codeProject.dir;
   sharedCodeStore.projectType = codeProject.projectType;
+}
+
+onMounted(() => {
+  resetCode(props.docContent);
 });
 
 watch([() => props.docContent], ([docContent]) => {
-  const codeProject = parseMarkdownProject(docContent || '');
   sharedStore.docMode = 'markdown';
-  sharedCodeStore.codeDirectory = codeProject.dir;
+  resetCode(docContent);
   sharedCodeStore.codeContent = null;
   sharedCodeStore.currentCodeFilePath = null;
 });

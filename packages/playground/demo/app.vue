@@ -28,11 +28,13 @@ const state = reactive<{
 }>({
   docDirectory: docDirectory,
   currentDocFilePath: '',
-  docContent: mockDoc('Hello World', mdVueNote01)
+  // docContent: mockDoc('Hello World', mdVueNote01)
+  docContent: mockDoc('Hello World', mdReactNote01)
 });
 
 const onSelectDocFile = (file: DocFile) => {
   state.currentDocFilePath = file?.path || '';
-  state.docContent = mockDoc(file.name, mdReactNote01);
+  // state.docContent = mockDoc(file.name, mdReactNote01);
+  state.docContent = mockDoc(file.name, mdVueNote01);
 };
 </script>

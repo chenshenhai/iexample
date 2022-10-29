@@ -1,0 +1,268 @@
+<head>
+    <script type="importmap">
+      {
+        "imports": {
+          "vue": "https://unpkg.com/vue@3.2.37/dist/vue.runtime.esm-browser.js",
+          "react": "https://jspm.dev/react",
+          "react-dom": "https://jspm.dev/react-dom"
+        }
+      }
+    </script>
+    <style>
+      html,body {
+        margin: 0;
+        padding: 0;
+        background: #f0f0f0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  <style data-amd-module-path="@/src/app.css">.main {
+  width: 200px;
+  margin: 0 auto;
+  padding: 10px;
+  color: #666666;
+  box-shadow: 0px 0px 9px #00000066;
+  text-align: center;
+}</style></head>
+  <body>
+
+    <div id="app">Loading...</div>
+    <div id="app2">Loading2...</div>
+
+
+    <script type="module" src="./test.ts"></script>
+    <script>(function(global, factory) {
+  typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, global.define = factory());
+})(this, function() {
+  "use strict";
+  function compose(middleware) {
+    return function(context, next) {
+      return dispatch(0);
+      function dispatch(i) {
+        let fn = middleware[i];
+        if (i === middleware.length && next) {
+          fn = next;
+        }
+        if (!fn)
+          return Promise.resolve();
+        try {
+          return Promise.resolve(fn(context, dispatch.bind(null, i + 1)));
+        } catch (err) {
+          return Promise.reject(err);
+        }
+      }
+    };
+  }
+  function isNPM(name) {
+    return /^(?:@([^/]+?)[/])?([^/]+?)$/.test(name) && !name.startsWith("@/");
+  }
+  const modStorage = {};
+  async function define2(name, dependencies, callback) {
+    let modName = "";
+    let modDeps = [];
+    let modFn = () => {
+    };
+    let canEmit = false;
+    let canExec = false;
+    if (name && dependencies && callback) {
+      if (typeof name === "string") {
+        modName = name;
+      }
+      if (Array.isArray(dependencies)) {
+        modDeps = dependencies;
+      }
+      modFn = callback;
+    } else {
+      if (dependencies) {
+        if (typeof name === "string" && typeof dependencies === "function") {
+          modName = name;
+          modDeps = [];
+          modFn = dependencies;
+          canExec = true;
+        } else if (Array.isArray(name) && typeof dependencies === "function") {
+          modDeps = name;
+          modFn = dependencies;
+          modName = "temp-uuid-" + new Date().getTime();
+          canEmit = true;
+        }
+      } else {
+        if (typeof name === "function") {
+          modName = "temp-uuid-" + new Date().getTime();
+          modDeps = [];
+          modFn = name;
+          canEmit = true;
+        } else {
+          return false;
+        }
+      }
+    }
+    if (canExec) {
+      const modObj = {
+        name: modName,
+        dependencies: modDeps,
+        callback: modFn,
+        content: modFn(),
+        isLoaded: true
+      };
+      modStorage[modName] = modObj;
+      return modStorage[modName];
+    }
+    if (!modStorage.hasOwnProperty(modName)) {
+      const modObj = {
+        name: modName,
+        dependencies: modDeps,
+        callback: modFn,
+        content: null,
+        isLoaded: false
+      };
+      modStorage[modName] = modObj;
+    }
+    if (canEmit) {
+      await emit(modName);
+    } else {
+      return modStorage[modName];
+    }
+  }
+  async function emit(name) {
+    var _a, _b, _c;
+    const module2 = modStorage[name];
+    const tasks = [];
+    const taskContext = { contentList: [] };
+    let content = void 0;
+    if (!module2) {
+      console.warn(`Module "${name}" is not defined!`);
+      return null;
+    }
+    if ((module2 == null ? void 0 : module2.isLoaded) === true) {
+      return module2.content;
+    } else {
+      for (let i = 0, len = (_a = module2 == null ? void 0 : module2.dependencies) == null ? void 0 : _a.length; i < len; i++) {
+        const depName = module2.dependencies[i];
+        if (modStorage.hasOwnProperty(depName) && modStorage[depName].isLoaded) {
+          tasks.push(async (ctx, next) => {
+            ctx.contentList.push(modStorage[depName].content);
+            await next();
+          });
+        } else if (isNPM(depName)) {
+          tasks.push(async (ctx, next) => {
+            let esModule = null;
+            try {
+              esModule = await import(depName);
+            } catch (err) {
+              console.warn(err);
+            }
+            modStorage[depName] = {
+              name: depName,
+              dependencies: [],
+              content: esModule,
+              callback: null,
+              isLoaded: true
+            };
+            ctx.contentList.push(esModule);
+            await next();
+          });
+        } else {
+          tasks.push(async (ctx, next) => {
+            let defModule;
+            try {
+              defModule = await emit(depName);
+            } catch (err) {
+              console.warn(err);
+              defModule = null;
+            }
+            if (modStorage[depName]) {
+              modStorage[depName].isLoaded = true;
+            } else {
+              console.warn(`Module "${depName}" is not defined!`);
+            }
+            ctx.contentList.push(defModule);
+            await next();
+          });
+        }
+      }
+      await compose(tasks)(taskContext);
+      content = await ((_b = module2 == null ? void 0 : module2.callback) == null ? void 0 : _b.apply(
+        function() {
+        },
+        taskContext.contentList
+      ));
+    }
+    modStorage[name] = {
+      name,
+      dependencies: [...module2.dependencies],
+      content,
+      callback: module2.callback,
+      isLoaded: true
+    };
+    return (_c = modStorage[name]) == null ? void 0 : _c.content;
+  }
+  define2._getModules = function() {
+    return modStorage;
+  };
+  return define2;
+});
+</script><script data-amd-module-path="@/src/lib/log.ts">define([], function () {
+  console.log('Hello Log!');
+});</script><script data-amd-module-path="@/src/util/add.ts">define("@/src/util/add.ts", [], function () {
+  const __module__ = {};
+  __module__.add = num => {
+    return num + 1;
+  };
+  return __module__;
+});</script><script data-amd-module-path="@/src/lib/counter.tsx">define("@/src/lib/counter.tsx", ["react", "@/src/util/add.ts"], function (React, __src_util_add_ts_1) {
+  const useState = React.useState;
+  const add = __src_util_add_ts_1.add;
+  const Counter = () => {
+    const [count, setCount] = useState(0);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "hello"
+    }, /*#__PURE__*/React.createElement("div", null, count), /*#__PURE__*/React.createElement("button", {
+      onClick: () => {
+        setCount(add(count));
+      }
+    }, "Add +"));
+  };
+  const __module__ = {};
+  __module__.default = Counter;
+  return __module__;
+});</script><script data-amd-module-path="@/src/app.tsx">define(["react", "@/src/lib/log.ts", "react-dom", "@/src/lib/counter.tsx"], function (__React_2, ___3, __react_dom_4, __Counter_5) {
+  const React = __React_2.default;
+  const createRoot = __react_dom_4.createRoot;
+  const Counter = __Counter_5.default;
+  const App = () => {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "main"
+    }, /*#__PURE__*/React.createElement(Counter, null));
+  };
+  const root = createRoot(document.querySelector('#app'));
+  root.render( /*#__PURE__*/React.createElement(App, null));
+});</script>
+    <script data-amd-module-path="@/src/util/add2.ts">define("@/src/util/add2.ts", [], function () {
+  const __module__ = {};
+  __module__.add = num => {
+    return num + 2;
+  };
+  return __module__;
+});</script><script data-amd-module-path="@/src/app2.tsx">define(["react", "react-dom", "@/src/util/add2.ts", "@/src/lib/log.ts"], function (React, __ReactDOM_7, __src_util_add2_ts_8, ___9) {
+  const useState = React.useState;
+  const ReactDOM = __ReactDOM_7.default;
+  const add = __src_util_add2_ts_8.add;
+  const Counter = () => {
+    const [count, setCount] = useState(0);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "hello"
+    }, /*#__PURE__*/React.createElement("div", null, count), /*#__PURE__*/React.createElement("button", {
+      onClick: () => {
+        setCount(add(count));
+      }
+    }, "Add 2 +"));
+  };
+  const root = ReactDOM.createRoot(document.querySelector('#app2'));
+  root.render( /*#__PURE__*/React.createElement(Counter, null));
+});</script>
+  
+
+
+
+</body>

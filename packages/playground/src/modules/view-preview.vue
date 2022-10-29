@@ -9,7 +9,7 @@ import {
   VueSetupProjectCompiler
 } from '@iexample/compiler';
 import { SHARED_CODE_STORE_CONTEXT_KEY } from '../util/constant';
-import type { SharedCodeStore, CodeDirectory } from '../types';
+import type { SharedCodeStore, CodeDirectory, ProjectType } from '../types';
 
 const refDOM = ref<HTMLDivElement>();
 
@@ -21,12 +21,15 @@ let currentCompiler: ReactProjectCompiler | VueSetupProjectCompiler =
 
 let iframe: HTMLIFrameElement | null = null;
 
-function generateIFrame(targetCodeDir: CodeDirectory) {
+function generateIFrame(
+  targetCodeDir: CodeDirectory,
+  targetProjectType?: ProjectType
+) {
   if (iframe) {
     refDOM.value?.removeChild(iframe);
     iframe = null;
   }
-  if (sharedCodeStore?.projectType === 'vue') {
+  if (targetProjectType === 'vue') {
     currentCompiler = vueSetupCompiler;
   } else {
     currentCompiler = reactCompiler;
@@ -38,11 +41,14 @@ function generateIFrame(targetCodeDir: CodeDirectory) {
   refDOM.value?.appendChild(iframe);
 }
 
-watch([() => sharedCodeStore?.codeDirectory], ([targetCodeDirectory]) => {
-  if (targetCodeDirectory) {
-    generateIFrame(targetCodeDirectory);
+watch(
+  [() => sharedCodeStore?.codeDirectory, () => sharedCodeStore?.projectType],
+  ([targetCodeDirectory, targetProjectType]) => {
+    if (targetCodeDirectory) {
+      generateIFrame(targetCodeDirectory, targetProjectType);
+    }
   }
-});
+);
 </script>
 
 <style lang="less">

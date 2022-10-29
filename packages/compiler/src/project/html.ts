@@ -46,7 +46,7 @@ export function compileRuntimeHTML(
       const entry = _convertFullPath(src);
       if (entry) {
         entryList.push(entry);
-        script.setAttribute('data-amd-module-path', entry);
+        script.setAttribute('data-origin-esm-module-path', entry);
       }
     }
   });
@@ -83,7 +83,7 @@ export function compileRuntimeHTML(
     }
   });
 
-  const prevAmdIndex = -1;
+  let prevAmdIndex = 0;
   if (scripts[0]) {
     const defineScript = document.createElement('script');
     defineScript.innerHTML = defineScriptText || '';
@@ -91,17 +91,20 @@ export function compileRuntimeHTML(
   }
 
   scripts.forEach((script: HTMLScriptElement) => {
-    const amdPath: string = script.getAttribute('data-amd-module-path') || '';
+    const amdPath: string =
+      script.getAttribute('data-origin-esm-module-path') || '';
     const scriptAmdIndex = compiledFilePathList.indexOf(amdPath);
+
     if (scriptAmdIndex >= 0) {
-      for (let i = prevAmdIndex + 1; i <= scriptAmdIndex; i++) {
+      for (let i = prevAmdIndex; i <= scriptAmdIndex; i++) {
         const amdModuleScript = document.createElement('script');
         amdModuleScript.setAttribute(
           'data-amd-module-path',
           compiledFiles[i]?.path
         );
         amdModuleScript.innerHTML = compiledFiles[i]?.compiledContent || '';
-        script.after(amdModuleScript);
+        script.before(amdModuleScript);
+        prevAmdIndex++;
       }
       script.remove();
     }

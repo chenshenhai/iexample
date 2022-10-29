@@ -1,8 +1,6 @@
 
 <!-- 
-  iexample-type: react
-  iexample-project-001: 111
-  iexample-project-002: 222
+iexample-type: react
 -->
 # $$Hello_Demo$$
 
@@ -56,7 +54,6 @@ const App = () => {
   return (
     <div className='main'>
       <h1>$$Hello_Demo$$</h1>
-      <div>Hello Counter</div>
       <Counter />
     </div>
   )
@@ -70,8 +67,11 @@ root.render(<App />)
 
 <!-- iexample-file: "@/src/app.css" -->
 ```css
+h1 {
+  margin: 0;
+}
 .main {
-  width: 200px;
+  width: 400px;
   margin: 20px auto;
   padding: 10px;
   color: #666666;

@@ -33,8 +33,11 @@ export interface SharedStore {
 }
 
 export interface SharedCodeStore {
+  projectType: ProjectType;
   codeDirectory: CodeDirectory;
   currentCodeFilePath: string | null;
   codeContent: string | null;
   codeType: CodeType;
 }
+
+export type ProjectType = 'react' | 'vue' | 'javascript' | 'typescript';

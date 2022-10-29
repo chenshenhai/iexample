@@ -50,7 +50,7 @@ import LayoutRow from './components/layout-row.vue';
 import { storeGlobal } from './store/global';
 import SiderMenu from './modules/sider-menu.vue';
 import ViewSwitch from './modules/view-switch.vue';
-import ViewPreview from './modules/view-preivew.vue';
+import ViewPreview from './modules/view-preview.vue';
 import { parseMarkdownProject } from './runtime/markdown/parse';
 import { createSharedStore, createSharedCodeStore } from './store/shared';
 import {
@@ -90,11 +90,15 @@ storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
 onMounted(() => {
   const codeProject = parseMarkdownProject(props.docContent || '');
   sharedCodeStore.codeDirectory = codeProject.dir;
+  sharedCodeStore.projectType = codeProject.projectType;
 });
 
 watch([() => props.docContent], ([docContent]) => {
   const codeProject = parseMarkdownProject(docContent || '');
+  sharedStore.docMode = 'markdown';
   sharedCodeStore.codeDirectory = codeProject.dir;
+  sharedCodeStore.codeContent = null;
+  sharedCodeStore.currentCodeFilePath = null;
 });
 </script>
 

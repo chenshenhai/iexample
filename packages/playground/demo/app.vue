@@ -14,6 +14,7 @@ import { Playground } from '../src';
 import type { CodeDirectory, DocDirectory, DocFile } from '@iexample/types';
 import { docDirectory } from './data';
 import mdReactNote01 from './md/react-note-01.md?raw';
+import mdVueNote01 from './md/vue-note-01.md?raw';
 
 function mockDoc(name: string, content: string): string {
   return content.replace(/\$\$Hello_Demo\$\$/gi, name);
@@ -27,7 +28,7 @@ const state = reactive<{
 }>({
   docDirectory: docDirectory,
   currentDocFilePath: '',
-  docContent: `# Hello World`
+  docContent: mockDoc('Hello World', mdVueNote01)
 });
 
 const onSelectDocFile = (file: DocFile) => {

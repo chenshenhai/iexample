@@ -1,10 +1,13 @@
 <template>
-  <div class="preview-iframe" ref="refDOM"></div>
+  <div class="iexmaple-mod-view-preview" ref="refDOM"></div>
 </template>
 
 <script setup lang="ts">
-import { ref, inject, watch, toRaw } from 'vue';
-import { ReactProjectCompiler } from '@iexample/compiler';
+import { ref, inject, watch } from 'vue';
+import {
+  ReactProjectCompiler,
+  VueSetupProjectCompiler
+} from '@iexample/compiler';
 import { SHARED_CODE_STORE_CONTEXT_KEY } from '../util/constant';
 import type { SharedCodeStore, CodeDirectory } from '../types';
 
@@ -12,18 +15,25 @@ const refDOM = ref<HTMLDivElement>();
 
 const sharedCodeStore = inject<SharedCodeStore>(SHARED_CODE_STORE_CONTEXT_KEY);
 const reactCompiler = new ReactProjectCompiler();
+const vueSetupCompiler = new VueSetupProjectCompiler();
+let currentCompiler: ReactProjectCompiler | VueSetupProjectCompiler =
+  reactCompiler;
+
 let iframe: HTMLIFrameElement | null = null;
 
 function generateIFrame(targetCodeDir: CodeDirectory) {
-  console.log('targetCodeDir ====', toRaw(targetCodeDir));
   if (iframe) {
     refDOM.value?.removeChild(iframe);
     iframe = null;
   }
+  if (sharedCodeStore?.projectType === 'vue') {
+    currentCompiler = vueSetupCompiler;
+  } else {
+    currentCompiler = reactCompiler;
+  }
   iframe = document.createElement('iframe');
-  reactCompiler.setFiles(targetCodeDir);
-  const html = reactCompiler.compileFormPage('@/index.html') || '';
-  console.log('html ======', html);
+  currentCompiler.setFiles(targetCodeDir);
+  const html = currentCompiler.compileFormPage('@/index.html') || '';
   iframe.srcdoc = html;
   refDOM.value?.appendChild(iframe);
 }
@@ -37,8 +47,9 @@ watch([() => sharedCodeStore?.codeDirectory], ([targetCodeDirectory]) => {
 
 <style lang="less">
 .iexmaple-mod-view-preview {
-  .preview-iframe,
-  .preview-iframe:deep(iframe) {
+  width: 100%;
+  height: 100%;
+  iframe {
     width: 100%;
     height: 100%;
     border: none;

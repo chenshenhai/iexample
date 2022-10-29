@@ -6,7 +6,7 @@ declare module '*.vue' {
   export default component;
 }
 
-declare module '*?raw' {
-  const rawContent: string;
-  export default rawContent;
-}
+// declare module '*?raw' {
+//   const rawContent: string;
+//   export default rawContent;
+// }

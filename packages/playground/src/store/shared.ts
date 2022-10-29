@@ -8,6 +8,7 @@ export function createSharedStore(): SharedStore {
 
 export function createSharedCodeStore(): SharedCodeStore {
   return {
+    projectType: 'typescript',
     codeDirectory: [],
     currentCodeFilePath: null,
     codeContent: null,

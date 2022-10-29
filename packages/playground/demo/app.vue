@@ -12,8 +12,12 @@
 import { reactive } from 'vue';
 import { Playground } from '../src';
 import type { CodeDirectory, DocDirectory, DocFile } from '@iexample/types';
-import { codeDirectory, codeDirectory2, docDirectory } from './data';
+import { docDirectory } from './data';
 import mdReactNote01 from './md/react-note-01.md?raw';
+
+function mockDoc(name: string, content: string): string {
+  return content.replace(/\$\$Hello_Demo\$\$/gi, name);
+}
 
 const state = reactive<{
   // TODO
@@ -23,14 +27,11 @@ const state = reactive<{
 }>({
   docDirectory: docDirectory,
   currentDocFilePath: '',
-  docContent: mdReactNote01
+  docContent: `# Hello World`
 });
 
 const onSelectDocFile = (file: DocFile) => {
   state.currentDocFilePath = file?.path || '';
-
-  state.docContent = `# ${file.name}
-${mdReactNote01}
-`;
+  state.docContent = mockDoc(file.name, mdReactNote01);
 };
 </script>

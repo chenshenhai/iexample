@@ -4,7 +4,7 @@
   iexample-project-001: 111
   iexample-project-002: 222
 -->
-# React Note 001
+# $$Hello_Demo$$
 
 ## HTML
 
@@ -35,7 +35,7 @@
   <body>
 
     <div id="app">Loading...</div>
-    <script src="./src/app.tsx"></script>
+    <script type="module" src="./src/app.tsx"></script>
   </body>
 </html>
 
@@ -55,6 +55,7 @@ import './app.css';
 const App = () => {
   return (
     <div className='main'>
+      <h1>$$Hello_Demo$$</h1>
       <div>Hello Counter</div>
       <Counter />
     </div>

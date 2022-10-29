@@ -16,7 +16,7 @@
         <template #bottom>
           <TreeView
             :data="props.codeDirectory || []"
-            :expandAll="false"
+            :expandAll="true"
             :selectedFilePath="props.currentCodeFilePath || ''"
             @selectFile="onSelectCodeFile"
           />

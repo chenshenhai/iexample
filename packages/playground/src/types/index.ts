@@ -1,6 +1,6 @@
 import type CodeMirror from 'codemirror';
 
-export type {
+import type {
   CodeType,
   CodeFileType,
   CodeFile,
@@ -9,6 +9,16 @@ export type {
   DocFile,
   DocDirectory
 } from '@iexample/types';
+
+export type {
+  CodeType,
+  CodeFileType,
+  CodeFile,
+  CodeFolder,
+  CodeDirectory,
+  DocFile,
+  DocDirectory
+};
 
 export type ICodeEditor = typeof CodeMirror & {};
 
@@ -20,4 +30,11 @@ export type DocMode = 'code' | 'markdown';
 
 export interface SharedStore {
   docMode: DocMode;
+}
+
+export interface SharedCodeStore {
+  codeDirectory: CodeDirectory;
+  currentCodeFilePath: string | null;
+  codeContent: string | null;
+  codeType: CodeType;
 }

@@ -196,7 +196,7 @@ export function parseMarkdownProject(md: string): {
     targetCodeFolders: (CodeFolder | CodeFile)[],
     targeFileMap: TempFileMap
   ) => {
-    if (targeFileMap.__isFolder__ === true) {
+    if (targeFileMap?.__isFolder__ === true) {
       Object.keys(targeFileMap).forEach((name: string) => {
         if (
           name &&

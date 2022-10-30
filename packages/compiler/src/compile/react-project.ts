@@ -33,9 +33,7 @@ export const compileReactProject = (
       let compiledContent: string | null = null;
       if (['react', 'javascript', 'typescript'].includes(file.codeType)) {
         try {
-          const reactResult = compileReactFile(file.content, {
-            filename: file.name
-          });
+          const reactResult = compileReactFile(file.content);
           const jsAst = parseJsToAst(reactResult.code);
           const baseFolderPath = getFolderPath(file.path);
           const cssPaths = filterCssFiles(jsAst.ast);

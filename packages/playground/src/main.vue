@@ -10,8 +10,8 @@
         <SiderMenu
           :docDirectory="props.docDirectory"
           :currentDocFilePath="props.currentDocFilePath"
-          :codeDirectory="storeCode.codeDirectory"
-          :currentCodeFilePath="storeCode.currentCodeFilePath || ''"
+          :codeDirectory="sharedCodeStore.codeDirectory"
+          :currentCodeFilePath="sharedCodeStore.currentCodeFilePath || ''"
           @onSelectDocFile="onSelectDocFile"
           @onSelectCodeFile="onSelectCodeFile"
         />
@@ -19,13 +19,15 @@
       <template #layout-center>
         <ViewSwitch
           :docContent="props.docContent"
-          :codeContent="storeCode.codeContent || ''"
-          :codeType="storeCode.codeType"
+          :codeContent="sharedCodeStore.codeContent || ''"
+          :codeType="sharedCodeStore.codeType"
         />
       </template>
       <template #layout-preview>
         <LayoutRow :defaultTopHeight="50" :unit="'%'">
-          <template #top> Preview </template>
+          <template #top>
+            <ViewPreview />
+          </template>
           <template #bottom> Console </template>
         </LayoutRow>
       </template>
@@ -34,23 +36,27 @@
 </template>
 
 <script lang="ts" setup>
-import { watch, reactive, provide } from 'vue';
+import { watch, reactive, provide, onMounted } from 'vue';
 import type {
   PlaygroundTheme,
   DocDirectory,
   DocFile,
   CodeFile,
-  SharedStore
+  SharedStore,
+  SharedCodeStore
 } from './types';
 import ResponsiveLayout from './modules/responsive-layout.vue';
 import LayoutRow from './components/layout-row.vue';
 import { storeGlobal } from './store/global';
 import SiderMenu from './modules/sider-menu.vue';
 import ViewSwitch from './modules/view-switch.vue';
+import ViewPreview from './modules/view-preview.vue';
 import { parseMarkdownProject } from './runtime/markdown/parse';
-import { storeCode } from './store/code';
-import { createSharedStore } from './store/shared';
-import { SHARED_STORE_CONTEXT_KEY } from './util/constant';
+import { createSharedStore, createSharedCodeStore } from './store/shared';
+import {
+  SHARED_STORE_CONTEXT_KEY,
+  SHARED_CODE_STORE_CONTEXT_KEY
+} from './util/constant';
 
 const props = defineProps<{
   theme?: PlaygroundTheme;
@@ -60,8 +66,10 @@ const props = defineProps<{
 }>();
 
 const sharedStore = reactive<SharedStore>(createSharedStore());
+const sharedCodeStore = reactive<SharedCodeStore>(createSharedCodeStore());
 
 provide<SharedStore>(SHARED_STORE_CONTEXT_KEY, sharedStore);
+provide<SharedCodeStore>(SHARED_CODE_STORE_CONTEXT_KEY, sharedCodeStore);
 
 const emits = defineEmits<{
   (event: 'onSelectDocFile', docFile: DocFile): void;
@@ -72,16 +80,30 @@ const onSelectDocFile = (docFile: DocFile) => {
 };
 
 const onSelectCodeFile = (codeFile: CodeFile) => {
-  storeCode.currentCodeFilePath = codeFile.path;
-  storeCode.codeContent = codeFile.content;
-  storeCode.codeType = codeFile.codeType;
+  sharedCodeStore.currentCodeFilePath = codeFile.path;
+  sharedCodeStore.codeContent = codeFile.content;
+  sharedCodeStore.codeType = codeFile.codeType;
 };
 
 storeGlobal.theme = props.theme === 'dark' ? 'dark' : 'light';
 
-watch([() => props.docContent], ([docContent]) => {
+function resetCode(docContent?: string) {
   const codeProject = parseMarkdownProject(docContent || '');
-  storeCode.codeDirectory = codeProject.dir;
+  console.log('codeProject ========', codeProject);
+
+  sharedCodeStore.codeDirectory = codeProject.dir;
+  sharedCodeStore.projectType = codeProject.projectType;
+}
+
+onMounted(() => {
+  resetCode(props.docContent);
+});
+
+watch([() => props.docContent], ([docContent]) => {
+  sharedStore.docMode = 'markdown';
+  resetCode(docContent);
+  sharedCodeStore.codeContent = null;
+  sharedCodeStore.currentCodeFilePath = null;
 });
 </script>
 

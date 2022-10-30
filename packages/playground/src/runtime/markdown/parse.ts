@@ -1,17 +1,22 @@
 import { Lexer, marked } from 'marked';
-import { parse } from 'yaml';
+import { parse as yamlParse } from 'yaml';
 import type {} from 'marked';
 import type {
   CodeDirectory,
   CodeFile,
   CodeFolder,
   CodeType,
-  CodeFileType
-} from '@iexample/types';
+  CodeFileType,
+  ProjectType
+} from '../../types';
 import { KEY_TYPE, KEY_FILE } from './config';
 
-type ProjectType = 'react' | 'vue';
-const PROJECT_TYPES: ProjectType[] = ['react', 'vue'];
+const PROJECT_TYPES: ProjectType[] = [
+  'react',
+  'vue',
+  'javascript',
+  'typescript'
+];
 
 type TempFile = {
   __path__: string;
@@ -74,7 +79,8 @@ function getCodeTypeFromPath(
     css: 'css',
     json: 'json',
     html: 'html',
-    txt: 'text'
+    txt: 'text',
+    vue: 'vue'
   };
   if (codeTypeMap[extname]) {
     return codeTypeMap[extname];
@@ -98,7 +104,8 @@ function getFileTypeFromPath(
     css: 'css',
     json: 'json',
     html: 'html',
-    txt: 'plaintext'
+    txt: 'plaintext',
+    vue: 'html'
   };
   if (fileTypeMap[extname]) {
     return fileTypeMap[extname];
@@ -144,28 +151,26 @@ function appendFileToMap(
 
 export function parseMarkdownProject(md: string): {
   dir: CodeDirectory;
-  codeType: CodeType;
+  projectType: ProjectType;
 } {
-  const project: { dir: CodeDirectory; codeType: CodeType } = {
-    codeType: 'javascript',
+  const project: { dir: CodeDirectory; projectType: ProjectType } = {
+    projectType: 'typescript',
     dir: []
   };
   const tokens: marked.TokensList = lexer.lex(md);
-  let projectType: ProjectType | null = null;
   const fileConfigMap = new Map<number, string>();
 
   for (let i = 0; i < tokens.length; i++) {
     const tk = tokens[i];
     if (isHtmlAnnotationToken(tk)) {
       const content = getHtmlAnnotationContent(tk.raw);
-      const config = parse(content);
-      if (typeof config?.[KEY_TYPE] === 'string' && config?.[KEY_TYPE]) {
-        if (
-          projectType === null &&
-          PROJECT_TYPES.includes(config[KEY_TYPE] as ProjectType)
-        ) {
-          projectType = config[KEY_TYPE] as ProjectType;
-        }
+      const config = yamlParse(content);
+      if (
+        typeof config?.[KEY_TYPE] === 'string' &&
+        config?.[KEY_TYPE] &&
+        PROJECT_TYPES.includes(config[KEY_TYPE] as ProjectType)
+      ) {
+        project.projectType = config[KEY_TYPE] as ProjectType;
       } else if (typeof config?.[KEY_FILE] === 'string' && config?.[KEY_FILE]) {
         fileConfigMap.set(i, config?.[KEY_FILE]);
       }
@@ -196,7 +201,7 @@ export function parseMarkdownProject(md: string): {
     targetCodeFolders: (CodeFolder | CodeFile)[],
     targeFileMap: TempFileMap
   ) => {
-    if (targeFileMap.__isFolder__ === true) {
+    if (targeFileMap?.__isFolder__ === true) {
       Object.keys(targeFileMap).forEach((name: string) => {
         if (
           name &&
@@ -246,5 +251,6 @@ export function parseMarkdownProject(md: string): {
     }
   });
   project.dir = [...folderList, ...fileList];
+
   return project;
 }

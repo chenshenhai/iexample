@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <NumComponent :num="num" />
-    <button class="btn" @click="click">Add 2</button>
+    <button class="btn" @click="click">Add + 2</button>
   </div>
 </template>
 

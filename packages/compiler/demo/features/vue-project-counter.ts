@@ -15,6 +15,7 @@ import {
   parseCompiledJsCodeList,
   parseCompiledCssCodeList
 } from '../../src';
+// } from '../../dist/index.es';
 import type { CodeDirectory } from '@iexample/types';
 
 const dir: CodeDirectory = [

@@ -4,3 +4,6 @@ function randomStr(): string {
 
 export const SHARED_STORE_CONTEXT_KEY =
   'shared_store_context_key_' + randomStr();
+
+export const SHARED_CODE_STORE_CONTEXT_KEY =
+  'shared_store_context_key_' + randomStr();

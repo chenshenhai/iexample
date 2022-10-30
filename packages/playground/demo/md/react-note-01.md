@@ -1,10 +1,8 @@
 
 <!-- 
-  iexample-type: react
-  iexample-project-001: 111
-  iexample-project-002: 222
+iexample-type: react
 -->
-# React Note 001
+# $$Hello_Demo$$
 
 ## HTML
 
@@ -35,7 +33,7 @@
   <body>
 
     <div id="app">Loading...</div>
-    <script src="./src/app.tsx"></script>
+    <script type="module" src="./src/app.tsx"></script>
   </body>
 </html>
 
@@ -55,7 +53,7 @@ import './app.css';
 const App = () => {
   return (
     <div className='main'>
-      <div>Hello Counter</div>
+      <h1>$$Hello_Demo$$</h1>
       <Counter />
     </div>
   )
@@ -69,8 +67,11 @@ root.render(<App />)
 
 <!-- iexample-file: "@/src/app.css" -->
 ```css
+h1 {
+  margin: 0;
+}
 .main {
-  width: 200px;
+  width: 400px;
   margin: 20px auto;
   padding: 10px;
   color: #666666;

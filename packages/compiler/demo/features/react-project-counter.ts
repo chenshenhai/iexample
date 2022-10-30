@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 import defineLib from '@iexample/define/dist/index.umd.js?raw';
 import codeReactLibCounter from './codes/react/counter/src/lib/counter?raw';
+import codeReactLibLog from './codes/react/counter/src/lib/log?raw';
 import codeReactUtilAdd from './codes/react/counter/src/util/add?raw';
 import codeReactUtilAdd2 from './codes/react/counter/src/util/add2?raw';
 import codeReactApp from './codes/react/counter/src/app?raw';
@@ -61,7 +62,7 @@ const dir: CodeDirectory = [
             path: '@/src/lib/log.ts',
             name: 'log.ts',
             type: 'file',
-            content: codeReactLibCounter,
+            content: codeReactLibLog,
             codeType: 'react',
             fileType: 'typescript'
           }
@@ -98,6 +99,83 @@ const dir: CodeDirectory = [
     name: 'index.html',
     type: 'file',
     content: codeReactIndexPage,
+    codeType: 'html',
+    fileType: 'html'
+  }
+];
+
+const dir1: CodeDirectory = [
+  {
+    path: '@/src',
+    name: 'src',
+    type: 'folder',
+    children: [
+      {
+        path: '@/src/app.tsx',
+        name: 'app.tsx',
+        type: 'file',
+        content:
+          "import React, { useState } from 'react';\nimport './lib/log';\nimport ReactDOM, { createRoot } from 'react-dom';\nimport Counter from './lib/counter';\nimport './app.css';\n\nconst App = () => {\n  return (\n    <div className='main'>\n      <h1>Hello World</h1>\n      <Counter />\n    </div>\n  )\n}\n\nconst root = createRoot(document.querySelector('#app'));\nroot.render(<App />)",
+        codeType: 'react',
+        fileType: 'typescript'
+      },
+      {
+        path: '@/src/app.css',
+        name: 'app.css',
+        type: 'file',
+        content:
+          'h1 {\n  margin: 0;\n}\n.main {\n  width: 400px;\n  margin: 20px auto;\n  padding: 10px;\n  color: #666666;\n  box-shadow: 0px 0px 9px #00000066;\n  text-align: center;\n}',
+        codeType: 'css',
+        fileType: 'css'
+      },
+      {
+        path: '@/src/lib',
+        name: 'lib',
+        type: 'folder',
+        children: [
+          {
+            path: '@/src/lib/counter.tsx',
+            name: 'counter.tsx',
+            type: 'file',
+            content:
+              "import React, { useState } from 'react';\nimport { add } from '../util/add';\n\nconst Counter = () => {\n  const [count, setCount] = useState<number>(0);\n  return (\n    <div className='hello'>\n      <div>{count}</div>\n      <button onClick={() => {\n        setCount(add(count));\n      }}>Add +</button>\n    </div>\n  )\n}\n\nexport default Counter;",
+            codeType: 'react',
+            fileType: 'typescript'
+          },
+          {
+            path: '@/src/lib/log.ts',
+            name: 'log.ts',
+            type: 'file',
+            content: "console.log('Hello Log!');",
+            codeType: 'typescript',
+            fileType: 'typescript'
+          }
+        ]
+      },
+      {
+        path: '@/src/util',
+        name: 'util',
+        type: 'folder',
+        children: [
+          {
+            path: '@/src/util/add.ts',
+            name: 'add.ts',
+            type: 'file',
+            content:
+              'export const add = (num: number) => {\n  return num + 1;\n}',
+            codeType: 'typescript',
+            fileType: 'typescript'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: '@/index.html',
+    name: 'index.html',
+    type: 'file',
+    content:
+      '<html>\n  <head>\n    <script type="importmap">\n      {\n        "imports": {\n          "vue": "https://unpkg.com/vue@3.2.37/dist/vue.runtime.esm-browser.js",\n          "react": "https://jspm.dev/react",\n          "react-dom": "https://jspm.dev/react-dom"\n        }\n      }\n    </script>\n    <style>\n      html,body {\n        margin: 0;\n        padding: 0;\n        background: #f0f0f0;\n        height: 100%;\n        width: 100%;\n      }\n    </style>\n  </head>\n  <body>\n\n    <div id="app">Loading...</div>\n    <script type="module" src="./src/app.tsx"></script>\n  </body>\n</html>\n\n\n',
     codeType: 'html',
     fileType: 'html'
   }
